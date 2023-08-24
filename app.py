@@ -9,8 +9,10 @@ from aiogram.utils import executor
 import os
 import sys
 import asyncio
+import time
 
 from libs.mysql_connect import query
+from libs.handlers import main_handler 
 from config import BOT_TOKEN
 
 
@@ -20,6 +22,6 @@ bot = Bot(
 )
 dp = Dispatcher(bot)
 
-@dp.message_handler() 
-async def handler(message: types.message):
-    print(message)
+dp.register_message_handler(main_handler)
+
+executor.start_polling(dp, skip_updates=True)
