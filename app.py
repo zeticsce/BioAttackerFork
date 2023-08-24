@@ -11,7 +11,7 @@ import sys
 import asyncio
 
 from libs.mysql_connect import query
-from config import BOT_TOKEN
+from config import BOT_TOKEN, OWNER_ID
 
 
 
@@ -20,6 +20,18 @@ bot = Bot(
 )
 dp = Dispatcher(bot)
 
-@dp.message_handler() 
+async def start_notify(dp):
+    await dp.bot.send_message(OWNER_ID, "Бот запущен")
+
+async def on_startup(dp):
+    await start_notify(dp)
+
+@dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
     print(message)
+
+
+if __name__ == '__main__':
+    
+    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
+
