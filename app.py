@@ -11,11 +11,13 @@ import sys
 import asyncio
 import time
 
+sys.path.insert(1, 'libs')
+
 from libs.mysql_connect import query
 
 from config import BOT_TOKEN, OWNER_ID
 
-from libs.handlers import main_handler 
+from libs.handlers import *
 
 
 bot = Bot(
@@ -30,12 +32,9 @@ async def start_notify(dp):
 async def on_startup(dp):
     await start_notify(dp)
 
-@dp.message_handler(content_types=['text']) 
-async def handler(message: types.message):
-    print(message)
 
 
 if __name__ == '__main__':
-    
+    from libs.handlers import dp
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
 

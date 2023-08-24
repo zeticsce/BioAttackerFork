@@ -45,4 +45,3 @@ config.py
 # Folders
 
 __pycache__/
-__pycache__
