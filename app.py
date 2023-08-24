@@ -22,17 +22,12 @@ from libs.handlers import *
 
 bot = Bot(
     token = BOT_TOKEN,
-    parse_mode="Markdown"
+    parse_mode="MarkdownV2"
 )
 dp = Dispatcher(bot)
 
-async def start_notify(dp):
-    await dp.bot.send_message(OWNER_ID, "Бот запущен")
-
 async def on_startup(dp):
-    await start_notify(dp)
-
-
+    await dp.bot.send_message(OWNER_ID, "Бот запущен")
 
 if __name__ == '__main__':
     from libs.handlers import dp
