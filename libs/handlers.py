@@ -9,5 +9,3 @@ from aiogram.utils import executor
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
     await message.reply(message.text)
-
-print("handlers init")

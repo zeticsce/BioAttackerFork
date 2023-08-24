@@ -1,6 +1,3 @@
-import pymysql
-from pymysql.cursors import DictCursor
-
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.dispatcher import Dispatcher
@@ -11,13 +8,11 @@ import sys
 import asyncio
 import time
 
-sys.path.insert(1, 'libs')
-
-from libs.mysql_connect import query
-
 from config import BOT_TOKEN, OWNER_ID
 
+from libs.mysql_connect import query
 from libs.handlers import *
+
 
 
 bot = Bot(
