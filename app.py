@@ -15,10 +15,9 @@ from libs.mysql_connect import query
 from libs.handlers import main_handler 
 from config import BOT_TOKEN
 
-
-
 bot = Bot(
-    token = BOT_TOKEN
+    token = BOT_TOKEN,
+    parse_mode="Markdown"
 )
 dp = Dispatcher(bot)
 
