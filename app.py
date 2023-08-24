@@ -16,8 +16,7 @@ from config import BOT_TOKEN
 
 
 bot = Bot(
-    token = '6262610716:AAHnxnu4vyHgU_QFIDI1EXzN6oevEp5lc5k',
-    proxy="http://H7zDFP:pvGSnG@45.155.202.95:8000/"
+    token = BOT_TOKEN
 )
 dp = Dispatcher(bot)
 
