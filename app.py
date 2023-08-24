@@ -9,14 +9,18 @@ from aiogram.utils import executor
 import os
 import sys
 import asyncio
+import time
 
 from libs.mysql_connect import query
+
 from config import BOT_TOKEN, OWNER_ID
 
+from libs.handlers import main_handler 
 
 
 bot = Bot(
-    token = BOT_TOKEN
+    token = BOT_TOKEN,
+    parse_mode="Markdown"
 )
 dp = Dispatcher(bot)
 
