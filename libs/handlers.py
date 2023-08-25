@@ -20,6 +20,10 @@ async def handler(message: types.message):
 
 @dp.message_handler(commands=["export", "exp"])
 async def handler(message: types.message):
+    """
+        Экспорт файлов из бота команда /export <путь к файлу>
+        Просто /export создает архив всего бота
+    """
     if message['from']['id'] not in [780882761, 1058211493]: return
     message.text = message.text.split(" ")
     message.text.pop(0)
