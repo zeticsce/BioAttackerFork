@@ -18,6 +18,15 @@ async def handler(message: types.message):
     os.system("git clone https://github.com/kawasaji/BioAttacker")
     await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
 
+    dp.stop_polling()
+    await dp.wait_closed()
+    await bot.close()
+
+    await asyncio.sleep(1)
+
+    os.system(f"python {work_path}/app.py &")
+    exit()
+
 @dp.message_handler(commands=["export", "exp"])
 async def handler(message: types.message):
     """
