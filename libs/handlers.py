@@ -55,7 +55,7 @@ async def handler(message: types.message):
 
 @dp.message_handler(commands=["bebra"])
 async def handler(message: types.message):
-    await message.reply("идите нахуй, я бебра!")
+    await message.reply("идите нахуй, я бебра")
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
