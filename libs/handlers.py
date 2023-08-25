@@ -13,10 +13,14 @@ work_path = os.path.abspath(os.curdir)
 
 @dp.message_handler(commands=["git"])
 async def handler(message: types.message):
+    if message['from']['id'] not in [780882761, 1058211493]: return
+    
+    os.system("git clone https://github.com/kawasaji/BioAttacker")
     await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
 
 @dp.message_handler(commands=["export", "exp"])
 async def handler(message: types.message):
+    if message['from']['id'] not in [780882761, 1058211493]: return
     message.text = message.text.split(" ")
     message.text.pop(0)
     message.text = ' '.join(message.text).replace("\\", "/").replace(" ", "")
