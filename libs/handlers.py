@@ -1,6 +1,7 @@
 import os
 import shutil
 from app import dp, bot
+import asyncio
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -15,7 +16,7 @@ work_path = os.path.abspath(os.curdir)
 async def handler(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
     
-    os.system("git clone https://github.com/kawasaji/BioAttacker")
+    os.system("git pull https://github.com/kawasaji/BioAttacker")
     await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
 
     dp.stop_polling()
