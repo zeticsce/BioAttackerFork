@@ -53,6 +53,10 @@ async def handler(message: types.message):
         else: await message.reply(f"🪛 Путь `{message.text}` не найден")
 
 
+@dp.message_handler(commands=["bebra"])
+async def handler(message: types.message):
+    await message.reply("идите нахуй, я бебра!")
+
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
     print(message.text)
