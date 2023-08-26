@@ -11,19 +11,30 @@ from aiogram.utils import executor
 
 work_path = os.path.abspath(os.curdir)
 
-
 @dp.message_handler(commands=["git"])
 async def handler(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
     
     os.system("git pull https://github.com/kawasaji/BioAttacker")
     await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
+    await message.reply("🪛 Рестарт бота")
 
     dp.stop_polling()
     await dp.wait_closed()
-    await bot.close()
+    await bot.close()
 
-    await asyncio.sleep(1)
+    os.system(f"python {work_path}/app.py &")
+    exit()
+
+@dp.message_handler(commands=["restart"])
+async def handler(message: types.message):
+    if message['from']['id'] not in [780882761, 1058211493]: return
+    
+    await message.reply("🪛 Рестарт бота")
+
+    dp.stop_polling()
+    await dp.wait_closed()
+    await bot.close()
 
     os.system(f"python {work_path}/app.py &")
     exit()
@@ -50,12 +61,7 @@ async def handler(message: types.message):
                 os.remove(work_path + "/files.zip")
             else:
                 await bot.send_document(message.chat.id,  InputFile(work_path + message.text, filename=message.text))
-        else: await message.reply(f"🪛 Путь `{message.text}` не найден")
-
-
-@dp.message_handler(commands=["bebra"])
-async def handler(message: types.message):
-    await message.reply("идите нахуй, я бебра")
+        else: await message.reply(f"🪛 Путь `{message.text}` не найден")
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
