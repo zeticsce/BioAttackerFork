@@ -73,6 +73,15 @@ async def handler(message: types.message):
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
+    if message.text == "биоеб":
+        """
+            Команда заражения
+        """
+        if message['from']['id'] in labs.has_lab_users:
+            ran_user = labs.get_random_victum()
+            await message.reply(f"{ran_user['user_id']}, {ran_user['name']}")
+            # labs.save_victum(message['from']['id'], 2563739, 100)
+
     if message.text == "биолаб":
 
         """
@@ -80,8 +89,7 @@ async def handler(message: types.message):
         """
 
         lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
-        if lab == None: 
-            lab = labs.create_lab(message['from']['id'])
+        if lab == None: lab = labs.create_lab(message['from']['id'])
 
         # дальше лаба точно существует и полностью содежится в lab
         """

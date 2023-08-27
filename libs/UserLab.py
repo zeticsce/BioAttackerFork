@@ -36,10 +36,30 @@ class UserLab:
     def __repr__(self):
         return str(json.dumps(self.__dict__, indent=4))
     
+    
+    def get_victums(self, params = None):
+        """
+            Выводит список жертв у юзера
+            params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
+        """
+        if params == None: return query(f"SELECT * FROM `bio_attacker_data`.`victums{self.user_id}`;")
+        else: return query(f"SELECT * FROM `bio_attacker_data`.`victums{self.user_id}` WHERE {params};")
+    
+    def get_issues(self, params = None):
+        """
+            Выводит список болезней у юзера
+            params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
+        """
+        if params == None: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}`;")
+        else: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` WHERE {params};")
+    
+
     def save(self):
         """Сохраняет значение лабы, если никакие значения не были изменены, то ничего не делает"""
         result = []
         for i in self.__start_data:
             if self.__start_data[i] != self.__dict__[i]: result.append(f"`{i}` = '{self.__dict__[i]}'") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
+
+    
 
