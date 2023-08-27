@@ -25,10 +25,6 @@ conn = pymysql.connect(
 )
 def query(query):
     with conn.cursor() as cursor:
-        try:
-            cursor.execute(query)
-            conn.commit()
-            return cursor.fetchall()
-        except Exception as e:
-            print(traceback.format_exc(), '//', query) 
-            return []
+        cursor.execute(query)
+        conn.commit()
+        return cursor.fetchall()

@@ -77,7 +77,7 @@ async def handler(message: types.message):
 
         lab = labs.get_lab(message['from']['id'])
         if lab == None:
-            lab = labs.create_lab(message['from']['id'], message['from']['first_name'])
+            lab = labs.create_lab(message['from']['id'])
 
         # дальше лаба точно существует и полностью содежится в lab
         """
@@ -111,7 +111,8 @@ async def handler(message: types.message):
             coins               колличество коинов
             bio_valuta          колличество какой либо валюты / ирисок
         """
-        print(lab) 
+        print(lab)
+        lab.save()
 
         
 
