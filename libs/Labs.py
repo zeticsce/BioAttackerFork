@@ -28,7 +28,7 @@ class Labs:
         """
         victums = query(f"SELECT * FROM `bio_attacker_data`.`victums{user_id}` WHERE `user_id` = {victum_id} LIMIT 1")
         lab = self.get_lab(user_id)
-        if len(victums) == 0 or victums[0]['until_infect'] < int(time.time()):
+        if len(victums) == 0:
             query(f"INSERT INTO `bio_attacker_data`.`victums{user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (lab.mortality * 24 * 60 * 60)}')")
         else:
             query(f"DELETE FROM `bio_attacker_data`.`victums{user_id}` WHERE `victums{user_id}`.`id` = {victums[0]['id']}")
