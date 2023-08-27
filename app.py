@@ -16,8 +16,7 @@ sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
 
 bot = Bot(
-    token = BOT_TOKEN,
-    parse_mode="MarkdownV2"
+    token = BOT_TOKEN
 )
 dp = Dispatcher(bot)
 
