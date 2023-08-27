@@ -1,6 +1,7 @@
 import os
 import shutil
-from app import dp, bot
+from app import dp, bot, query
+from Labs import Labs
 import asyncio
 
 from aiogram import Bot, types
@@ -10,7 +11,7 @@ from aiogram.utils import executor
 
 
 work_path = os.path.abspath(os.curdir)
-
+labs = Labs()
 
 @dp.message_handler(commands=["git"])
 async def handler(message: types.message):
@@ -59,5 +60,45 @@ async def handler(message: types.message):
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
-    print(message.text)
+    if message.text == "биолаб":
+
+        lab = labs.get_lab(message['from']['id'])
+        if lab == None:
+            lab = labs.create_lab(message['from']['id'], message['from']['first_name'])
+
+        # дальше лаба точно существует и полностью содежится в lab
+        """
+            поле                описание
+
+            user_id             юзер айди пользователя
+            name имя            пользователя
+            user_name           юз пользователя
+            corp корп           айди пользователя
+            patogen_name        имя патогена пользователя
+
+            all_patogens        колличество всех патогенов у юзера
+            patogens            колличество оставшихся патогенов у юзера
+            last_patogen_time   время последнего израсходованного патогена (unix метка)
+
+            qualification       уровень квалификации
+            infectiousness      уровень заразности
+            immunity уровень    иммунитета
+            mortality уровень   летальности
+            security уровень    безопасноси
+
+            bio_exp             био опыт
+            bio_res             био ресурс
+
+            all_operations      колличество операций заражения
+            suc_operations      колличество успешных операций заражения
+            all_issue           колличество всех попыток заразить этого юзера
+            prevented_issue     колличество успешных попыток заразить этого юзера
+            victims             колличество жертв
+            disease             колличество болезней
+            coins               колличество коинов
+            bio_valuta          колличество какой либо валюты / ирисок
+        """
+        print(lab) 
+
+        
 

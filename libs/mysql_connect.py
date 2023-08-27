@@ -19,7 +19,7 @@ conn = pymysql.connect(
     port=3306,
     user=MYSQL_USER,
     password=MYSQL_PASSWORD,
-    database=MYSQL_DB,
+    database="",
     charset='utf8mb4',
     cursorclass=DictCursor
 )
