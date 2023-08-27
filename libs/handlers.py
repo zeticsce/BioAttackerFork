@@ -114,6 +114,9 @@ async def handler(message: types.message):
             disease             колличество болезней
             coins               колличество коинов
             bio_valuta          колличество какой либо валюты / ирисок
+
+            last_farma          время последнего использования комманды ферма
+            last_issue          время последнего заражения
         """
         print(lab)
         lab.save() 
