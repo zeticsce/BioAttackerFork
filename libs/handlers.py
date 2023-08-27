@@ -15,7 +15,7 @@ from aiogram.utils import executor
 
 work_path = os.path.abspath(os.curdir)
 labs = Labs()
-if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST:
+if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST: # Необходимо, потому что команда /git и /restar работает только на хостинге
     @dp.message_handler(commands=["git"])
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
@@ -75,8 +75,12 @@ async def handler(message: types.message):
 async def handler(message: types.message):
     if message.text == "биолаб":
 
-        lab = labs.get_lab(message['from']['id'])
-        if lab == None:
+        """
+            Команда вывода лаборатории юзера
+        """
+
+        lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
+        if lab == None: 
             lab = labs.create_lab(message['from']['id'])
 
         # дальше лаба точно существует и полностью содежится в lab
@@ -112,7 +116,7 @@ async def handler(message: types.message):
             bio_valuta          колличество какой либо валюты / ирисок
         """
         print(lab)
-        lab.save()
+        lab.save() 
 
         
 
