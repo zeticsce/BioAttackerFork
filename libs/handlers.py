@@ -1,8 +1,11 @@
 import os
 import shutil
 from app import dp, bot, query
+from config import MYSQL_HOST
+
 from Labs import Labs
 import asyncio
+import requests
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -12,36 +15,36 @@ from aiogram.utils import executor
 
 work_path = os.path.abspath(os.curdir)
 labs = Labs()
+if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST:
+    @dp.message_handler(commands=["git"])
+    async def handler(message: types.message):
+        if message['from']['id'] not in [780882761, 1058211493]: return
 
-@dp.message_handler(commands=["git"])
-async def handler(message: types.message):
-    if message['from']['id'] not in [780882761, 1058211493]: return
-    
-    os.system("git pull https://github.com/kawasaji/BioAttacker")
-    await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
-    await message.reply("🪛 Рестарт бота")
+        os.system("git pull https://github.com/kawasaji/BioAttacker")
+        await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
+        await message.reply("🪛 Рестарт бота")
 
-    dp.stop_polling()
-    await dp.wait_closed()
-    await bot.close()
-
-
-    os.system(f"python {work_path}/app.py &")
-    exit()
-
-@dp.message_handler(commands=["restart"])
-async def handler(message: types.message):
-    if message['from']['id'] not in [780882761, 1058211493]: return
-    
-    await message.reply("🪛 Рестарт бота")
-
-    dp.stop_polling()
-    await dp.wait_closed()
-    await bot.close()
+        dp.stop_polling()
+        await dp.wait_closed()
+        await bot.close()
 
 
-    os.system(f"python {work_path}/app.py &")
-    exit()
+        os.system(f"python {work_path}/app.py &")
+        exit()
+
+    @dp.message_handler(commands=["restart"])
+    async def handler(message: types.message):
+        if message['from']['id'] not in [780882761, 1058211493]: return
+
+        await message.reply("🪛 Рестарт бота")
+
+        dp.stop_polling()
+        await dp.wait_closed()
+        await bot.close()
+
+
+        os.system(f"python {work_path}/app.py &")
+        exit()
 
 @dp.message_handler(commands=["export", "exp"])
 async def handler(message: types.message):
