@@ -79,7 +79,7 @@ async def handler(message: types.message):
         """
         if message['from']['id'] in labs.has_lab_users:
             ran_user = labs.get_random_victum()
-            await message.reply(f"{ran_user['user_id']}, {ran_user['name']}")
+            await message.reply(text=f"{ran_user['user_id']}, {ran_user['name']}")
             # labs.save_victum(message['from']['id'], 2563739, 100)
 
     if message.text == "биолаб":
