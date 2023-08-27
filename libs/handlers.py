@@ -84,7 +84,7 @@ async def handler(message: types.message):
             поле                описание
 
             user_id             юзер айди пользователя
-            name имя            пользователя
+            name                имя пользователя
             user_name           юз пользователя
             corp корп           айди пользователя
             patogen_name        имя патогена пользователя
