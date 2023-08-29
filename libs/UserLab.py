@@ -14,7 +14,7 @@ class UserLab:
     def __init__(self, user_id):
         self.user_id = user_id
         self.__convert_lab()
-        self.__has_lab = False 
+        self.has_lab = False 
 
     def __convert_lab(self):
 
@@ -30,7 +30,7 @@ class UserLab:
             result[0].pop("tg_users.user_id")
             self.__dict__ = dict(result[0])
             self.__start_data = dict(result[0])
-            self.__has_lab = True
+            self.has_lab = True
 
     def __getitem__(self, item):
         return self.__dict__[item]
