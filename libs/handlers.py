@@ -131,52 +131,45 @@ async def handler(message: types.message):
             last_farma          время последнего использования комманды ферма
             last_issue          время последнего заражения
         """
-        # await message.reply(str(lab))
+
         '''  Название вируса '''
-        text = f'🦠 Информация о вирусе: {lab["patogen_name"]}\n\n'
+        text = f'🦠 Информация о вирусе: {lab.patogen_name if lab.patogen_name != None else "неизвестно"}\n\n'
 
         '''  Владелец лабы '''
-        if str(lab["user_name"]) in ("null", "None"):
-            text += f'👺 Владелец: <a href="tg://openmessage?user_id={lab["user_id"]}">{lab["name"]}</a>\n'
-        else:
-            text += f'👺 Владелец: <a href="https://t.me/{lab["user_name"]}">{lab["name"]}</a>\n'
+        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
+        text += f'👺 Владелец: [{lab.name}]({owner_link})\n'
 
         ''' Корпорация '''
-        if str(lab["corp"]) not in ("null", "None"):
-            text += f'🏢 Относится к корпорации: <a href="tg://openmessage?user_id={lab["corp_owner_id"]}">{lab["corp_name"]}</a>\n\n'
-        else:
-            text += f'\n'
+        if lab.corp != None: text += f'🏢 Относится к корпорации: [{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})\n\n'
+        else: text += f'\n'
         
         ''' Количество патогенов ''' 
-        text += f'🧪 Доступных патогенов: {lab["patogens"]}/{lab["all_patogens"]}\n'
+        text += f'🧪 Доступных патогенов: {lab.patogens} из {lab.all_patogens}\n'
 
         ''' Уровень разработки '''  
-        text += f'👨🏻‍🔬 Уровень разработки: {lab["qualification"]} (время в минутах)\n\n'
+        text += f'👨🏻‍🔬 Уровень разработки: {lab.qualification} (время в минутах)\n\n'
         
         ''' Навыки '''
-        text += f'🔬 <b>НАВЫКИ:</b>\n'
-        text += f'🦠 Заразность: {lab["infectiousness"]} ур.\n'
-        text += f'🛡 Иммунитет: {lab["immunity"]} ур.\n'
-        text += f'☠️ Летальность: {lab["mortality"]} ур.\n'
-        text += f'🕵️‍♂️ Безопасность: {lab["security"]} ур.\n\n'
+        text += f'🔬 **НАВЫКИ:**\n'
+        text += f'🦠 Заразность: {lab.infectiousness} ур.\n'
+        text += f'🛡 Иммунитет: {lab.immunity} ур.\n'
+        text += f'☠️ Летальность: {lab.mortality} ур.\n'
+        text += f'🕵️‍♂️ Безопасность: {lab.security} ур.\n\n'
 
         ''' Данные ''' 
-        text += f'⛩ <b>ДАННЫЕ:</b>\n'
-        text += f'☣️ Био-опыт: {lab["bio_exp"]}\n'
-        text += f'🧬 Био-ресурс: {lab["bio_res"]}\n'
-        text += f'😷 Спецопераций: {lab["suc_operations"]}/{lab["all_operations"]}\n'
-        text += f'🥽 Предотвращены: {lab["prevented_issue"]}/{lab["all_issue"]}\n\n'
+        text += f'⛩ **ДАННЫЕ:**\n'
+        text += f'☣️ Био-опыт: {lab.bio_exp}\n'
+        text += f'🧬 Био-ресурс: {lab.bio_res}\n'
+        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations}\n'
+        text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue}\n\n'
 
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
             reply_to_message_id=message.message_id, 
-            parse_mode="HTML",
+            parse_mode="Markdown",
             disable_web_page_preview=True
         )
-
-        
-
 
         lab.save() 
 
