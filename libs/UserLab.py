@@ -13,9 +13,24 @@ class UserLab:
     """
     def __init__(self, user_id):
         self.user_id = user_id
-        self.__convert_lab()
         self.has_lab = False 
+        self.__convert_lab()
 
+    def format_dir(self, _item, indent=4, base_indent=None):
+
+        if base_indent == None: 
+            base_indent = indent
+        result = "{\n"
+        count = 0
+        for i in _item:
+            comma = "" if len(_item) - 1 == count else ","
+            if type(_item[i]) == str: result += " "*indent + f'"{i}": "{_item[i]}"{comma}\n'
+            elif type(_item[i]) == dict: result += " "*indent + f'"{i}": ' + self.format_dir(_item[i], indent=base_indent + indent, base_indent=base_indent) + comma
+            else: result += " "*indent + f'"{i}": {_item[i]}{comma}\n'
+            count += 1
+        result += " "*(indent - base_indent) + "}\n"
+        return result
+    
     def __convert_lab(self):
 
         """
@@ -35,7 +50,10 @@ class UserLab:
     def __getitem__(self, item):
         return self.__dict__[item]
     def __repr__(self):
-        return str(json.dumps(self.__dict__, indent=4))
+        data = dict(self.__dict__)
+        data.pop("_UserLab__start_data")
+        data.pop("has_lab")
+        return self.format_dir(data)
     
     
     def get_victums(self, params = None):
