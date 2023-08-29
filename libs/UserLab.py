@@ -1,6 +1,7 @@
 from typing import Any
 from app import query
 import json
+import time
 
     
 class UserLab:
@@ -73,6 +74,26 @@ class UserLab:
         """
         if params == None: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}`;")
         else: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` WHERE {params};")
+
+        
+    def save_victum(self, victum_id, profit):
+        """
+            Функция записывает жертву в базу и обновляет число заражений у юзера
+
+            victum_id   юзер айди жертвы
+            profit      профит, который получил юзер
+        """
+        victums = query(f"SELECT * FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `user_id` = {victum_id} LIMIT 1")
+        if len(victums) == 0:
+            query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
+        else:
+            query(f"DELETE FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `victums{self.user_id}`.`id` = {victums[0]['id']}")
+            query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
+        q = query(f"SELECT count(victums{self.user_id}.id) FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `until_infect` >= {int(time.time())}")
+        self.victums = q[0][list(q[0].keys())[0]]
+        self.suc_operations += 1
+        self.bio_exp += profit
+        self.last_patogen_time = int(time.time())
     
 
     def save(self):
