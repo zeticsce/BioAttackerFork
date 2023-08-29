@@ -19,6 +19,17 @@ class Labs:
         return UserLab(user_id)
     
     def get_lab(self, user_id): return UserLab(user_id)
+    def get_user(self, tag):
+        """
+            Вернет юзера, если он существует, иначе будет None
+        """
+        if str(tag).isdigit(): 
+            result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_id` LIKE '{tag}'")
+            result = None if len(result) == 0 else result[0] 
+        else:
+            query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_name` LIKE '{tag}'")
+            result = None if len(result) == 0 else result[0]
+        return result
 
     def save_victum(self, user_id, victum_id, profit):
         """
