@@ -83,7 +83,7 @@ async def handler(message: types.message):
             ran_user = labs.get_random_victum()
             await message.reply(text=f"{ran_user['user_id']}, {ran_user['name']}")
 
-
+            # Использовать labs.get_user(tag), если пользователь решил заразить по тегу, если юзер не найден, вернет None
 
             '''
                 Сохранение жертвы
