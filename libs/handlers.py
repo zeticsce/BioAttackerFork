@@ -89,7 +89,11 @@ async def handler(message: types.message):
         """
 
         lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
-        if lab == None: lab = labs.create_lab(message['from']['id'])
+        if lab == None: 
+            await message.reply('инициализация лабы')
+            try:
+                lab = labs.create_lab(message['from']['id'])
+            except Exeptions as e: await message.reply(e)
 
         # дальше лаба точно существует и полностью содежится в lab
         """
