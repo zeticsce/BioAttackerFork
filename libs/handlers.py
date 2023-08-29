@@ -90,7 +90,7 @@ async def handler(message: types.message):
 
         lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
         await message.reply(str(lab))
-        if not lab.__has_lab: 
+        if not lab.has_lab: 
             await message.reply('инициализация лабы')
             try:
                 lab = labs.create_lab(message['from']['id'])
