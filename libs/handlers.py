@@ -77,9 +77,34 @@ async def handler(message: types.message):
         """
             Команда заражения
         """
-        if message['from']['id'] in labs.has_lab_users:
+        lab = labs.get_lab(message['from']['id'])
+        if lab.has_lab: 
+            '''Получает рандомного пользователя из базы данных'''
             ran_user = labs.get_random_victum()
             await message.reply(text=f"{ran_user['user_id']}, {ran_user['name']}")
+
+
+
+            '''
+                Сохранение жертвы
+
+                Метод lab.save_victum(victum_id, profit) принимает два параметра, айди жертвы и профит с жертвы
+
+                Еще необходимо изменить вручную:
+
+                    lab.all_operations (если было несколько неудачных попыток в одном заражении, надо записать)
+                    lab.patogens (возможно будет затрачено несколько патогенов при заражении)
+            
+            '''
+
+            '''Пример с сохранением жертв'''
+            lab.save_victum(ran_user['user_id'], 100)
+            lab.all_operations += 1
+            lab.patogens -= 1
+
+            lab.save()
+
+            
             # labs.save_victum(message['from']['id'], 2563739, 100)
 
     if message.text == "биолаб":
@@ -88,13 +113,9 @@ async def handler(message: types.message):
             Команда вывода лаборатории юзера
         """
 
-        lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
-        # await message.reply(str(lab))
+        lab = labs.get_lab(message['from']['id'])
         if not lab.has_lab: 
-            await message.reply('инициализация лабы')
-            try:
-                lab = labs.create_lab(message['from']['id'])
-            except Exception as e: await message.reply(e)
+            lab = labs.create_lab(message['from']['id'])
 
         # дальше лаба точно существует и полностью содежится в lab
         """
