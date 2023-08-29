@@ -98,7 +98,7 @@ async def handler(message: types.message):
             user_id             юзер айди пользователя
             name                имя пользователя
             user_name           юз пользователя
-            corp корп           айди пользователя
+            corp корп           айди корпы
             patogen_name        имя патогена пользователя
 
             all_patogens        колличество всех патогенов у юзера
