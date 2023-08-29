@@ -126,7 +126,7 @@ async def handler(message: types.message):
             last_farma          время последнего использования комманды ферма
             last_issue          время последнего заражения
         """
-        print(lab)
+        await message.reply(str(lab))
         lab.save() 
 
         
