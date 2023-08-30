@@ -12,9 +12,10 @@ from config import BOT_TOKEN, OWNER_ID
 
 from libs.mysql_connect import query
 from libs.handlers import *
+from libs.StringConverters import StringConv
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
-
+strconv = StringConv()
 bot = Bot(
     token = BOT_TOKEN
 )

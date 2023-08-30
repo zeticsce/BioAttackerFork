@@ -16,7 +16,3 @@ class StringConv:
             else: result = result[0:-3]
             return ''.join(result).strip() + "k"
         else: return str(num)
-    
-strconv = StringConv()
-
-print(strconv.num_to_str(956))
