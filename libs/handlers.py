@@ -74,41 +74,100 @@ async def handler(message: types.message):
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
-    if message.text == "биоеб":
-        """
-            Команда заражения
-        """
-        lab = labs.get_lab(message['from']['id'])
-        if lab.has_lab: 
-            '''Получает рандомного пользователя из базы данных'''
-            ran_user = labs.get_random_victum()
+    if "биоеб" in message.text.lower().split(" ")[0]:
 
-            # Использовать labs.get_user(tag), если пользователь решил заразить по тегу, если юзер не найден, вернет None
+        if len(message.text.split()) == 1:
+            """
+                Команда заражения
+            """
+            lab = labs.get_lab(message['from']['id'])
+            if lab.has_lab: 
+                if lab.patogens > 0:
+                    profit = random.randrange(1, 100)
+                    lab.save_victum(ran_user['user_id'], profit)
+                    lab.all_operations += 1
+                    lab.patogens -= 1
 
-            '''
-                Сохранение жертвы
+                    lab.save()
 
-                Метод lab.save_victum(victum_id, profit) принимает два параметра, айди жертвы и профит с жертвы
 
-                Еще необходимо изменить вручную:
+                    '''
+                        casual - случайный юзер
+                        victim - жертва
+                        bioattacker - игрок
 
-                    lab.all_operations (возможно было несколько неудачных попыток в одном заражении, надо записать)
-                    lab.patogens (возможно будет затрачено несколько патогенов при заражении)
+                    '''
+                    karma = ("casual", "victim")
+                    
+                    random_choice = random.choice(karma)
+                    ran_user = int()
+
+                    if random_choice == "casual":
+                        ran_user = labs.get_random_victum()
+
+                    elif random_choice == "victim":
+                        ran_user = lab.get_victums(params="ORDER BY RAND() LIMIT 1")[0]
+
+                        
+                    else:
+                        pass
+
+                    # ran_user = labs.get_random_victum()
+
+                    # Использовать labs.get_user(tag), если пользователь решил заразить по тегу, если юзер не найден, вернет None
+
+                    '''
+                        Сохранение жертвы
+
+                        Метод lab.save_victum(victum_id, profit) принимает два параметра, айди жертвы и профит с жертвы
+
+                        Еще необходимо изменить вручную:
+
+                            lab.all_operations (возможно было несколько неудачных попыток в одном заражении, надо записать)
+                            lab.patogens (возможно будет затрачено несколько патогенов при заражении)
+                    
+                    '''
+
+                    '''Пример с сохранением жертв'''
+                
+
+
+                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
             
-            '''
+        elif len(message.text.split(" ")) == 2:
+            ''' биоеб @username or @user_id '''
 
-            '''Пример с сохранением жертв'''
+            lab = labs.get_lab(message['from']['id'])
+
             if lab.patogens > 0:
-                profit = random.randrange(1, 100)
-                lab.save_victum(ran_user['user_id'], profit)
-                lab.all_operations += 1
-                lab.patogens -= 1
+                ran_user = int()
 
-                lab.save()
+                text_message = message.text.split(" ")
+                # await message.reply(str(text_message))
 
+                if text_message[1][0] == "@":
+                    ran_user = labs.get_user(text_message[1][1::])
+                
+                else:
+                    ran_user = labs.get_user(text_message[1])
 
-                await message.reply(text=f"Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}), получив за это {profit} био!", parse_mode="Markdown")
-            else: await message.reply(text=f"Попытка заразить юзера [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась... У Вас недостаточно патогенво!", parse_mode="Markdown")
+                
+                ''' Если юзер существует '''
+                if str(ran_user).lower() not in ("none", "null"):
+                    profit = random.randrange(1, 100)
+                    lab.save_victum(ran_user['user_id'], profit)
+                    lab.all_operations += 1
+                    lab.patogens -= 1
+
+                    lab.save()
+                    
+                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+
+                else:
+                    await message.reply("Такого пользователя не существует!")
+
+            else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
 
     if message.text == "биолаб":
 
