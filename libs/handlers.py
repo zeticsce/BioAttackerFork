@@ -83,12 +83,7 @@ async def handler(message: types.message):
             lab = labs.get_lab(message['from']['id'])
             if lab.has_lab: 
                 if lab.patogens > 0:
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(ran_user['user_id'], profit)
-                    lab.all_operations += 1
-                    lab.patogens -= 1
-
-                    lab.save()
+                    
 
 
                     '''
@@ -130,7 +125,12 @@ async def handler(message: types.message):
 
                     '''Пример с сохранением жертв'''
                 
+                    profit = random.randrange(1, 100)
+                    lab.save_victum(ran_user['user_id'], profit)
+                    lab.all_operations += 1
+                    lab.patogens -= 1
 
+                    lab.save()
 
                     await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
                 else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
