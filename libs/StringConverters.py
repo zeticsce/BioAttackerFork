@@ -2,6 +2,13 @@ class StringConv:
     def __init__(self):
         pass
     def num_to_str(self, num):
+        """
+            Конвертирует число в строку 
+            1000 1к
+            1300 1,3к
+            100300 100,3к
+            10000300 1 000,3к
+        """
         if num >= 1000:
             count = 1
             result = ""
