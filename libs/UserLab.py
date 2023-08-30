@@ -2,6 +2,7 @@ from typing import Any
 from app import query
 import json
 import time
+import math
 
     
 class UserLab:
@@ -44,9 +45,23 @@ class UserLab:
             result[0].pop("iris_name")
             result[0].pop("tg_users.id")
             result[0].pop("tg_users.user_id")
+            # print(result[0]['last_patogen_time'])
             self.__dict__ = dict(result[0])
             self.__start_data = dict(result[0])
             self.has_lab = True
+
+            delta = int(time.time()) - self.last_patogen_time
+            qual_time = ((61 - self.qualification)* 60)
+            delta = delta / qual_time
+            self.last_patogen_time = int(time.time()) - ((delta % 1) * qual_time)
+            self.patogens += math.floor(delta)
+            if self.patogens + math.floor(delta) <= self.all_patogens:
+                self.patogens += math.floor(delta)
+            else: 
+                self.patogens = int(self.all_patogens)
+                self.last_patogen_time = int(time.time())
+
+
 
     def __getitem__(self, item):
         return self.__dict__[item]

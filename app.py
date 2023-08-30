@@ -12,9 +12,10 @@ from config import BOT_TOKEN, OWNER_ID
 
 from libs.mysql_connect import query
 from libs.handlers import *
+from libs.StringConverters import StringConv
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
-
+strconv = StringConv()
 bot = Bot(
     token = BOT_TOKEN
 )
@@ -26,4 +27,6 @@ async def on_startup(dp):
 if __name__ == '__main__':
     from libs.handlers import dp
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
+
+
 

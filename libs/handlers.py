@@ -1,11 +1,12 @@
 import os
 import shutil
-from app import dp, bot, query
-from config import MYSQL_HOST
-
-from Labs import Labs
 import asyncio
 import requests
+import random
+
+from app import dp, bot, query, strconv
+from config import MYSQL_HOST
+from Labs import Labs
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -81,7 +82,6 @@ async def handler(message: types.message):
         if lab.has_lab: 
             '''Получает рандомного пользователя из базы данных'''
             ran_user = labs.get_random_victum()
-            await message.reply(text=f"{ran_user['user_id']}, {ran_user['name']}")
 
             # Использовать labs.get_user(tag), если пользователь решил заразить по тегу, если юзер не найден, вернет None
 
@@ -98,14 +98,17 @@ async def handler(message: types.message):
             '''
 
             '''Пример с сохранением жертв'''
-            lab.save_victum(ran_user['user_id'], 100)
-            lab.all_operations += 1
-            lab.patogens -= 1
+            if lab.patogens > 0:
+                profit = random.randrange(1, 100)
+                lab.save_victum(ran_user['user_id'], profit)
+                lab.all_operations += 1
+                lab.patogens -= 1
 
-            lab.save()
+                lab.save()
 
-            
-            # labs.save_victum(message['from']['id'], 2563739, 100)
+
+                await message.reply(text=f"Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}), получив за это {profit} био!", parse_mode="Markdown")
+            else: await message.reply(text=f"Попытка заразить юзера [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась... У Вас недостаточно патогенво!", parse_mode="Markdown")
 
     if message.text == "биолаб":
 
@@ -179,8 +182,8 @@ async def handler(message: types.message):
 
         ''' Данные ''' 
         text += f'⛩ **ДАННЫЕ:**\n'
-        text += f'☣️ Био-опыт: {lab.bio_exp}\n'
-        text += f'🧬 Био-ресурс: {lab.bio_res}\n'
+        text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
+        text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
         text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations}\n'
         text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue}\n\n'
 
