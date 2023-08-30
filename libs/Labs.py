@@ -7,7 +7,7 @@ class Labs:
         self.has_lab_users = [i['user_id'] for i in query("SELECT * FROM `bio_attacker`.`labs`")]
 
     def create_lab(self, user_id):
-        if len(query(f"SELECT * FROM `labs` WHERE `user_id` = {user_id}")) == 0:        
+        if len(query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `user_id` = {user_id}")) == 0:        
             "INSERT INTO `bio_attacker_data`.`victums780882761` (`id`, `user_id`, `name`, `profit`, `from_infect`, `untill_infect`) VALUES (NULL, '567', 'ополо', '657', '6584', '56765')"
             "INSERT INTO `bio_attacker_data`.`issues780882761` (`id`, `user_id`, `pat_name`, `hidden`, `from_infect`, `until_infect`) VALUES (NULL, '7800121', NULL, '1', '6584', '75648')"
 
