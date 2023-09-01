@@ -3,7 +3,7 @@ import shutil
 import asyncio
 import requests
 import random
-import chances
+
 
 from app import dp, bot, query, strconv
 from config import MYSQL_HOST
@@ -90,7 +90,7 @@ async def handler(message: types.message):
                 Команда заражения
         """
         
-        if len(message.text.split()) == 1:
+        if len(message.text.split(" ")) == 1:
             
             lab = labs.get_lab(message['from']['id'])
             if lab.has_lab: 
@@ -180,6 +180,57 @@ async def handler(message: types.message):
                 else:
                     await message.reply("Такого пользователя не существует!")
 
+            else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
+
+        elif len(message.text.split(" ")) == 3:
+
+            ''' биоеб (@user_id) (attempts) '''
+
+            lab = labs.get_lab(message['from']['id'])
+
+            if lab.patogens > 0:
+                ran_user = int()
+
+                text_message = message.text.split(" ")
+                # await message.reply(str(text_message))
+
+                if text_message[1][0] == "@":
+                    ran_user = labs.get_user(text_message[1][1::])
+                
+                else:
+                    ran_user = labs.get_user(text_message[1])
+            
+                if str(ran_user).lower() not in ("none", "null"):
+                    
+                    if int(text_message[2]) > 10:
+                        await message.reply("Максимальное кол-во попыток за раз — 10")
+
+                    else:
+                        
+                        import chances
+
+                        for i in range(int(text_message[2])):
+                            chance = chances.get_chance(params=1)
+
+                            if chance == 1:
+                                lab.patogens -= 1
+                                lab.all_operations += 1
+                                lab.save()
+                            else:
+                                profit = random.randrange(1, 100)
+                                lab.save_victum(ran_user['user_id'], profit)
+                                lab.all_operations += 1
+                                lab.patogens -= 1
+
+                                lab.save()
+                                
+                                await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) c {i + 1} попытки!\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+
+                                break
+
+                else:
+                    await message.reply("Такого пользователя не существует!")
+            
             else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
 
     if message.text == "биолаб":
