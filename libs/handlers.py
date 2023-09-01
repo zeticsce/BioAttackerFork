@@ -124,15 +124,25 @@ async def handler(message: types.message):
                     '''
 
                     '''Пример с сохранением жертв'''
-                
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(ran_user['user_id'], profit)
-                    lab.all_operations += 1
-                    lab.patogens -= 1
+                    
+                    chance = random.randint(1, 10)
 
-                    lab.save()
+                    if chance > 8:
 
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+                        await message.reply(text=f"👺 Попытка заразить [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                    else:
+                        profit = random.randrange(1, 100)
+                        lab.save_victum(ran_user['user_id'], profit)
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
                 else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
             
         elif len(message.text.split(" ")) == 2:
@@ -155,14 +165,24 @@ async def handler(message: types.message):
                 
                 ''' Если юзер существует '''
                 if str(ran_user).lower() not in ("none", "null"):
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(ran_user['user_id'], profit)
-                    lab.all_operations += 1
-                    lab.patogens -= 1
-
-                    lab.save()
                     
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                    
+                    chance = random.randint(1, 10)
+                    if chance > 8:
+
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+                        await message.reply(text=f"👺 Попытка заразить [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                    else:
+                        profit = random.randrange(1, 100)
+                        lab.save_victum(ran_user['user_id'], profit)
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
 
                 else:
                     await message.reply("Такого пользователя не существует!")
