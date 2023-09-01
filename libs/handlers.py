@@ -95,7 +95,7 @@ async def handler(message: types.message):
             lab = labs.get_lab(message['from']['id'])
             if lab.has_lab: 
                 if lab.patogens > 0:
-
+                    import chances
                     '''
                         casual - случайный юзер
                         victim - жертва
@@ -144,6 +144,9 @@ async def handler(message: types.message):
             lab = labs.get_lab(message['from']['id'])
 
             if lab.patogens > 0:
+                
+                import chances
+                
                 ran_user = int()
 
                 text_message = message.text.split(" ")
