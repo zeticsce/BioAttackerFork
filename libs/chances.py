@@ -1,12 +1,27 @@
 from random import *
 
-percentOfFault = int()
 
-def get_chance():
+def get_chance(params=0):
     
-    chance = randint(1, 10)
+    chance = randint(1, 100)
 
-    if chance > percentOfFault:
-        return 1
+    if params == 0:
+
+        if chance > 80:
+            return 1
+            
+        else:
+            return 0
+
+    elif params == 1:
+
+        if chance > 75:
+            return 1
+
+        else:
+            return 0
+
     else:
-        return 0
+        pass
+
+
