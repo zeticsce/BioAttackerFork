@@ -12,7 +12,17 @@
 - []()
 
 ## Установка
-Для установки нужно создать файл в  `BioAttacker\config.py`
+
+Для начала скопируйте репозиторий на свой компьютер
+```bash
+git commit https://github.com/kawasaji/BioAttacker
+```
+Далее перейдите в папку проекта `BioAttacker` и установите зависимости
+```bash
+pip install -r requirements.txt
+```
+
+Теперь нужно создать файл в  `BioAttacker\config.py`
 И ввести туда
 ``` python
 BOT_TOKEN = "BOT_TOKEN"
