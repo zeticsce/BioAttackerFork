@@ -8,17 +8,17 @@
 ## Оглавление
 
 - [Установка](#Установка)
-- []()
+- [Запуск](#Запуск)
 - []()
 
 ## Установка
 
 Для начала скопируйте репозиторий на свой компьютер
-```bash
+```console
 git commit https://github.com/kawasaji/BioAttacker
 ```
 Далее перейдите в папку проекта `BioAttacker` и установите зависимости
-```bash
+```console
 pip install -r requirements.txt
 ```
 
@@ -32,4 +32,10 @@ MYSQL_USER = "MYSQL_USER"
 MYSQL_PASSWORD = "MYSQL_PASSWORD"
 MYSQL_DB = "MYSQL_DB"
 MYSQL_HOST = "MYSQL_HOST"
+```
+
+## Запуск
+Для запуска перейдите в папку проекта и напишите данную команду
+```console
+python -m app
 ```
