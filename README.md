@@ -4,7 +4,7 @@
 [![Lines of code](https://hitsofcode.com/github/kawasaji/BioAttacker?branch=main)](https://hitsofcode.com/github/kawasaji/BioAttacker/view?branch=main) ![GitHub](https://img.shields.io/github/license/kawasaji/BioAttacker)
  ![GitHub contributors](https://img.shields.io/github/contributors/kawasaji/BioAttacker) <img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/kawasaji/BioAttacker"> <a href="https://www.behance.net/jimmykawasaji" target="blank"> <img alt="Static Badge" src="https://img.shields.io/badge/telegram-387D7A"> </a>
 
-Бот-игра для телеграм работающий на `pymysql`
+Бот-игра для телеграм работающий на `pymysql` и `aiogram`
 
 ## Оглавление
 
