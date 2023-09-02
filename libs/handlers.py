@@ -3,6 +3,8 @@ import shutil
 import asyncio
 import requests
 import random
+import subprocess
+import sys
 
 from app import dp, bot, query, strconv
 from config import MYSQL_HOST
@@ -21,18 +23,22 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
-        os.system("git pull https://github.com/kawasaji/BioAttacker")
-        await message.reply("🪛 Команда на клонирование гит репозитория отправлена")
-        await message.reply("🪛 Рестарт бота")
+        # os.system("git pull https://github.com/opolonix/JournalBot")
+        git_message = await message.reply("🪛 *Ожидаем клонирования...*", parse_mode="Markdown")
+
+        pull_result = subprocess.Popen(["git", "pull", "https://github.com/opolonix/JournalBot"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
+        output, errors = pull_result.communicate(input="Hello from the other side!")
+        pull_result.wait()
+        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
+
+        await message.reply("🪛 *Выход*", parse_mode="Markdown")
 
         dp.stop_polling()
         await dp.wait_closed()
         await bot.close()
 
-
         os.system(f"python {work_path}/app.py &")
-        exit()
-
+        sys.exit(0)
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
@@ -45,7 +51,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
 
         os.system(f"python {work_path}/app.py &")
-        exit()
+        sys.exit(0)
 
 @dp.message_handler(commands=["export", "exp"])
 async def handler(message: types.message):
