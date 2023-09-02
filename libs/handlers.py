@@ -4,6 +4,7 @@ import asyncio
 import requests
 import random
 
+
 from app import dp, bot, query, strconv
 from config import MYSQL_HOST
 from Labs import Labs
@@ -16,8 +17,10 @@ from aiogram.utils import executor
 
 work_path = os.path.abspath(os.curdir)
 labs = Labs()
+
+
 if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST: # Необходимо, потому что команда /git и /restar работает только на хостинге
-    @dp.message_handler(commands=["git"])
+    @dp.message_handler(commands=["git"], commands_prefix='!/.')
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
@@ -33,7 +36,8 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         os.system(f"python {work_path}/app.py &")
         exit()
 
-    @dp.message_handler(commands=["restart"])
+
+    @dp.message_handler(commands=["restart"], commands_prefix='!/.')
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
@@ -47,7 +51,13 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         os.system(f"python {work_path}/app.py &")
         exit()
 
-@dp.message_handler(commands=["export", "exp"])
+
+@dp.message_handler(commands=["start"], commands_prefix='!/.')
+async def hi_there(message: types.message):
+    await message.reply("Привет! *** придумать текст ***")
+
+
+@dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
 async def handler(message: types.message):
     """
         Экспорт файлов из бота команда /export <путь к файлу>
@@ -75,17 +85,17 @@ async def handler(message: types.message):
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
     if "биоеб" in message.text.lower().split(" ")[0]:
-
-        if len(message.text.split()) == 1:
-            """
+        
+        """
                 Команда заражения
-            """
+        """
+        
+        if len(message.text.split(" ")) == 1:
+            
             lab = labs.get_lab(message['from']['id'])
             if lab.has_lab: 
                 if lab.patogens > 0:
-                    
-
-
+                    import chances
                     '''
                         casual - случайный юзер
                         victim - жертва
@@ -103,36 +113,29 @@ async def handler(message: types.message):
                     elif random_choice == "victim":
                         ran_user = lab.get_victums(params="ORDER BY RAND() LIMIT 1")[0]
 
-                        
                     else:
                         pass
 
-                    # ran_user = labs.get_random_victum()
+                    chance = chances.get_chance()
 
-                    # Использовать labs.get_user(tag), если пользователь решил заразить по тегу, если юзер не найден, вернет None
+                    if chance == 1:
 
-                    '''
-                        Сохранение жертвы
+                        lab.all_operations += 1
+                        lab.patogens -= 1
 
-                        Метод lab.save_victum(victum_id, profit) принимает два параметра, айди жертвы и профит с жертвы
-
-                        Еще необходимо изменить вручную:
-
-                            lab.all_operations (возможно было несколько неудачных попыток в одном заражении, надо записать)
-                            lab.patogens (возможно будет затрачено несколько патогенов при заражении)
+                        lab.save()
+                        await message.reply(text=f"👺 Попытка заразить [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
                     
-                    '''
+                    else:
+                        profit = random.randrange(1, 100)
+                        lab.save_victum(ran_user['user_id'], profit)
+                        lab.all_operations += 1
+                        lab.patogens -= 1
 
-                    '''Пример с сохранением жертв'''
+                        lab.save()
+
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
                 
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(ran_user['user_id'], profit)
-                    lab.all_operations += 1
-                    lab.patogens -= 1
-
-                    lab.save()
-
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
                 else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
             
         elif len(message.text.split(" ")) == 2:
@@ -141,6 +144,9 @@ async def handler(message: types.message):
             lab = labs.get_lab(message['from']['id'])
 
             if lab.patogens > 0:
+                
+                import chances
+                
                 ran_user = int()
 
                 text_message = message.text.split(" ")
@@ -155,18 +161,79 @@ async def handler(message: types.message):
                 
                 ''' Если юзер существует '''
                 if str(ran_user).lower() not in ("none", "null"):
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(ran_user['user_id'], profit)
-                    lab.all_operations += 1
-                    lab.patogens -= 1
-
-                    lab.save()
                     
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                    
+                    chance = chance = chances.get_chance()
+                    if chance == 1:
+
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+                        await message.reply(text=f"👺 Попытка заразить [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                    else:
+                        profit = random.randrange(1, 100)
+                        lab.save_victum(ran_user['user_id'], profit)
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+
+                        lab.save()
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
 
                 else:
                     await message.reply("Такого пользователя не существует!")
 
+            else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
+
+        elif len(message.text.split(" ")) == 3:
+
+            ''' биоеб (@user_id) (attempts) '''
+
+            lab = labs.get_lab(message['from']['id'])
+
+            if lab.patogens > 0:
+                ran_user = int()
+
+                text_message = message.text.split(" ")
+                # await message.reply(str(text_message))
+
+                if text_message[1][0] == "@":
+                    ran_user = labs.get_user(text_message[1][1::])
+                
+                else:
+                    ran_user = labs.get_user(text_message[1])
+            
+                if str(ran_user).lower() not in ("none", "null"):
+                    
+                    if int(text_message[2]) > 10:
+                        await message.reply("Максимальное кол-во попыток за раз — 10")
+
+                    else:
+                        
+                        import chances
+
+                        for i in range(int(text_message[2])):
+                            chance = chances.get_chance(params=1)
+
+                            if chance == 1:
+                                lab.patogens -= 1
+                                lab.all_operations += 1
+                                lab.save()
+                            else:
+                                profit = random.randrange(1, 100)
+                                lab.save_victum(ran_user['user_id'], profit)
+                                lab.all_operations += 1
+                                lab.patogens -= 1
+
+                                lab.save()
+                                
+                                await message.reply(text=f"😎 Вы подвергли заражению пользователя [{ran_user['name']}](tg://openmessage?user_id={ran_user['user_id']}) c {i + 1} попытки!\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+
+                                break
+
+                else:
+                    await message.reply("Такого пользователя не существует!")
+            
             else: await message.reply(text=f"🧪 У Вас недостаточно патогенов!", parse_mode="Markdown")
 
     if message.text == "биолаб":
