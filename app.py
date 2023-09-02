@@ -7,6 +7,7 @@ import os
 import sys
 import asyncio
 import time
+import datetime
 
 from config import BOT_TOKEN, OWNER_ID
 
@@ -22,7 +23,7 @@ bot = Bot(
 dp = Dispatcher(bot)
 
 async def on_startup(dp):
-    await dp.bot.send_message(OWNER_ID, "Бот запущен")
+    await dp.bot.send_message(OWNER_ID, f"*Вход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
 if __name__ == '__main__':
     from libs.handlers import dp
