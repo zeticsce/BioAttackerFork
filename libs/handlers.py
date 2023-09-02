@@ -38,6 +38,8 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         dp.stop_polling()
         await dp.wait_closed()
         await bot.close()
+        
+        """ИЗМЕНЕНИЯ СУЩЕСТВУЮТ"""
 
         os.system(f"python {work_path}/app.py &")
     @dp.message_handler(commands=["restart"])
