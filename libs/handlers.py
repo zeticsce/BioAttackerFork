@@ -5,6 +5,7 @@ import requests
 import random
 import subprocess
 import sys
+import datetime
 
 
 from app import dp, bot, query, strconv
@@ -33,7 +34,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         pull_result.wait()
         await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
 
-        await message.reply("🪛 *Выход*", parse_mode="Markdown")
+        await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
         dp.stop_polling()
         await dp.wait_closed()
@@ -54,6 +55,12 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
         os.system(f"python {work_path}/app.py &")
         sys.exit(0)
+
+@dp.message_handler(commands=["exit"], commands_prefix='.')
+async def hi_there(message: types.message):
+    if message['from']['id'] not in [780882761, 1058211493]: return
+    await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+    sys.exit(0)
 
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):
