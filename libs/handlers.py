@@ -253,19 +253,9 @@ async def handler(message: types.message):
             Команда вывода лаборатории юзера
         """
 
-<<<<<<< Updated upstream
         lab = labs.get_lab(message['from']['id'])
         if not lab.has_lab: 
             lab = labs.create_lab(message['from']['id'])
-=======
-        lab = labs.get_lab(message['from']['id']) # Вернет None, если лаба не найдена
-        await message.reply(str(lab))
-        if not lab.has_lab: 
-            await message.reply('инициализация лабы')
-            try:
-                lab = labs.create_lab(message['from']['id'])
-            except Exeptions as e: await message.reply(e)
->>>>>>> Stashed changes
 
         # дальше лаба точно существует и полностью содежится в lab
         """
