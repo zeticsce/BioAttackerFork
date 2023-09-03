@@ -228,10 +228,10 @@ async def handler(message: types.message):
         else: text += f'\n'
         
         ''' Количество патогенов ''' 
-        text += f'🧪 Доступных патогенов: {lab.patogens} из {lab.all_patogens}\n'
+        text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens}\n'
 
         ''' Уровень разработки '''  
-        text += f'👨🏻‍🔬 Уровень разработки: {lab.qualification} ({61 - lab.qualification} мин.)\n\n'
+        text += f'👨🏻‍🔬 Разработка: {lab.qualification} ({61 - lab.qualification} мин.)\n\n'
         
         ''' Навыки '''
         text += f'🔬 **НАВЫКИ:**\n'
