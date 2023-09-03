@@ -39,6 +39,8 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         await dp.wait_closed()
         await bot.close()
 
+        """Типо много изменений"""
+
         os.system(f"python {work_path}/app.py &")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
