@@ -17,6 +17,7 @@ class UserLab:
         self.user_id = user_id
         self.has_lab = False 
         self.__convert_lab()
+        if self.virus_chat == None: self.virus_chat = self.user_id
 
     def format_dir(self, _item, indent=4, base_indent=None):
 
