@@ -33,6 +33,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
         print(output)
+        print("Already up to date." == output)
         # await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
         # await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
