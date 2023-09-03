@@ -161,7 +161,9 @@ async def handler(message: types.message):
                     profit = random.randrange(1, 100)
                     lab.save_victum(victim['user_id'], profit)
                     lab.save()
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\nЗатрачено патогенов: {pats}", parse_mode="Markdown")
+                    if pats > 1:
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\nЗатрачено патогенов: {pats}", parse_mode="Markdown")
+                    else: await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
                 else:
                     await message.reply(text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
                     lab.save()
