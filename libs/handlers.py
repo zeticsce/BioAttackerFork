@@ -32,7 +32,6 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         pull_result = subprocess.Popen(["git", "pull", "https://github.com/kawasaji/BioAttacker"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
-        print(output)
         await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
         if "Already up to date.\n" != output:
             await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
