@@ -32,16 +32,17 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         pull_result = subprocess.Popen(["git", "pull", "https://github.com/kawasaji/BioAttacker"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
-        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
-        await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+        print(output)
+        # await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
+        # await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-        dp.stop_polling()
-        await dp.wait_closed()
-        await bot.close()
+        # dp.stop_polling()
+        # await dp.wait_closed()
+        # await bot.close()
 
-        """Типо много изменений"""
+        # """Типо много изменений"""
 
-        os.system(f"python {work_path}/app.py &")
+        # os.system(f"python {work_path}/app.py &")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
