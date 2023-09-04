@@ -139,7 +139,7 @@ async def handler(message: types.message):
                 lab.save()
                 await message.reply(text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
             else:
-                
+
                 attack_chance = random.random() # рандом от 0 до 1
                 success = False
 
@@ -264,7 +264,7 @@ async def handler(message: types.message):
         text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens}\n'
 
         ''' Уровень разработки '''  
-        text += f'👨🏻‍🔬 Разработка: {lab.qualification} ({61 - lab.qualification} мин.)\n\n'
+        text += f'👨🏻‍🔬 Разработка: {lab.qualification} ({61 - lab.qualification} мин.) \n\n'
         
         ''' Навыки '''
         text += f'🔬 **НАВЫКИ:**\n'
@@ -277,9 +277,11 @@ async def handler(message: types.message):
         text += f'⛩ **ДАННЫЕ:**\n'
         text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
         text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
-        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations}\n'
-        text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue}\n\n'
-
+        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations) )}%`)\n'
+        try:
+            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue))}`)\n\n'
+        except ZeroDivisionError:
+            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`0%`)\n\n'
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
