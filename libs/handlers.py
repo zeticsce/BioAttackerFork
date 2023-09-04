@@ -106,6 +106,7 @@ async def handler(message: types.message):
             chance = random.random() # рандомыш от 0 до 1
 
             profit = 0
+            pats = 0  
 
             if victim_tag != None: # если все хорошо, у нас останется victim_user, которая содержит айди юзера
                 if re.fullmatch(r"[\w]+", victim_tag) == None: # проверка на валидность тега, нет ли там русских букв, спец символов и тд
@@ -116,13 +117,13 @@ async def handler(message: types.message):
                     if victim == None:
                         await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                         return
-                
+
             if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
+            
             if attempts > 10: # ограничивает колво попыток до 10
                 await message.reply(text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
                 return
 
-                    
             if lab.patogens <= 0: # проверка на паты
                 await message.reply(text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
                 return
@@ -138,8 +139,10 @@ async def handler(message: types.message):
                 lab.save()
                 await message.reply(text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
             else:
+                
                 attack_chance = random.random() # рандом от 0 до 1
                 success = False
+
                 if attempts > 1: # если попыток задано больше 1, то он увеличивает шанс на поражение
                     pats = 0
                     for i in range(attempts):
@@ -164,26 +167,29 @@ async def handler(message: types.message):
                     lab.save_victum(victim['user_id'], profit)
                     lab.save()
                     if pats > 1:
-                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\nЗатрачено патогенов: {pats}", parse_mode="Markdown")
+                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
                     else: await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
 
                     ''' Отправка уведомления '''
 
                     try:
                         chat = labs.get_lab(victim["user_id"])["virus_chat"]
-                        print(chat)
                         text = ""
                         chance = random.random()
 
                         if chance < 0.4:
                             attacker = labs.get_lab(message['from']['id'])
-
-                            text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={victim["user_id"]}) подверг вас заражению.\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ -{profit} опыта_'
+                            if pats > 1:
+                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={victim["user_id"]}) подверг вас заражению.\nБыло произведено {pats} попыток вашего заражения\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
+                            else:
+                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={victim["user_id"]}) подверг вас заражению.\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
                         
                         else:
                             attacker = labs.get_lab(message['from']['id'])
-                            
-                            text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ -{profit} опыта_'
+                            if pats > 1:
+                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\nБыло произведено {pats} попыток вашего заражения\n\n_Вы потеряли ☣️ {profit} опыта_'
+                            else:
+                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
                         
                         
                         await bot.send_message(chat_id=chat, text=text, parse_mode="Markdown")
