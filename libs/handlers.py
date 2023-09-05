@@ -118,7 +118,7 @@ async def handler(message: types.message):
                         await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                         return
                     else: 
-                        victim_in_list = lab.get_victums(f"SELECT * FROM ``.`victums{lab.user_id}` WHERE `user_id` LIKE '{victim['user_id']}' LIMIT 1;")
+                        victim_in_list = lab.get_victums(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE `user_id` LIKE '{victim['user_id']}' LIMIT 1;")
                         if len(victim_in_list) != 0:
                             victim_in_list =  victim_in_list = victim_in_list[0]
                             if victim_in_list['from_infect'] > (int(time.time())-3600):
