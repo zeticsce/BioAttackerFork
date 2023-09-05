@@ -117,6 +117,9 @@ async def handler(message: types.message):
                     if victim == None:
                         await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                         return
+                    else: 
+                       victim_in_list = lab.get_victum(victim_tag)
+                       
 
             if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
             
