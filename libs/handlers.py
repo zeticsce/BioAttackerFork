@@ -119,11 +119,11 @@ async def handler(message: types.message):
                         return
                     else: 
                        victim_in_list = lab.get_victums(f"SELECT * FROM ``.`victums{lab.user_id}` WHERE `user_id` LIKE '{victim['user_id']}' LIMIT 1;")
-                    if len(victim_in_list) != 0:
-                        victim_in_list =  victim_in_list = victim_in_list[0]
-                        if victim_in_list['from_infect'] > (int(time.time())-3600):
-                            await message.reply(text=f"👺 Вы не можете заразить пользователя два раза подряд!",  parse_mode="Markdown")
-                            return 
+                        if len(victim_in_list) != 0:
+                            victim_in_list =  victim_in_list = victim_in_list[0]
+                            if victim_in_list['from_infect'] > (int(time.time())-3600):
+                                await message.reply(text=f"👺 Вы не можете заразить пользователя два раза подряд!",  parse_mode="Markdown")
+                                return 
                      
 
             if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
