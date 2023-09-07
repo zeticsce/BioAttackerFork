@@ -128,12 +128,14 @@ async def handler(message: types.message):
                     pats = 1
                 if success:
                     labOfVictim = labs.get_lab(victim['user_id'])
-                    labOfVictim.all_issue += 1
-                    labOfVictim.prevented_issue += 1
-                    
-                    profit = round(labOfVictim.bio_exp / 100 * 10)
-                    labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
-                    labOfVictim.save()
+                    if labOfVictim.has_lab:
+                        labOfVictim.all_issue += 1
+                        labOfVictim.prevented_issue += 1
+
+                        profit = round(labOfVictim.bio_exp / 100 * 10)
+                        labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
+                        labOfVictim.save()
+                    else: profit = random.randint(1, 100)
 
                     await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
 
@@ -218,14 +220,16 @@ async def handler(message: types.message):
                         lab.patogens -= 1
                         pats = 1
                     if success:
-
                         labOfVictim = labs.get_lab(victim['user_id'])
-                        labOfVictim.all_issue += 1
-                        labOfVictim.prevented_issue += 1
-                        
-                        profit = round(labOfVictim.bio_exp / 100 * 10)
-                        labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
-                        labOfVictim.save()
+                        if labOfVictim.has_lab:
+
+                            labOfVictim.all_issue += 1
+                            labOfVictim.prevented_issue += 1
+
+                            profit = round(labOfVictim.bio_exp / 100 * 10)
+                            labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
+                            labOfVictim.save()
+                        else: profit = random.randint(1, 100)
                         lab.save_victum(victim['user_id'], profit)
                         lab.save()
 
@@ -237,8 +241,9 @@ async def handler(message: types.message):
 
                         ''' Отправка уведомления '''
 
-                        try:
-                            chat = labs.get_lab(victim["user_id"])["virus_chat"]
+                        chat = labs.get_lab(victim["user_id"])
+                        if chat.has_lab:
+                            chat = chat["virus_chat"]
                             text = ""
                             chance = random.random()
 
@@ -258,18 +263,14 @@ async def handler(message: types.message):
                             
                             
                             await bot.send_message(chat_id=chat, text=text, parse_mode="Markdown")
-                        
-                            
-                        except Exception as e:
-                            print(e)
+
                     else:
                         await message.reply(text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
                         
                         labOfVictim = labs.get_lab(victim['user_id'])
-                        labOfVictim.all_issue += 1
-                        labOfVictim.save()
-
-                        labOfVictim.save()
+                        if labOfVictim.has_lab:
+                            labOfVictim.all_issue += 1
+                            labOfVictim.save()
 
     if message.text.lower() == "биолаб":
 
