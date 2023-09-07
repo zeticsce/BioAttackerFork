@@ -18,6 +18,7 @@ from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButt
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
+from math import ceil, floor
 
 work_path = os.path.abspath(os.curdir)
 labs = Labs()
@@ -108,6 +109,14 @@ async def handler(message: types.message):
             if message.reply_to_message:
                 replier = message.reply_to_message["from"]["id"]
 
+                if message.reply_to_message["from"]["is_bot"] == True:
+                    await message.reply("Нельзя заразить бота")
+                    return
+
+                if replier == message.from_user.id:
+                    await message.reply("Нельзя заразить самого себя :)")
+                    return
+
                 chance = random.random()
                 attack_chance = random.random()
                 profit = 0
@@ -115,8 +124,6 @@ async def handler(message: types.message):
                 success = False
 
                 victim = labs.get_user(replier)
-                
-
                 if attack_chance < (0.2): # 20% шанс на неудачу при атаке, success остается False по умолчанию
                     lab.all_operations += 1
                     lab.patogens -= 1
@@ -127,26 +134,36 @@ async def handler(message: types.message):
                     lab.patogens -= 1
                     pats = 1
                 if success:
-                    labOfVictim = labs.get_lab(victim['user_id'])
+
+                    labOfVictim = labs.get_lab(replier)
+
                     if labOfVictim.has_lab:
+
                         labOfVictim.all_issue += 1
                         labOfVictim.prevented_issue += 1
 
-                        profit = round(labOfVictim.bio_exp / 100 * 10)
-                        labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
+                        exp = labOfVictim.bio_exp / 100 * 10
+                        profit = ceil(exp)
+
+                        labOfVictim.bio_exp -= floor(exp)
                         labOfVictim.save()
+
                     else: profit = random.randint(1, 100)
 
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                    lab.save_victum(replier, profit)
+                    lab.save()
+                    
+                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{labOfVictim['name']}](tg://openmessage?user_id={labOfVictim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
 
                 else:
-                    labOfVictim = labs.get_lab(replier)
-                    labOfVictim.all_issue += 1
-                    
-                    labOfVictim.save()
+                    if labOfVictim.has_lab:
+                        labOfVictim = labs.get_lab(replier)
+                        labOfVictim.all_issue += 1
+                        
+                        labOfVictim.save()
 
                     await message.reply(f"😔 Вам не удалось заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']})", parse_mode='Markdown')
-            
+                    
             else:
                 attempts = int(bio_infect.group(2)) if bio_infect.group(2) != None else None # колво попыток
                 victim_tag = bio_infect.group(3).strip().replace("tg://openmessage?user_id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
@@ -226,14 +243,15 @@ async def handler(message: types.message):
                             labOfVictim.all_issue += 1
                             labOfVictim.prevented_issue += 1
 
-                            profit = round(labOfVictim.bio_exp / 100 * 10)
-                            labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
+                            profit = ceil(labOfVictim.bio_exp / 100 * 10)
+
+                            labOfVictim.bio_exp -= floor(labOfVictim.bio_exp / 100 * 10)
                             labOfVictim.save()
+
                         else: profit = random.randint(1, 100)
+
                         lab.save_victum(victim['user_id'], profit)
                         lab.save()
-
-                        
 
                         if pats > 1:
                             await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
@@ -321,7 +339,7 @@ async def handler(message: types.message):
         """
 
         '''  Название вируса '''
-        text = f'🦠 Информация о вирусе: {lab.patogen_name if lab.patogen_name != None else "неизвестно"}\n\n'
+        text = f'🦠 Информация о вирусе: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
 
         '''  Владелец лабы '''
         owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
@@ -348,7 +366,10 @@ async def handler(message: types.message):
         text += f'⛩ **ДАННЫЕ:**\n'
         text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
         text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
-        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations) )}%`)\n'
+        try:
+            text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations) )}%`)\n'
+        except ZeroDivisionError:
+            text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`0%`)\n'
         try:
             text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue))}%`)\n\n'
         except ZeroDivisionError:
