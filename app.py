@@ -9,7 +9,7 @@ import asyncio
 import time
 import datetime
 
-from config import BOT_TOKEN, OWNER_ID
+from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST
 
 from libs.mysql_connect import query
 from libs.handlers import *
