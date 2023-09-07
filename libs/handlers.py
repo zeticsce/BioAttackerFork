@@ -7,8 +7,9 @@ import subprocess
 import sys
 import datetime
 import re
+import time
 
-from app import dp, bot, query, strconv
+from app import dp, bot, query, strconv, save_message
 from config import MYSQL_HOST
 from Labs import Labs
 
@@ -36,9 +37,11 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         if "Already up to date.\n" != output:
             await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-            dp.stop_polling()
-            await dp.wait_closed()
-            await bot.close()
+            try:
+                dp.stop_polling()
+                await dp.wait_closed()
+                await bot.close()
+            except: pass
 
             os.system(f"python {work_path}/app.py &")
         else: await message.reply(f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
@@ -46,11 +49,13 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
-        await message.reply("🪛 Рестарт бота")
-
-        dp.stop_polling()
-        await dp.wait_closed()
-        await bot.close()
+        await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+        
+        try:
+            dp.stop_polling()
+            await dp.wait_closed()
+            await bot.close()
+        except: pass
 
 
         os.system(f"python {work_path}/app.py &")
@@ -94,6 +99,7 @@ async def handler(message: types.message):
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
+    save_message(message)
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
     if bio_infect != None:
         lab = labs.get_lab(message['from']['id'])
@@ -355,3 +361,7 @@ async def handler(message: types.message):
 
         
 
+
+@dp.edited_message_handler()
+async def other(message):
+    save_message(message)

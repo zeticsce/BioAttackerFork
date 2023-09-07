@@ -46,6 +46,7 @@ config.py
 
 __pycache__/
 libs/__pycache__/
+chats/
 
 libs/chances.py
 libs/chances.py
