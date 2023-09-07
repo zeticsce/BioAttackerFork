@@ -368,14 +368,9 @@ async def handler(message: types.message):
         text += f'⛩ **ДАННЫЕ:**\n'
         text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
         text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
-        try:
-            text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations) )}%`)\n'
-        except ZeroDivisionError:
-            text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`0%`)\n'
-        try:
-            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue))}%`)\n\n'
-        except ZeroDivisionError:
-            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`0%`)\n\n'
+
+        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations if lab.all_operations != 0 else 1))}%`)\n'
+        text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
