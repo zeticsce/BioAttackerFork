@@ -271,7 +271,7 @@ async def handler(message: types.message):
 
                         labOfVictim.save()
 
-    if message.text == "биолаб":
+    if message.text.lower() == "биолаб":
 
         """
             Команда вывода лаборатории юзера
@@ -362,7 +362,7 @@ async def handler(message: types.message):
 
         lab.save() 
 
-    if message.text == "био":
+    if message.text.lower() == "био":
         await message.reply(f"*Бот на месте*", parse_mode='Markdown')
 
 
