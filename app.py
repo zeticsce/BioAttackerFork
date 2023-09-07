@@ -16,7 +16,7 @@ from libs.handlers import *
 from libs.StringConverters import StringConv
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
-strconv = StringConv()
+strconv = StringConv()  
 bot = Bot(
     token = BOT_TOKEN
 )

@@ -98,70 +98,20 @@ async def handler(message: types.message):
     if bio_infect != None:
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab:  
-
-            attempts = int(bio_infect.group(2)) if bio_infect.group(2) != None else None # колво попыток
-            victim_tag = bio_infect.group(3).strip().replace("tg://openmessage?user_id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
-
-            victim = None # жертва (пиздец я всегда victum использовал)
-            chance = random.random() # рандомыш от 0 до 1
-
-            profit = 0
-            pats = 0  
-
-            if victim_tag != None: # если все хорошо, у нас останется victim_user, которая содержит айди юзера
-                if re.fullmatch(r"[\w]+", victim_tag) == None: # проверка на валидность тега, нет ли там русских букв, спец символов и тд
-                    await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
-                    return
-                else:
-                    victim = labs.get_user(victim_tag) # проверка есть ли он в базе
-                    if victim == None:
-                        await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
-                        return
-                    else: 
-                        victim_in_list = lab.get_victums(f"WHERE `user_id` LIKE '{victim['user_id']}' LIMIT 1;")
-                        if len(victim_in_list) != 0:
-                            victim_in_list = victim_in_list[0]
-                            if victim_in_list['from_infect'] > (int(time.time())-3600):
-                                await message.reply(text=f"👺 Вы не можете заразить пользователя два раза подряд!",  parse_mode="Markdown")
-                                return 
-                     
-
-            if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
             
-            if attempts > 10: # ограничивает колво попыток до 10
-                await message.reply(text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
-                return
+            if message.reply_to_message:
+                replier = message.reply_to_message["from"]["id"]
 
-            if lab.patogens <= 0: # проверка на паты
-                await message.reply(text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
-                return
-
-
-            if victim == None:
-                if chance < 0.40: victim = labs.get_random_victum() # 40% абсолютно рандомный чел из бд
-                elif chance < 0.40: victim = lab.get_victums(params="ORDER BY RAND() LIMIT 1")[0] # 40% перебив случайной жертвы
-                elif chance < 0.90: victim = query("SELECT * FROM `bio_attacker`.`labs` INNER JOIN `telegram_data`.`tg_users` ON `telegram_data`.`tg_users`.`user_id`=`bio_attacker`.`labs`.`user_id` ORDER BY RAND() LIMIT 1;")[0] # 10% жертва из уже созданных лаб
-                else: victim = None # 10% неудачный поиск
-
-            if victim == None:
-                lab.save()
-                await message.reply(text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
-            else:
-
-                attack_chance = random.random() # рандом от 0 до 1
+                chance = random.random()
+                attack_chance = random.random()
+                profit = 0
+                pats = 0  
                 success = False
 
-                if attempts > 1: # если попыток задано больше 1, то он увеличивает шанс на поражение
-                    pats = 0
-                    for i in range(attempts):
-                        if lab.patogens <= 0: break
-                        lab.all_operations += 1
-                        lab.patogens -= 1
-                        pats += 1
-                        success = random.random() > 0.3
-                        if success: break
+                victim = labs.get_user(replier)
+                
 
-                elif attack_chance < (0.2): # 20% шанс на неудачу при атаке, success остается False по умолчанию
+                if attack_chance < (0.2): # 20% шанс на неудачу при атаке, success остается False по умолчанию
                     lab.all_operations += 1
                     lab.patogens -= 1
                     pats = 1
@@ -174,40 +124,143 @@ async def handler(message: types.message):
                     profit = random.randrange(1, 100)
                     lab.save_victum(victim['user_id'], profit)
                     lab.save()
-                    if pats > 1:
-                        await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
-                    else: await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
-
-                    ''' Отправка уведомления '''
-
-                    try:
-                        chat = labs.get_lab(victim["user_id"])["virus_chat"]
-                        text = ""
-                        chance = random.random()
-
-                        if chance < 0.4:
-                            attacker = labs.get_lab(message['from']['id'])
-                            if pats > 1:
-                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={attacker["user_id"]}) подверг вас заражению.\nБыло произведено {pats} попыток вашего заражения\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
-                            else:
-                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={attacker["user_id"]}) подверг вас заражению.\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
-                        
-                        else:
-                            attacker = labs.get_lab(message['from']['id'])
-                            if pats > 1:
-                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\nБыло произведено {pats} попыток вашего заражения\n\n_Вы потеряли ☣️ {profit} опыта_'
-                            else:
-                                text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
-                        
-                        
-                        await bot.send_message(chat_id=chat, text=text, parse_mode="Markdown")
                     
-                        
-                    except Exception as e:
-                        print(e)
+                    labOfVictim = labs.get_lab(replier)
+                    labOfVictim.all_issue += 1
+                    labOfVictim.prevented_issue += 1
+                    labOfVictim.save()
+
+                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+
                 else:
-                    await message.reply(text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                    labOfVictim = labs.get_lab(replier)
+                    labOfVictim.all_issue += 1
+                    
+                    labOfVictim.save()
+
+                    await message.reply(f"😔 Вам не удалось заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']})", parse_mode='Markdown')
+            
+            else:
+                attempts = int(bio_infect.group(2)) if bio_infect.group(2) != None else None # колво попыток
+                victim_tag = bio_infect.group(3).strip().replace("tg://openmessage?user_id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
+
+                victim = None # жертва (пиздец я всегда victum использовал)
+                chance = random.random() # рандомыш от 0 до 1
+
+                profit = 0
+                pats = 0  
+
+                if victim_tag != None: # если все хорошо, у нас останется victim_user, которая содержит айди юзера
+                    if re.fullmatch(r"[\w]+", victim_tag) == None: # проверка на валидность тега, нет ли там русских букв, спец символов и тд
+                        await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
+                        return
+                    else:
+                        victim = labs.get_user(victim_tag) # проверка есть ли он в базе
+                        if victim == None:
+                            await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
+                            return
+                        else: 
+                            victim_in_list = lab.get_victums(f"WHERE `user_id` LIKE '{victim['user_id']}' LIMIT 1;")
+                            if len(victim_in_list) != 0:
+                                victim_in_list = victim_in_list[0]
+                                if victim_in_list['from_infect'] > (int(time.time())-3600):
+                                    await message.reply(text=f"👺 Вы не можете заразить пользователя два раза подряд!",  parse_mode="Markdown")
+                                    return 
+                        
+
+                if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
+                
+                if attempts > 10: # ограничивает колво попыток до 10
+                    await message.reply(text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
+                    return
+
+                if lab.patogens <= 0: # проверка на паты
+                    await message.reply(text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
+                    return
+
+
+                if victim == None:
+                    if chance < 0.40: victim = labs.get_random_victum() # 40% абсолютно рандомный чел из бд
+                    elif chance < 0.40: victim = lab.get_victums(params="ORDER BY RAND() LIMIT 1")[0] # 40% перебив случайной жертвы
+                    elif chance < 0.90: victim = query("SELECT * FROM `bio_attacker`.`labs` INNER JOIN `telegram_data`.`tg_users` ON `telegram_data`.`tg_users`.`user_id`=`bio_attacker`.`labs`.`user_id` ORDER BY RAND() LIMIT 1;")[0] # 10% жертва из уже созданных лаб
+                    else: victim = None # 10% неудачный поиск
+
+                if victim == None:
                     lab.save()
+                    await message.reply(text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
+                else:
+
+                    attack_chance = random.random() # рандом от 0 до 1
+                    success = False
+
+                    if attempts > 1: # если попыток задано больше 1, то он увеличивает шанс на поражение
+                        pats = 0
+                        for i in range(attempts):
+                            if lab.patogens <= 0: break
+                            lab.all_operations += 1
+                            lab.patogens -= 1
+                            pats += 1
+                            success = random.random() > 0.3
+                            if success: break
+
+                    elif attack_chance < (0.2): # 20% шанс на неудачу при атаке, success остается False по умолчанию
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+                        pats = 1
+                    else:
+                        success = True
+                        lab.all_operations += 1
+                        lab.patogens -= 1
+                        pats = 1
+                    if success:
+                        profit = random.randrange(1, 100)
+                        lab.save_victum(victim['user_id'], profit)
+                        lab.save()
+
+                        labOfVictim = labs.get_lab(victim['user_id'])
+                        labOfVictim.all_issue += 1
+                        labOfVictim.prevented_issue += 1
+                        labOfVictim.save()
+
+                        if pats > 1:
+                            await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
+                        else: await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+
+                        ''' Отправка уведомления '''
+
+                        try:
+                            chat = labs.get_lab(victim["user_id"])["virus_chat"]
+                            text = ""
+                            chance = random.random()
+
+                            if chance < 0.4:
+                                attacker = labs.get_lab(message['from']['id'])
+                                if pats > 1:
+                                    text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={attacker["user_id"]}) подверг вас заражению.\nБыло произведено {pats} попыток вашего заражения\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
+                                else:
+                                    text += f'👨🏻‍🔬 Корпорация докладывает: \n\n[{attacker["name"]}](tg://openmessage?user_id={attacker["user_id"]}) подверг вас заражению.\n\nНазвание патогена: `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
+                            
+                            else:
+                                attacker = labs.get_lab(message['from']['id'])
+                                if pats > 1:
+                                    text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\nБыло произведено {pats} попыток вашего заражения\n\n_Вы потеряли ☣️ {profit} опыта_'
+                                else:
+                                    text += f'👨🏻‍🔬 Корпорация докладывает: \n\nВас пытались заразить вирусом под названием `{attacker["patogen_name"]}`\n\n_Вы потеряли ☣️ {profit} опыта_'
+                            
+                            
+                            await bot.send_message(chat_id=chat, text=text, parse_mode="Markdown")
+                        
+                            
+                        except Exception as e:
+                            print(e)
+                    else:
+                        await message.reply(text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                        
+                        labOfVictim = labs.get_lab(victim['user_id'])
+                        labOfVictim.all_issue += 1
+                        labOfVictim.save()
+
+                        labOfVictim.save()
 
     if message.text == "биолаб":
 
@@ -287,7 +340,7 @@ async def handler(message: types.message):
         text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
         text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations) )}%`)\n'
         try:
-            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue))}`)\n\n'
+            text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue))}%`)\n\n'
         except ZeroDivisionError:
             text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`0%`)\n\n'
 
