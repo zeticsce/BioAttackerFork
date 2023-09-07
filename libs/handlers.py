@@ -121,13 +121,12 @@ async def handler(message: types.message):
                     lab.patogens -= 1
                     pats = 1
                 if success:
-                    profit = random.randrange(1, 100)
-                    lab.save_victum(victim['user_id'], profit)
-                    lab.save()
-                    
-                    labOfVictim = labs.get_lab(replier)
+                    labOfVictim = labs.get_lab(victim['user_id'])
                     labOfVictim.all_issue += 1
                     labOfVictim.prevented_issue += 1
+                    
+                    profit = round(labOfVictim.bio_exp / 100 * 10)
+                    labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
                     labOfVictim.save()
 
                     await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
@@ -213,14 +212,18 @@ async def handler(message: types.message):
                         lab.patogens -= 1
                         pats = 1
                     if success:
-                        profit = random.randrange(1, 100)
-                        lab.save_victum(victim['user_id'], profit)
-                        lab.save()
 
                         labOfVictim = labs.get_lab(victim['user_id'])
                         labOfVictim.all_issue += 1
                         labOfVictim.prevented_issue += 1
+                        
+                        profit = round(labOfVictim.bio_exp / 100 * 10)
+                        labOfVictim.bio_exp -= round(labOfVictim.bio_exp / 100 * 10)
                         labOfVictim.save()
+                        lab.save_victum(victim['user_id'], profit)
+                        lab.save()
+
+                        
 
                         if pats > 1:
                             await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
