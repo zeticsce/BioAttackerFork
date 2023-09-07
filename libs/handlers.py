@@ -9,7 +9,7 @@ import datetime
 import re
 import time
 
-from app import dp, bot, query, strconv, save_message
+from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
 from Labs import Labs
 
@@ -183,7 +183,7 @@ async def handler(message: types.message):
                         if victim == None:
                             await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                             return
-                        else: 
+                        elif is_host: 
                             
                             """Хйня для кд нихуя не работает"""
                             victim_in_list = lab.get_victums(f"WHERE `victums{lab.user_id}`.`user_id` LIKE '{victim['user_id']}'")
