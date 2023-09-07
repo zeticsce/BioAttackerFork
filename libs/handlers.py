@@ -50,7 +50,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         if message['from']['id'] not in [780882761, 1058211493]: return
 
         await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
-        
+
         try:
             dp.stop_polling()
             await dp.wait_closed()
@@ -359,7 +359,9 @@ async def handler(message: types.message):
 
         lab.save() 
 
-        
+    if message.text == "био":
+        await message.reply(f"*Бот на месте*", parse_mode='Markdown')
+
 
 
 @dp.edited_message_handler()
