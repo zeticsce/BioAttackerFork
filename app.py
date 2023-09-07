@@ -23,6 +23,8 @@ bot = Bot(
 )
 dp = Dispatcher(bot)
 
+is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
+
 async def on_startup(dp):
     await dp.bot.send_message(OWNER_ID, f"*Вход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
