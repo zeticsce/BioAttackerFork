@@ -14,6 +14,7 @@ from config import BOT_TOKEN, OWNER_ID
 from libs.mysql_connect import query
 from libs.handlers import *
 from libs.StringConverters import StringConv
+from libs.ChatHistory import save_message
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
 strconv = StringConv()
