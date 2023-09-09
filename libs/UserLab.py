@@ -1,5 +1,5 @@
 from typing import Any
-from app import query
+from app import query, strconv
 import json
 import time
 import math
@@ -116,7 +116,7 @@ class UserLab:
         """Сохраняет значение лабы, если никакие значения не были изменены, то ничего не делает"""
         result = []
         for i in self.__start_data:
-            if self.__start_data[i] != self.__dict__[i]: result.append(f"`{i}` = '{self.__dict__[i]}'") 
+            if self.__start_data[i] != self.__dict__[i]: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 
     
