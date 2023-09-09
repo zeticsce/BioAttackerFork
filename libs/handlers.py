@@ -384,6 +384,22 @@ async def handler(message: types.message):
     if message.text.lower() == "био":
         await message.reply(f"*Бот на месте*", parse_mode='Markdown')
 
+    if message.text.lower().split(" ")[0] == "+вирус":
+
+        lab = labs.get_lab(message['from']['id'])
+        if not lab.has_lab: 
+            lab = labs.create_lab(message['from']['id'])
+        
+        patName = message.text.split(" ")[1::]
+
+        if len(patName) > 50:
+            await message.reply("Длина названия вируса не может быть больше 50 символов")
+            return
+
+        lab.patogen_name = patName
+        lab.save()
+
+        await message.reply("✅ Название патогена успешно обновлено!")
 
 
 @dp.edited_message_handler()
