@@ -16,7 +16,7 @@
 
 Для начала скопируйте репозиторий на свой компьютер
 ```console
-git commit https://github.com/kawasaji/BioAttacker
+git clone https://github.com/kawasaji/BioAttacker
 ```
 Далее перейдите в папку проекта `BioAttacker` и установите зависимости
 ```console
