@@ -1,3 +1,5 @@
+import re
+
 class StringConv:
     def __init__(self):
         pass
@@ -23,3 +25,9 @@ class StringConv:
             else: result = result[0:-3]
             return ''.join(result).strip() + "k"
         else: return str(num)
+        
+    def escape_sql(self, text):
+        """функция для экранирования символов sql"""
+        result = re.sub(r"([\'\`\\])", r"\\\1", str(text))
+        print(result)
+        return result
