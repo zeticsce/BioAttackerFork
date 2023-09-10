@@ -422,6 +422,20 @@ async def handler(message: types.message):
 
             await message.reply("✅ Название патогена успешно обновлено!")
 
+    if message.text.lower() == "биожертвы":
+        lab = labs.get_lab(message['from']['id'])
+        text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
+        profit = 0
+
+        for i, item in enumerate(lab.get_victums()):
+            profit += int(item["profit"])
+            text += f'{i + 1}. [{item["name"]}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до ...\n'
+            if i > 50:
+                break
+        
+        text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
+
+        await message.reply(text=text, parse_mode="Markdown")
 
 
 @dp.edited_message_handler()
