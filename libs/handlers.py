@@ -399,17 +399,20 @@ async def handler(message: types.message):
         await message.reply(f"*Бот на месте*", parse_mode='Markdown')
 
 
-    if message.text.lower().split(" ")[0] == "+вирус":
+    if message.text.lower().startswith("+вирус "):
 
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
-            patName = message.text.replace("+вирус", '').strip()
+            patName = message.text[7::].strip()
 
             if len(patName) > 50:
                 await message.reply("Длина названия вируса не может быть больше 50 символов")
                 return
             if len(patName) == 0:
                 await message.reply("Вирус не может быть пустым!")
+                return
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
+                await message.reply("В вирусе не может быть недопустимых символов!")
                 return
 
             lab.patogen_name = patName
