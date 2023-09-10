@@ -435,7 +435,7 @@ async def handler(message: types.message):
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
-        text = f'*Жертвы игрока* *_[{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})_*\n\n'
+        text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
         profit = 0
 
         for i, item in enumerate(lab.get_victums()):
