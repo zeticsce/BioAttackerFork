@@ -283,9 +283,6 @@ async def handler(message: types.message):
                                 sp = (attacker.infectiousness - labOfVictim.security)**2
 
 
-                                print(sp)
-                                print(chance)
-
                                 if chance > sp:
                                     
                                     if pats > 1:
@@ -436,6 +433,31 @@ async def handler(message: types.message):
         text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
 
         await message.reply(text=text, parse_mode="Markdown")
+
+    if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
+        
+        lab = labs.get_lab(message['from']['id'])
+        profit = random.randint(20, 200)
+
+        lab.coins += profit
+        lab.save()
+
+        text = f'Вы успешно пофармили и получили {profit} коинов 💰!'
+
+        await message.reply(text=text, parse_mode="Markdown")
+
+    if message.text.lower() in ("биомеш", "биомешок", "биобаланс", "коины"):
+
+        lab = labs.get_lab(message['from']['id'])
+
+        text = f'Мешок игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'\
+               f'Коины: _{lab.coins}_ 💰\n' \
+               f'Био-коины: _{lab.bio_valuta}_ 🥑'
+
+        await message.reply(text=text, parse_mode="Markdown")
+
+
+
 
 
 @dp.edited_message_handler()
