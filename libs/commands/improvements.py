@@ -240,7 +240,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_infectiousness = lab.all_patogens
+            current_infectiousness = lab.infectiousness
 
             if len(msg) == 2:
                 if msg[1].isdigit():
@@ -280,7 +280,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_infectiousness = lab.all_patogens
+            current_infectiousness = lab.infectiousness
 
             if len(msg) == 2:
                 if msg[1].isdigit():
