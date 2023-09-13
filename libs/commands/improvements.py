@@ -110,7 +110,7 @@ async def improve(message: types.Message):
                         lab.all_patogens += level
                         lab.patogens += level
                         lab.save()
-                        total_cost = str('{0:,}'.format(total_cost).replace(',', '.'))
+                        total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                         text += f"Вы успешно добавили `{level}` патогенов!\n"
                         text += f"С баланса снято `{total_cost}` био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
@@ -216,7 +216,7 @@ async def improve(message: types.Message):
                         lab.bio_res -= total_cost
                         lab.qualification += level
                         lab.save()
-                        total_cost = str('{0:,}'.format(total_cost).replace(',', '.'))
+                        total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                         text += f"Вы успешно добавили `+{level}` к квалификации!\n"
                         text += f"С баланса снято `{total_cost}` био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
@@ -306,7 +306,7 @@ async def improve(message: types.Message):
                         lab.bio_res -= total_cost
                         lab.infectiousness += level
                         lab.save()
-                        total_cost = str('{0:,}'.format(total_cost).replace(',', '.'))
+                        total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                         text += f"Вы успешно добавили `{level}` заразности!\n"
                         text += f"С баланса снято `{total_cost}` био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
@@ -397,7 +397,7 @@ async def improve(message: types.Message):
                         lab.bio_res -= total_cost
                         lab.immunity += level
                         lab.save()
-                        total_cost = str('{0:,}'.format(total_cost).replace(',', '.'))
+                        total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                         text += f"Вы успешно добавили `{level}` иммунитета!\n"
                         text += f"С баланса снято `{total_cost}` био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
