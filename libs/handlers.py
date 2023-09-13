@@ -439,11 +439,15 @@ async def handler(message: types.message):
         text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
         profit = 0
 
-        for i, item in enumerate(lab.get_victums()):
-            profit += int(item["profit"])
-            text += f'{i + 1}. [{item["name"]}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до ...\n'
-            if i > 50:
-                break
+        count = 0
+
+        for item in list(reversed(lab.get_victums()[50::])):
+            if item['until_infect'] > int(time.time()):
+                profit += int(item["profit"])
+                until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
+                text += f'{count + 1}. [{item["name"]}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+
+                count += 1
         
         text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
 
