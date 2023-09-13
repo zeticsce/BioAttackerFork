@@ -13,6 +13,7 @@ import math
 from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
 from Labs import Labs
+from commands.improvements import *
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
