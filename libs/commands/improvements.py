@@ -495,7 +495,7 @@ async def improve(message: types.Message):
 
                     else:
                         lab.bio_res -= total_cost
-                        lab.immunity += level
+                        lab.mortality += level
                         lab.save()
                         total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                         text += f"Вы успешно добавили `{level}` летальности!\n"
