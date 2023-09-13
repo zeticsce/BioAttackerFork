@@ -48,7 +48,4 @@ __pycache__/
 libs/__pycache__/
 chats/
 
-libs/__pycache__/app.cpython-311.pyc
-libs/__pycache__/config.cpython-311.pyc
 *.pyc
-libs/__pycache__/mysql_connect.cpython-311.pyc
