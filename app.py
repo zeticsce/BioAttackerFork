@@ -22,6 +22,7 @@ bot = Bot(
     token = BOT_TOKEN
 )
 dp = Dispatcher(bot)
+dp.message_handlers.once = False
 
 is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
 
