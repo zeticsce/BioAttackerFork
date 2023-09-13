@@ -240,7 +240,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_patogens = lab.all_patogens
+            current_infectiousness = lab.all_patogens
 
             if len(msg) == 2:
                 if msg[1].isdigit():
@@ -254,9 +254,9 @@ async def improve(message: types.Message):
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
                         return
 
-                    text += f"Ваш текущий уровень патогена: `{current_patogens}` 🦠\n"
+                    text += f"Ваш текущий уровень заразности: `{current_infectiousness}` 🦠\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
-                    text += f"`{calculate.zz(current_patogens, (current_patogens+level))}` 🧬\n\n"
+                    text += f"`{calculate.zz(current_infectiousness, (current_infectiousness+level))}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++зар {level}`"
 
                     await message.reply(text=text, parse_mode="Markdown")
@@ -280,7 +280,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_patogens = lab.all_patogens
+            current_infectiousness = lab.all_patogens
 
             if len(msg) == 2:
                 if msg[1].isdigit():
@@ -295,7 +295,7 @@ async def improve(message: types.Message):
                         return
 
                     current_balance = lab.bio_res
-                    total_cost = calculate.zz(current_patogens, (current_patogens+level))
+                    total_cost = calculate.zz(current_infectiousness, (current_infectiousness+level))
                     if current_balance < total_cost:
                         await message.reply("*У вас недостаточно био-ресурсов!*", parse_mode="Markdown")
 
