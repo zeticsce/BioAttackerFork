@@ -33,10 +33,6 @@ from math import ceil, floor
 work_path = os.path.abspath(os.curdir)
 labs = Labs()
 
-# @dp.message_handler(content_types=['text']) 
-# async def handler(message: types.message):
-#     pass
-
 @dp.message_handler(content_types=['text'])
 async def improve(message: types.Message):
     save_message(message)
@@ -238,6 +234,93 @@ async def improve(message: types.Message):
             
             return
 
+    ''' ПРОКАЧКА ЗАРАЗНОСТИ '''
+
+    if message.text.lower().startswith("+зар ") or message.text.lower().startswith("+заразность "):
+        if lab.has_lab:  
+            msg = message.text.lower().split(" ")
+            text = "🔬 _Меню прокачки уровней_\n\n"
+            current_patogens = lab.all_patogens
+
+            if len(msg) == 2:
+                if msg[1].isdigit():
+                    level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
+
+                    if level > 5:
+                        await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
+                        return
+
+                    text += f"Ваш текущий уровень патогена: `{current_patogens}` 🦠\n"
+                    text += f"Улучшение на _+{level}_ будет стоить: "
+                    text += f"`{calculate.zz(current_patogens, (current_patogens+level))}` 🧬\n\n"
+                    text += f"*Чтобы подвердить улучшение напишите:* `++зар {level}`"
+
+                    await message.reply(text=text, parse_mode="Markdown")
+                
+                else:
+                    await message.reply("Неправильный формат команды.")
+                    return 
+
+            else:
+                await message.reply("Неправильный формат команды.")
+                return  
+        else:
+            await message.reply(text=f"{message.from_user.first_name}, " \
+                                f"у вас не создана лаборотория!\n\n"\
+                                f"Напишите команду `биолаб` чтобы создать её",
+                                parse_mode="Markdown")
+            
+            return
+
+    elif message.text.lower().startswith("++зар ") or message.text.lower().startswith("++заразность "):
+        if lab.has_lab:  
+            msg = message.text.lower().split(" ")
+            text = "🔬 _Меню прокачки уровней_\n\n"
+            current_patogens = lab.all_patogens
+
+            if len(msg) == 2:
+                if msg[1].isdigit():
+                    level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
+
+                    if level > 5:
+                        await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
+                        return
+
+                    current_balance = lab.bio_res
+                    total_cost = calculate.zz(current_patogens, (current_patogens+level))
+                    if current_balance < total_cost:
+                        await message.reply("*У вас недостаточно био-ресурсов!*", parse_mode="Markdown")
+
+                    else:
+                        lab.bio_res -= total_cost
+                        lab.infectiousness += level
+                        lab.save()
+                        text += f"Вы успешно добавили `{level}` заразности!"
+                        await message.reply(text=text, parse_mode="Markdown")
+                
+                else:
+                    await message.reply("Неправильный формат команды.")
+                    return 
+
+            else:
+                await message.reply("Неправильный формат команды.")
+                return  
+
+        else:
+            await message.reply(text=f"{message.from_user.first_name}, " \
+                                f"у вас не создана лаборотория!\n\n"\
+                                f"Напишите команду `биолаб` чтобы создать её",
+                                parse_mode="Markdown")
+            
+            return
 
 
 print("improvements init")
