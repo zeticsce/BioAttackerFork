@@ -431,7 +431,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_mortality = lab.immunity
+            current_mortality = lab.mortality
 
             if len(msg) == 2:
                 if msg[1].isdigit():
@@ -448,7 +448,7 @@ async def improve(message: types.Message):
                     total_cost = calculate.ll(current_mortality, (current_mortality+level))
                     total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
 
-                    text += f"Ваш текущий уровень летальности: `{current_mortality}` 🛡\n"
+                    text += f"Ваш текущий уровень летальности: `{current_mortality}` ☠️\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
                     text += f"`{total_cost}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++летал {level}`"
@@ -474,7 +474,7 @@ async def improve(message: types.Message):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
-            current_mortality = lab.infectiousness
+            current_mortality = lab.mortality
 
             if len(msg) == 2:
                 if msg[1].isdigit():
