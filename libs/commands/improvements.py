@@ -563,7 +563,7 @@ async def improve(message: types.Message):
             
             return
 
-    elif message.text.lower().startswith("++летал ") or message.text.lower().startswith("++летальность "):
+    elif message.text.lower().startswith("++бп ") or message.text.lower().startswith("++безопасность "):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
