@@ -46,7 +46,7 @@ async def improve(message: types.Message):
 
     ''' ПРОКАЧКА ПАТОГЕНОВ '''
 
-    if message.text.lower().startswith("+патоген "):
+    if message.text.lower().startswith("+пат ") or message.text.lower().startswith("+патоген "):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
@@ -55,6 +55,10 @@ async def improve(message: types.Message):
             if len(msg) == 2:
                 if msg[1].isdigit():
                     level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
 
                     if level > 5:
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
@@ -82,7 +86,7 @@ async def improve(message: types.Message):
             
             return
 
-    elif message.text.lower().startswith("++патоген "):
+    elif message.text.lower().startswith("++пат ") or message.text.lower().startswith("++патоген "):
         if lab.has_lab:  
             msg = message.text.lower().split(" ")
             text = "🔬 _Меню прокачки уровней_\n\n"
@@ -91,6 +95,10 @@ async def improve(message: types.Message):
             if len(msg) == 2:
                 if msg[1].isdigit():
                     level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
 
                     if level > 5:
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
@@ -106,8 +114,8 @@ async def improve(message: types.Message):
                         lab.all_patogens += level
                         lab.patogens += level
                         lab.save()
-
-                        await message.reply(f"Вы успешно добавили `{level}` патогенов!", parse_mode="Markdown")
+                        text += f"Вы успешно добавили `{level}` патогенов!"
+                        await message.reply(text=text, parse_mode="Markdown")
                 
                 else:
                     await message.reply("Неправильный формат команды.")
@@ -140,6 +148,10 @@ async def improve(message: types.Message):
             if len(msg) == 2:
                 if msg[1].isdigit():
                     level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
 
                     if current_qualification + level > 60:
                         await message.reply("Квалификацию можно прокачать только до 60 уровня!")
@@ -185,6 +197,10 @@ async def improve(message: types.Message):
                 if msg[1].isdigit():
                     level = int(msg[1])
 
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
+
                     if current_qualification + level > 60:
                         await message.reply("Квалификацию можно прокачать только до 60 уровня!")
                         return
@@ -203,7 +219,8 @@ async def improve(message: types.Message):
                         lab.qualification += level
                         lab.save()
 
-                        await message.reply(f"Вы успешно добавили `+{level}` к квалификации!", parse_mode="Markdown")
+                        text += f"Вы успешно добавили `+{level}` к квалификации!"
+                        await message.reply(text=text, parse_mode="Markdown")
                 
                 else:
                     await message.reply("Неправильный формат команды.")
