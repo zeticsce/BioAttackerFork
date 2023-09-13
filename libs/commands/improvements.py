@@ -425,5 +425,98 @@ async def improve(message: types.Message):
             
             return
 
+    ''' ПРОКАЧКА ЛЕТАЛЬНОСТИ '''
+
+    if message.text.lower().startswith("+летал ") or message.text.lower().startswith("+летальность "):
+        if lab.has_lab:  
+            msg = message.text.lower().split(" ")
+            text = "🔬 _Меню прокачки уровней_\n\n"
+            current_mortality = lab.immunity
+
+            if len(msg) == 2:
+                if msg[1].isdigit():
+                    level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
+
+                    if level > 5:
+                        await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
+                        return
+
+                    total_cost = calculate.ll(current_mortality, (current_mortality+level))
+                    total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
+
+                    text += f"Ваш текущий уровень летальности: `{current_mortality}` 🛡\n"
+                    text += f"Улучшение на _+{level}_ будет стоить: "
+                    text += f"`{total_cost}` 🧬\n\n"
+                    text += f"*Чтобы подвердить улучшение напишите:* `++летал {level}`"
+
+                    await message.reply(text=text, parse_mode="Markdown")
+                
+                else:
+                    await message.reply("Неправильный формат команды.")
+                    return 
+
+            else:
+                await message.reply("Неправильный формат команды.")
+                return  
+        else:
+            await message.reply(text=f"{message.from_user.first_name}, " \
+                                f"у вас не создана лаборотория!\n\n"\
+                                f"Напишите команду `биолаб` чтобы создать её",
+                                parse_mode="Markdown")
+            
+            return
+
+    elif message.text.lower().startswith("++летал ") or message.text.lower().startswith("++летальность "):
+        if lab.has_lab:  
+            msg = message.text.lower().split(" ")
+            text = "🔬 _Меню прокачки уровней_\n\n"
+            current_mortality = lab.infectiousness
+
+            if len(msg) == 2:
+                if msg[1].isdigit():
+                    level = int(msg[1])
+
+                    if level <= 0:
+                        await message.reply("Чувак)")
+                        return
+
+                    if level > 5:
+                        await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
+                        return
+
+                    current_balance = lab.bio_res
+                    total_cost = calculate.ll(current_mortality, (current_mortality+level))
+                    if current_balance < total_cost:
+                        await message.reply("*У вас недостаточно био-ресурсов!*", parse_mode="Markdown")
+
+                    else:
+                        lab.bio_res -= total_cost
+                        lab.immunity += level
+                        lab.save()
+                        total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
+                        text += f"Вы успешно добавили `{level}` летальности!\n"
+                        text += f"С баланса снято `{total_cost}` био-ресурсов 🧬"
+                        await message.reply(text=text, parse_mode="Markdown")
+                
+                else:
+                    await message.reply("Неправильный формат команды.")
+                    return 
+
+            else:
+                await message.reply("Неправильный формат команды.")
+                return  
+
+        else:
+            await message.reply(text=f"{message.from_user.first_name}, " \
+                                f"у вас не создана лаборотория!\n\n"\
+                                f"Напишите команду `биолаб` чтобы создать её",
+                                parse_mode="Markdown")
+            
+            return
+
 
 print("improvements init")
