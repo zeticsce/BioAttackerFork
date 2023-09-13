@@ -114,10 +114,6 @@ async def handler(message: types.message):
                     await message.reply("Нельзя заразить бота")
                     return
 
-                if replier == message.from_user.id:
-                    await message.reply("Нельзя заразить самого себя :)")
-                    return
-
                 chance = random.random()
                 attack_chance = random.random()
                 profit = 0
