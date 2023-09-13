@@ -127,6 +127,7 @@ class UserLab:
         self.suc_operations += 1
         self.bio_exp += profit
         self.last_patogen_time = int(time.time())
+        self.save()
     
 
     def save(self):

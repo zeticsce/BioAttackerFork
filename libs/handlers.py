@@ -436,14 +436,16 @@ async def handler(message: types.message):
         profit = 0
 
         count = 0
-
-        for item in list(reversed(lab.get_victums()[50::])):
+        for item in list(reversed(lab.get_victums())):
             if item['until_infect'] > int(time.time()):
-                profit += int(item["profit"])
+                profit += item["profit"]
+                name = strconv.deEmojify(item["name"])
+                print(name)
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. [{item["name"]}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+                text += f'{count + 1}. [{name}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
 
                 count += 1
+                if count == 50: break
         
         text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
 
