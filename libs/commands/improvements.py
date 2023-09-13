@@ -59,10 +59,11 @@ async def improve(message: types.Message):
                     if level > 5:
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
                         return
-
+                    total_cost = calculate.pt(current_patogens, (current_patogens+level))
+                    total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                     text += f"Ваш текущий уровень патогена: `{current_patogens}` 🧪\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
-                    text += f"`{calculate.pt(current_patogens, (current_patogens+level))}` 🧬\n\n"
+                    text += f"`{total_cost}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++патоген {level}`"
 
                     await message.reply(text=text, parse_mode="Markdown")
@@ -159,9 +160,11 @@ async def improve(message: types.Message):
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
                         return
 
+                    total_cost = calculate.ql(current_qualification, (current_qualification+level))
+                    total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                     text += f"Ваш текущий уровень квалификации: `{current_qualification}` 👨🏻‍🔬\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
-                    text += f"`{calculate.ql(current_qualification, (current_qualification+level))}` 🧬\n\n"
+                    text += f"`{total_cost}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++квала {level}`"
 
                     await message.reply(text=text, parse_mode="Markdown")
@@ -256,10 +259,11 @@ async def improve(message: types.Message):
                     if level > 5:
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
                         return
-
+                    total_cost = calculate.zz(current_infectiousness, (current_infectiousness+level))
+                    total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
                     text += f"Ваш текущий уровень заразности: `{current_infectiousness}` 🦠\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
-                    text += f"`{calculate.zz(current_infectiousness, (current_infectiousness+level))}` 🧬\n\n"
+                    text += f"`{total_cost}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++зар {level}`"
 
                     await message.reply(text=text, parse_mode="Markdown")
@@ -348,9 +352,12 @@ async def improve(message: types.Message):
                         await message.reply("Максимальное допустимое значение: `5`", parse_mode="Markdown")
                         return
 
+                    total_cost = calculate.im(current_immunity, (current_immunity+level))
+                    total_cost = str('{0:,}'.format(total_cost).replace(',', ' '))
+
                     text += f"Ваш текущий уровень иммунитета: `{current_immunity}` 🛡\n"
                     text += f"Улучшение на _+{level}_ будет стоить: "
-                    text += f"`{calculate.im(current_immunity, (current_immunity+level))}` 🧬\n\n"
+                    text += f"`{total_cost}` 🧬\n\n"
                     text += f"*Чтобы подвердить улучшение напишите:* `++зар {level}`"
 
                     await message.reply(text=text, parse_mode="Markdown")
