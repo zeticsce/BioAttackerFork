@@ -29,5 +29,4 @@ class StringConv:
     def escape_sql(self, text):
         """функция для экранирования символов sql"""
         result = re.sub(r"([\'\`\\])", r"\\\1", str(text))
-        print(result)
         return result

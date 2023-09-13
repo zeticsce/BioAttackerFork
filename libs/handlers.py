@@ -8,6 +8,7 @@ import sys
 import datetime
 import re
 import time
+import math
 
 from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
@@ -84,7 +85,6 @@ async def handler(message: types.message):
     message.text.pop(0)
     message.text = ' '.join(message.text).replace("\\", "/").replace(" ", "")
     if message.text == '' or message.text == '/':
-        print(message)
         await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path), filename='BioAttacker.zip'))
         os.remove(work_path + "/files.zip")
     else:
@@ -190,7 +190,18 @@ async def handler(message: types.message):
                             if len(victim_in_list) != 0:
                                 victim_in_list = victim_in_list[0]
                                 if victim_in_list['from_infect'] > (int(time.time())-3600):
-                                    await message.reply(text=f"👺 Вы не можете заразить пользователя два раза подряд!",  parse_mode="Markdown")
+                                    untill = math.floor((victim_in_list['from_infect'] - (int(time.time())-3600)) / 60) # колво минут
+                                    declination = "" # склонение минуту/минуты/минут
+                                    if untill <= 20:
+                                        if untill == 1: declination = "минута"
+                                        elif untill <= 4: declination = "минуты"
+                                        else: declination = "минут"
+                                    else: 
+                                        if untill%10 == 1: declination = "минута"
+                                        elif untill%10 <= 4: declination = "минуты"
+                                        else: declination = "минут"
+
+                                    await message.reply(text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
                                     return 
                         
 
@@ -282,7 +293,6 @@ async def handler(message: types.message):
                                 
                                 sp = (attacker.infectiousness - labOfVictim.security)**2
 
-
                                 if chance > sp:
                                     
                                     if pats > 1:
@@ -352,6 +362,7 @@ async def handler(message: types.message):
 
             last_farma          время последнего использования комманды ферма
             last_issue          время последнего заражения
+            last_daily          время последнего получения ежи
 
             virus_chat          чат айди, куда отправлять вирусы (None если в лс)
         """
@@ -401,17 +412,20 @@ async def handler(message: types.message):
         await message.reply(f"*Бот на месте*", parse_mode='Markdown')
 
 
-    if message.text.lower().split(" ")[0] == "+вирус":
+    if message.text.lower().startswith("+вирус "):
 
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
-            patName = message.text.replace("+вирус", '').strip()
+            patName = message.text[7::].strip()
 
             if len(patName) > 50:
                 await message.reply("Длина названия вируса не может быть больше 50 символов")
                 return
             if len(patName) == 0:
                 await message.reply("Вирус не может быть пустым!")
+                return
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
+                await message.reply("В вирусе не может быть недопустимых символов!")
                 return
 
             lab.patogen_name = patName

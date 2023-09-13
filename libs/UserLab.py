@@ -3,6 +3,7 @@ from app import query, strconv
 import json
 import time
 import math
+import datetime
 
     
 class UserLab:
@@ -51,16 +52,32 @@ class UserLab:
             self.__start_data = dict(result[0])
             self.has_lab = True
 
+
+            """Начисление патогенов"""
             delta = int(time.time()) - self.last_patogen_time
             qual_time = ((61 - self.qualification)* 60)
             delta = delta / qual_time
             self.last_patogen_time = int(time.time()) - ((delta % 1) * qual_time)
-            self.patogens += math.floor(delta)
             if self.patogens + math.floor(delta) <= self.all_patogens:
                 self.patogens += math.floor(delta)
-            else: 
+            else:
                 self.patogens = int(self.all_patogens)
                 self.last_patogen_time = int(time.time())
+
+            """Начислене ежи"""
+
+            minday30 = datetime.datetime.today() # тридцать минут текущего дня 
+            minday30 = minday30.replace(hour=0, minute=30, second=0) 
+            minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
+            if self.last_daily < minday30ts:
+                count = math.ceil((minday30ts - self.last_daily) / 86400)
+                profits = query(f"SELECT SUM(profit) as `result` FROM `bio_attacker_data`.`victums780882761` WHERE `until_infect` > {int(time.time())};")[0]
+                self.bio_res += int(profits['result']) * count
+                self.last_daily = int(time.time())
+                
+                
+
+            
 
 
 
