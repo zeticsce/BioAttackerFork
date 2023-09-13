@@ -110,7 +110,8 @@ async def improve(message: types.Message):
                         lab.all_patogens += level
                         lab.patogens += level
                         lab.save()
-                        text += f"Вы успешно добавили `{level}` патогенов!"
+                        text += f"Вы успешно добавили `{level}` патогенов!\n"
+                        text += f"С баланса снято {total_cost} био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
                 
                 else:
@@ -215,7 +216,8 @@ async def improve(message: types.Message):
                         lab.qualification += level
                         lab.save()
 
-                        text += f"Вы успешно добавили `+{level}` к квалификации!"
+                        text += f"Вы успешно добавили `+{level}` к квалификации!\n"
+                        text += f"С баланса снято {total_cost} био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
                 
                 else:
@@ -303,7 +305,8 @@ async def improve(message: types.Message):
                         lab.bio_res -= total_cost
                         lab.infectiousness += level
                         lab.save()
-                        text += f"Вы успешно добавили `{level}` заразности!"
+                        text += f"Вы успешно добавили `{level}` заразности!\n"
+                        text += f"С баланса снято {total_cost} био-ресурсов 🧬"
                         await message.reply(text=text, parse_mode="Markdown")
                 
                 else:
