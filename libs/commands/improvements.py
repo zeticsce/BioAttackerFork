@@ -84,6 +84,7 @@ async def improve(message: types.Message):
                         text = f"Вы успешно увелчили максимальное колличество патоегенов с _{lab.all_patogens}_ до _{lab.all_patogens + atts}_, это обошлось вам в _{strconv.format_nums(price)} био_"
                         if lab.bio_res > price:
                             lab.all_patogens += atts
+                            lab.patogens = lab.patogens + atts if lab.patogens + atts <= lab.all_patogens else lab.all_patogens
                             lab.bio_res -= price
                         else: text = f"Недостаточно био-ресурса!"
 
