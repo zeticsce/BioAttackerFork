@@ -39,3 +39,12 @@ class StringConv:
             u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                                "]+", flags = re.UNICODE)
         return regrex_pattern.sub(r'',text)
+    def format_nums(self, num):
+        num = ''.join(reversed(str(num)))
+        result = ''
+        count = 0
+        for i in num:
+            if count%3 == 0: result += ' '
+            result += i
+            count += 1
+        return ''.join(reversed(str(result)))

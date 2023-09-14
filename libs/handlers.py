@@ -341,9 +341,9 @@ async def handler(message: types.message):
 
             qualification       уровень квалификации
             infectiousness      уровень заразности
-            immunity уровень    иммунитета
-            mortality уровень   летальности
-            security уровень    безопасноси
+            immunity            уровень иммунитета
+            mortality           уровень летальности
+            security            уровень безопасноси
 
             bio_exp             био опыт
             bio_res             био ресурс
