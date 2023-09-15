@@ -150,7 +150,12 @@ async def handler(message: types.message):
                     lab.save_victum(replier, profit)
                     lab.save()
                     
-                    await message.reply(text=f"😎 Вы подвергли заражению пользователя [{labOfVictim['name']}](tg://openmessage?user_id={labOfVictim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                    text = f"😎 Вы подвергли заражению пользователя "
+                    text += f"[{labOfVictim['name']}](tg://openmessage?user_id={labOfVictim['user_id']})\n\n"
+                    text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                    text += f"☣️ `{profit}` био-опыта."
+
+                    await message.reply(text=text, parse_mode="Markdown")
 
                 else:
                     if labOfVictim.has_lab:
@@ -264,9 +269,21 @@ async def handler(message: types.message):
                         lab.save()
 
                         if pats > 1:
-                            await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️\n\nатрачено патогенов: {pats}", parse_mode="Markdown")
-                        else: await message.reply(text=f"😎 Вы подвергли заражению пользователя [{victim['name']}](tg://openmessage?user_id={victim['user_id']})\nИ получили за это {profit} ☣️", parse_mode="Markdown")
+                            text = f"😎 Вы подвергли заражению пользователя "
+                            text += f"[{labOfVictim['name']}](tg://openmessage?user_id={labOfVictim['user_id']})\n\n"
+                            text += f"🧪 Затрачено патогенов `{pats}`.\n"
+                            text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                            text += f"☣️ `{profit}` био-опыта."
 
+                            await message.reply(text=text, parse_mode="Markdown")
+                        else: 
+                            text = f"😎 Вы подвергли заражению пользователя "
+                            text += f"[{labOfVictim['name']}](tg://openmessage?user_id={labOfVictim['user_id']})\n\n"
+                            text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                            text += f"☣️ `{profit}` био-опыта."
+
+                            await message.reply(text=text, parse_mode="Markdown")
+                            
                         ''' Отправка уведомления '''
 
                         labOfVictim = labs.get_lab(victim['user_id'])
