@@ -489,6 +489,10 @@ async def handler(message: types.message):
 
         await message.reply(text=text, parse_mode="Markdown")
 
+    
+    if message.text.lower() == "биохелп":
+        await message.reply(f"[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)", parse_mode="Markdown")
+
 
 
 
