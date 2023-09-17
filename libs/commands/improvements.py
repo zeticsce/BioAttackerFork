@@ -31,16 +31,18 @@ async def improve(message: types.Message):
     if message.text.startswith("+"):
     
         lab = labs.get_lab(message['from']['id'])
-        if lab.has_lab: # проверка существует ли лаба, если лабы нет, то пусть вообще не отвечает
+            
+        imps={}
+        imps["попыток"] = re.fullmatch(r"(\+\+|\+)([а-я]+)(\s\d+)?", message.text.lower()) # если imps["попыток"] будет None, то это невалидное сообщение
         
-            imps={}
+        if lab.has_lab and imps["попыток"] != None: # проверка существует ли лаба, если лабы нет, то пусть вообще не отвечает
+        
             imps["патоген"] =      re.fullmatch(r"(\+\+|\+)(патоген|пат)(\s\d+)?", message.text.lower())
             imps["квалификация"] = re.fullmatch(r"(\+\+|\+)(разработка|квала|квалификация)(\s\d+)?", message.text.lower())
             imps["заразность"] =   re.fullmatch(r"(\+\+|\+)(зз|заразность)(\s\d+)?", message.text.lower())
             imps["иммунитет"] =    re.fullmatch(r"(\+\+|\+)(иммун|иммунитет)(\s\d+)?", message.text.lower())
             imps["летальность"] =  re.fullmatch(r"(\+\+|\+)(летал|летальность)(\s\d+)?", message.text.lower())
             imps["безопасность"] = re.fullmatch(r"(\+\+|\+)(сб|безопасность)(\s\d+)?", message.text.lower())
-            imps["попыток"] =      re.fullmatch(r"(\+\+|\+)([а-я]+)(\s\d+)?", message.text.lower())
 
             atts = int(imps["попыток"].group(3)) if imps["попыток"].group(3) != None else 1
             text = None

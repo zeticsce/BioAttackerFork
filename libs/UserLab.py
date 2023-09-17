@@ -43,11 +43,13 @@ class UserLab:
         
         result = query(f"SELECT * FROM `bio_attacker`.`labs` LEFT JOIN `telegram_data`.`tg_users` ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id WHERE `bio_attacker`.`labs`.`user_id` = {self.user_id} LIMIT 1;")
         if len(result) != 0: 
+
+            """Очистка от лишних полей"""
             result[0].pop("patogen_names")
             result[0].pop("iris_name")
             result[0].pop("tg_users.id")
             result[0].pop("tg_users.user_id")
-            # print(result[0]['last_patogen_time'])
+            
             self.__dict__ = dict(result[0])
             self.__start_data = dict(result[0])
             self.has_lab = True
@@ -82,6 +84,7 @@ class UserLab:
 
 
     def __getitem__(self, item):
+        print(self.__dict__)
         return self.__dict__[item]
     def __repr__(self):
         data = dict(self.__dict__)
