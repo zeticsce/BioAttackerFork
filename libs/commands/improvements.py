@@ -45,7 +45,7 @@ async def improve(message: types.Message):
             atts = int(imps["попыток"].group(3)) if imps["попыток"].group(3) != None else 1
             text = None
 
-            if atts <= 100:
+            if atts <= 10000:
                 if imps["попыток"].group(1) == "+": # тут проверяется колво плюсов, может быть только один или два
 
                     if imps["патоген"] != None:
@@ -116,7 +116,7 @@ async def improve(message: types.Message):
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["летальность"] != None:
-                        price = impr_price(lab.mortality, lab.mortality + atts,1.95)
+                        price = impr_price(lab.mortality, lab.mortality + atts, 1.95)
                         text = f"Вы успешно прокачали летальность с _{lab.mortality} ур._ до _{lab.mortality + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
                         if lab.bio_res > price:
                             lab.mortality += atts
@@ -133,6 +133,6 @@ async def improve(message: types.Message):
                     
                     lab.save()
 
-            else: text = f"Вы не можете прокачать более _100 уровней_ за раз!"
+            else: text = f"Вы не можете прокачать более _1000 уровней_ за раз!"
 
             if text != None: await message.reply(text=text, parse_mode="Markdown")

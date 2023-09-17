@@ -381,7 +381,19 @@ async def handler(message: types.message):
             virus_chat          чат айди, куда отправлять вирусы (None если в лс)
         """
 
+
+        def get_impr_count(start, biores, power): # подсчет колва доступных уровней прокачки
+            count = 0
+            price = 0
+            while price <= biores:
+                count += 1
+                price += floor((int(start) + count) ** power)
+            return count - 1
+        
+
+
         '''  Название вируса '''
+
         text = f'🦠 Информация о вирусе: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
 
         '''  Владелец лабы '''
@@ -393,17 +405,21 @@ async def handler(message: types.message):
         else: text += f'\n'
         
         ''' Количество патогенов ''' 
-        text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens}\n'
+        text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
 
         ''' Уровень разработки '''  
-        text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`{61 - lab.qualification} мин.`) \n\n'
+        if lab.qualification < 60: 
+            qualification_count = get_impr_count(lab.qualification, lab.bio_res, 2.6)
+            qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else lab.qualification - qualification_count
+            text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
+        else: text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`1 мин.`) \n\n'
         
         ''' Навыки '''
         text += f'🔬 **НАВЫКИ:**\n'
-        text += f'🦠 Заразность: {lab.infectiousness} ур.\n'
-        text += f'🛡 Иммунитет: {lab.immunity} ур.\n'
-        text += f'☠️ Летальность: {lab.mortality} ур.\n'
-        text += f'🕵️‍♂️ Безопасность: {lab.security} ур.\n\n'
+        text += f'🦠 Заразность: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
+        text += f'🛡 Иммунитет: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
+        text += f'☠️ Летальность: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
+        text += f'🕵️‍♂️ Безопасность: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
 
         ''' Данные ''' 
         text += f'⛩ **ДАННЫЕ:**\n'
