@@ -26,6 +26,19 @@ work_path = os.path.abspath(os.curdir)
 labs = Labs()
 
 
+async def skloneniye(num):
+    names = ['день', 'дня', 'дней']
+    n = num % 100
+    if n >= 5 and n <= 20:
+      return names[2]
+    n = num % 10
+    if n == 1:
+        return names[0]
+    if n >= 2 and n <= 4:
+        return names[1]
+    return names[2]
+
+
 if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST: # Необходимо, потому что команда /git и /restar работает только на хостинге
     @dp.message_handler(commands=["git"])
     async def handler(message: types.message):
@@ -152,7 +165,9 @@ async def handler(message: types.message):
                     
                     text = f"😎 Вы подвергли заражению пользователя "
                     text += f"[{victim['name']}](tg://openmessage?user_id={victim['user_id']})\n\n"
-                    text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                    text += f"☠️ Заражение на `{lab.mortality}` "      
+                    text += await skloneniye(lab.mortality)
+                    text += ".\n"
                     text += f"☣️ `{profit}` био-опыта."
 
                     await message.reply(text=text, parse_mode="Markdown")
@@ -266,21 +281,24 @@ async def handler(message: types.message):
 
                         lab.save_victum(victim['user_id'], profit)
                         lab.save()
-
                         if pats > 1:
                             text = f"😎 Вы подвергли заражению пользователя "
                             text += f"[{victim['name']}](tg://openmessage?user_id={victim['user_id']})\n\n"
                             text += f"🧪 Затрачено патогенов `{pats}`.\n"
-                            text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                            text += f"☠️ Заражение на `{lab.mortality}` "      
+                            text += await skloneniye(lab.mortality)
+                            text += ".\n"
                             text += f"☣️ `{profit}` био-опыта."
 
                             await message.reply(text=text, parse_mode="Markdown")
                         else: 
                             text = f"😎 Вы подвергли заражению пользователя "
                             text += f"[{victim['name']}](tg://openmessage?user_id={victim['user_id']})\n\n"
-                            text += f"☠️ Заражение на `{lab.mortality}` дней.\n"
+                            text += f"☠️ Заражение на `{lab.mortality}` "      
+                            text += await skloneniye(lab.mortality)
+                            text += ".\n"
                             text += f"☣️ `{profit}` био-опыта."
-
+                            
                             await message.reply(text=text, parse_mode="Markdown")
                             
                         ''' Отправка уведомления '''
