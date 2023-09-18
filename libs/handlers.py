@@ -57,6 +57,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
             except: pass
 
             os.system(f"python {work_path}/app.py &")
+            sys.exit(0)
         else: await message.reply(f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
