@@ -29,13 +29,10 @@ labs = Labs()
 async def skloneniye(num):
     names = ['день', 'дня', 'дней']
     n = num % 100
-    if n >= 5 and n <= 20:
-      return names[2]
+    if n >= 5 and n <= 20: return names[2]
     n = num % 10
-    if n == 1:
-        return names[0]
-    if n >= 2 and n <= 4:
-        return names[1]
+    if n == 1: return names[0]
+    if n >= 2 and n <= 4: return names[1]
     return names[2]
 
 
