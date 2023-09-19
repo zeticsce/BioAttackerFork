@@ -84,7 +84,6 @@ class UserLab:
 
 
     def __getitem__(self, item):
-        print(self.__dict__)
         return self.__dict__[item]
     def __repr__(self):
         data = dict(self.__dict__)
