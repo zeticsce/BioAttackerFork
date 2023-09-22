@@ -459,7 +459,7 @@ async def handler(message: types.message):
                 profit += item["profit"]
                 name = strconv.deEmojify(item["name"])
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. [{name}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+                text += f'{count + 1}. [{strconv.escape_markdown(name)}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
 
                 count += 1
                 if count == 50: break
