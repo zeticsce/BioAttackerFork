@@ -31,6 +31,11 @@ class StringConv:
         result = re.sub(r"([\'\`\\])", r"\\\1", str(text))
         return result
 
+    def escape_markdown(self, text):
+        """функция для экранирования символов sql"""
+        result = re.sub(r"([\`\*\[\]])", r"\\\1", str(text))
+        return result
+    
     def deEmojify(self, text):
         regrex_pattern = re.compile(pattern = "["
             u"\U0001F600-\U0001F64F"  # emoticons
