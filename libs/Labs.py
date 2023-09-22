@@ -1,10 +1,10 @@
 from app import query
-from libs.UserLab import UserLab
 import time
 
 class Labs:
     def __init__(self) -> None:
         self.has_lab_users = [i['user_id'] for i in query("SELECT * FROM `bio_attacker`.`labs`")]
+        self.bio_top = query("SELECT * FROM bio_attacker.labs INNER JOIN telegram_data.tg_users ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id ORDER BY bio_attacker.labs.bio_exp DESC LIMIT 25;")
 
     def create_lab(self, user_id):
         if len(query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `user_id` = {user_id}")) == 0:        
@@ -16,9 +16,12 @@ class Labs:
             query(f"CREATE TABLE `bio_attacker_data`.`victums{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` VARCHAR(255) NULL , `profit` INT(11) NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             query(f"CREATE TABLE `bio_attacker_data`.`issues{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `pat_name` VARCHAR(255) NULL , `hidden` BOOLEAN NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             self.has_lab_users.append(user_id)
+            from libs.UserLab import UserLab
         return UserLab(user_id)
     
-    def get_lab(self, user_id): return UserLab(user_id)
+    def get_lab(self, user_id): 
+        from libs.UserLab import UserLab
+        return UserLab(user_id)
     def get_user(self, tag):
         """
             Вернет юзера, если он существует, иначе будет None

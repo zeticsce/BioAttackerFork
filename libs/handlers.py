@@ -13,7 +13,11 @@ import math
 from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
 from Labs import Labs
+
+labs = Labs()
+
 from commands.improvements import *
+from commands.BioTop import *
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -23,7 +27,6 @@ from aiogram.utils import executor
 from math import ceil, floor
 
 work_path = os.path.abspath(os.curdir)
-labs = Labs()
 
 
 async def skloneniye(num):
@@ -183,7 +186,9 @@ async def handler(message: types.message):
                             break
                 elif chance < 0.90: 
                     victim = query("SELECT * FROM `bio_attacker`.`labs` INNER JOIN `telegram_data`.`tg_users` ON `telegram_data`.`tg_users`.`user_id`=`bio_attacker`.`labs`.`user_id` ORDER BY RAND() LIMIT 1;")[0] # 10% жертва из уже созданных лаб
-                    victim = victim if len(lab.get_victums(f"WHERE `victums{lab.user_id}`.`user_id` LIKE '{victim['user_id']}' AND `victums{lab.user_id}`.`from_infect` <= {int(time.time()) - (60*60)}")) != 0 else None # проверка кд
+                    
+                    """Штука снизу отвечает за исключение повторных заражений, но мне дико не нравится, что теперь постоянно пишет, что жертва не найдена (это пишется потому, что очень мало игроков)"""
+                    # victim = victim if len(lab.get_victums(f"WHERE `victums{lab.user_id}`.`user_id` LIKE '{victim['user_id']}' AND `victums{lab.user_id}`.`from_infect` <= {int(time.time()) - (60*60)}")) != 0 else None # проверка кд
                     
                 else: victim = None # 10% неудачный поиск
 
