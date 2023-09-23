@@ -18,7 +18,7 @@ from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButt
 @dp.message_handler(content_types=['text'])
 async def improve(message: types.Message):
     if message.text.lower() == "биоб":
-        text = "Биотоп чмоней"
+        text = "Биотоп чмоней\n"
         count = 0
         for lab in labs.bio_top:
             count += 1
