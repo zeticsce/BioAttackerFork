@@ -27,6 +27,16 @@ strconv = StringConv()
 bot = Bot(
     token = BOT_TOKEN
 )
+
+snd_msg_base = bot.send_message
+
+async def new_send_message(chat_id, text, parse_mode = None, entities = None, disable_web_page_preview = None, message_thread_id = None, disable_notification = None, protect_content = None, reply_to_message_id = None, allow_sending_without_reply = None, reply_markup = None):
+    msg = await snd_msg_base(chat_id, text, parse_mode, entities, disable_web_page_preview, message_thread_id, disable_notification, protect_content, reply_to_message_id, allow_sending_without_reply, reply_markup)
+    save_message(msg)
+
+bot.send_message = new_send_message
+
+
 dp = Dispatcher(bot)
 dp.message_handlers.once = False
 
