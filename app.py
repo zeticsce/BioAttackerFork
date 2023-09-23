@@ -4,6 +4,11 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
 import os
+
+work_path = __file__.split("\\")
+work_path.pop(-1)
+work_path = '\\'.join(work_path)
+
 import sys
 import asyncio
 import time
@@ -15,6 +20,7 @@ from libs.mysql_connect import query
 from libs.handlers import *
 from libs.StringConverters import StringConv
 from libs.ChatHistory import save_message
+
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
 strconv = StringConv()
