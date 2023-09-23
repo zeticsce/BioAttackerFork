@@ -362,7 +362,14 @@ async def handler(message: types.message):
         
         text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
 
-        await message.reply(text=text, parse_mode="Markdown")
+        
+        victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
+        victims_keyboard.row(
+            types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message['from']['id'], message_name=message['from']['first_name'], chat_id=message['chat']['id'])),
+        )
+
+
+        await message.reply(text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
         

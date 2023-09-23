@@ -11,7 +11,6 @@ import datetime
 
 from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
-from Labs import Labs
 from libs.handlers import labs
 
 from aiogram import types
@@ -21,7 +20,6 @@ from aiogram.utils.callback_data import CallbackData
 from math import floor
 
 vote_cb = CallbackData('vote', 'action', 'id', 'message_name', 'chat_id')
-labs = Labs()
 
 def get_keyboard_first(message: types.Message):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
@@ -29,6 +27,9 @@ def get_keyboard_first(message: types.Message):
         types.InlineKeyboardButton('🥴 Показать жертвы', callback_data=vote_cb.new(action='victims', id=message.from_user.id, message_name=message.from_user.first_name, chat_id=message.chat.id)),
         # types.InlineKeyboardButton('.д', callback_data=vote_cb.new(action='d', id=message.from_user.id)),
         # types.InlineKeyboardButton('Другое', callback_data=vote_cb.new(action='other', id=message.from_user.id)),
+    )
+    keyboard_markup.row(
+        types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message.from_user.id, message_name=message.from_user.first_name, chat_id=message.chat.id)),
     )
 
     return keyboard_markup
@@ -169,8 +170,28 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         
         text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
 
-        await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown")
+        
+        victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
+        victims_keyboard.row(
+            types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, message_name=query.from_user.first_name, chat_id=chat_id)),
+        )
+
+        await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await query.message.edit_reply_markup(types.InlineKeyboardMarkup())
+        await query.answer()
 
     
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(vote_cb.filter(action='delete msg'))
+async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
+    from_user_id = callback_data["id"]
+    message_name = callback_data["message_name"]
+    chat_id = callback_data["chat_id"]
+    if from_user_id == str(query.from_user.id):
+
+        await bot.delete_message(chat_id=chat_id, message_id=query.message.message_id)
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
