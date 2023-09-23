@@ -1,6 +1,6 @@
 import os
 
-work_path = __file__.split("/")
+work_path = __file__.replace("\\", "/").split("/")
 work_path.pop(-1)
 work_path.pop(-1)
 work_path = '/'.join(work_path)
