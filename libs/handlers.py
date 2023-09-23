@@ -18,6 +18,7 @@ labs = Labs()
 
 from commands.improvements import *
 from commands.BioTop import *
+from commands.BioLab import *
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -317,111 +318,6 @@ async def handler(message: types.message):
                         labOfVictim.all_issue += 1
                         labOfVictim.save()
 
-    if message.text.lower() == "биолаб":
-
-        """
-            Команда вывода лаборатории юзера
-        """
-
-        lab = labs.get_lab(message['from']['id'])
-        if not lab.has_lab: 
-            lab = labs.create_lab(message['from']['id'])
-
-        # дальше лаба точно существует и полностью содежится в lab
-        """
-            поле                описание
-
-            user_id             юзер айди пользователя
-            name                имя пользователя
-            user_name           юз пользователя
-            corp корп           айди корпы
-            patogen_name        имя патогена пользователя
-
-            all_patogens        колличество всех патогенов у юзера
-            patogens            колличество оставшихся патогенов у юзера
-            last_patogen_time   время последнего израсходованного патогена (unix метка)
-
-            qualification       уровень квалификации
-            infectiousness      уровень заразности
-            immunity            уровень иммунитета
-            mortality           уровень летальности
-            security            уровень безопасноси
-
-            bio_exp             био опыт
-            bio_res             био ресурс
-
-            all_operations      колличество операций заражения
-            suc_operations      колличество успешных операций заражения
-            all_issue           колличество всех попыток заразить этого юзера
-            prevented_issue     колличество успешных попыток заразить этого юзера
-            victims             колличество жертв
-            disease             колличество болезней
-            coins               колличество коинов
-            bio_valuta          колличество какой либо валюты / ирисок
-
-            last_farma          время последнего использования комманды ферма
-            last_issue          время последнего заражения
-            last_daily          время последнего получения ежи
-
-            virus_chat          чат айди, куда отправлять вирусы (None если в лс)
-        """
-
-
-        def get_impr_count(start, biores, power): # подсчет колва доступных уровней прокачки
-            count = 0
-            price = 0
-            while price <= biores:
-                count += 1
-                price += floor((int(start) + count) ** power)
-            return count - 1
-        
-
-
-        '''  Название вируса '''
-
-        text = f'🦠 Информация о вирусе: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
-
-        '''  Владелец лабы '''
-        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
-        text += f'👺 Владелец: [{lab.name}]({owner_link})\n'
-
-        ''' Корпорация '''
-        if lab.corp != None: text += f'🏢 Относится к корпорации: [{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})\n\n'
-        else: text += f'\n'
-        
-        ''' Количество патогенов ''' 
-        text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
-
-        ''' Уровень разработки '''  
-        if lab.qualification < 60: 
-            qualification_count = get_impr_count(lab.qualification, lab.bio_res, 2.6)
-            qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else lab.qualification - qualification_count
-            text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
-        else: text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`1 мин.`) \n\n'
-        
-        ''' Навыки '''
-        text += f'🔬 **НАВЫКИ:**\n'
-        text += f'🦠 Заразность: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
-        text += f'🛡 Иммунитет: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
-        text += f'☠️ Летальность: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
-        text += f'🕵️‍♂️ Безопасность: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
-
-        ''' Данные ''' 
-        text += f'⛩ **ДАННЫЕ:**\n'
-        text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
-        text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
-
-        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations if lab.all_operations != 0 else 1))}%`)\n'
-        text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
-
-        await bot.send_message(chat_id=message.chat.id, 
-            text=text, 
-            reply_to_message_id=message.message_id, 
-            parse_mode="Markdown",
-            disable_web_page_preview=True
-        )
-
-        lab.save() 
 
     if message.text.lower() == "био":
         await message.reply(f"*Бот на месте*", parse_mode='Markdown')
