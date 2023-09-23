@@ -23,4 +23,4 @@ async def improve(message: types.Message):
         for lab in labs.bio_top:
             count += 1
             text += f"\n{count}. [{strconv.deEmojify(lab['name'])}](tg://openmessage?user_id={lab['user_id']}) | {strconv.num_to_str(lab['bio_exp'])} опыта"
-        await message.reply(text=text, parse_mode="Markdown")
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")

@@ -46,14 +46,14 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
-        git_message = await message.reply("🪛 *Ожидаем клонирования...*", parse_mode="Markdown")
+        git_message = await bot.send_message(message.chat.id, "🪛 *Ожидаем клонирования...*", parse_mode="Markdown")
 
         pull_result = subprocess.Popen(["git", "pull", "https://github.com/kawasaji/BioAttacker"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
         await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
         if "Already up to date.\n" != output:
-            await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+            await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
             try:
                 dp.stop_polling()
@@ -63,12 +63,12 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
             os.system(f"python {work_path}/app.py &")
             sys.exit(0)
-        else: await message.reply(f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
+        else: await bot.send_message(message.chat.id, f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
 
-        await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+        await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
         try:
             dp.stop_polling()
@@ -83,12 +83,12 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 @dp.message_handler(commands=["exit"], commands_prefix='.')
 async def hi_there(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
-    await message.reply(f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
+    await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
     sys.exit(0)
 
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):
-    await message.reply("Привет! *** придумать текст ***")
+    await bot.send_message(message.chat.id, "Привет! *** придумать текст ***")
 
 
 @dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
@@ -112,7 +112,7 @@ async def handler(message: types.message):
                 os.remove(work_path + "/files.zip")
             else:
                 await bot.send_document(message.chat.id,  InputFile(work_path + message.text, filename=message.text))
-        else: await message.reply(f"🪛 Путь `{message.text}` не найден")
+        else: await bot.send_message(message.chat.id, f"🪛 Путь `{message.text}` не найден")
 
 
 @dp.message_handler(content_types=['text']) 
@@ -126,11 +126,11 @@ async def handler(message: types.message):
             if attempts == None: attempts = 1 # если колво попыток не определено, задавать 1
 
             if attempts > 10: # ограничивает колво попыток до 10
-                await message.reply(text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
                 return
 
             if lab.patogens <= 0: # проверка на паты
-                await message.reply(text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
                 return
 
             victim_tag = bio_infect.group(3).strip().replace("tg://openmessage?user_id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
@@ -143,7 +143,7 @@ async def handler(message: types.message):
 
             if message.reply_to_message: # нахождение айди жертвы при реплае
                 if message.reply_to_message["from"]["is_bot"] == True: # фильтр на ботов
-                    await message.reply("Нельзя заразить бота")
+                    await bot.send_message(message.chat.id, "Нельзя заразить бота")
                     return
                 victim = labs.get_user(message.reply_to_message["from"]["id"]) # обьект жертвы user_id, user_name, name
 
@@ -151,12 +151,12 @@ async def handler(message: types.message):
             if victim_tag != None: # если все хорошо, у нас останется victim_user, которая содержит айди юзера
                 # в приоретете victim_tag, если будет реплай, то он сначала чекнет victim_tag, если он присутсвует, то будет бить его
                 if re.fullmatch(r"[\w]+", victim_tag) == None: # проверка на валидность тега, нет ли там русских букв, спец символов и тд
-                    await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
+                    await bot.send_message(message.chat.id, text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                     return
                 else:
                     victim = labs.get_user(victim_tag) # проверка есть ли он в базе
                     if victim == None:
-                        await message.reply(text=f"👺 Юзер не найден!",  parse_mode="Markdown")
+                        await bot.send_message(message.chat.id, text=f"👺 Юзер не найден!",  parse_mode="Markdown")
                         return
                     elif is_host: # на хосте проверяет кд до следующего удара по юзеру
                         victim_in_list = lab.get_victums(f"WHERE `victums{lab.user_id}`.`user_id` LIKE '{victim['user_id']}'")
@@ -174,7 +174,7 @@ async def handler(message: types.message):
                                     elif untill%10 <= 4: declination = "минуты"
                                     else: declination = "минут"
 
-                                await message.reply(text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
+                                await bot.send_message(message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
                                 return 
 
             if victim == None: # тут происходит рандомный выбор жертвы
@@ -197,7 +197,7 @@ async def handler(message: types.message):
             if victim == None:
                 lab.save()
                 del lab
-                await message.reply(text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
             else:
 
                 attack_chance = random.random() # рандом от 0 до 1
@@ -271,7 +271,7 @@ async def handler(message: types.message):
                     text += ".\n"
                     text += f"☣️ `{profit}` био-опыта."
 
-                    await message.reply(text=text, parse_mode="Markdown")
+                    await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
                         
                     ''' Отправка уведомления '''
 
@@ -312,7 +312,7 @@ async def handler(message: types.message):
                             await bot.send_message(chat_id=chat, text=text, parse_mode="Markdown")
 
                 else:
-                    await message.reply(text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
+                    await bot.send_message(message.chat.id, text=f"👺 Попытка заразить [{victim['name']}](tg://openmessage?user_id={victim['user_id']}) провалилась!\nВероятно у вашего вируса слабая заразность.",  parse_mode="Markdown")
                     
                     labOfVictim = labs.get_lab(victim['user_id'])
                     if labOfVictim.has_lab:
@@ -321,7 +321,7 @@ async def handler(message: types.message):
 
 
     if message.text.lower() == "био":
-        await message.reply(f"*Бот на месте*", parse_mode='Markdown')
+        await bot.send_message(message.chat.id, f"*Бот на месте*", parse_mode='Markdown')
 
 
     if message.text.lower().startswith("+вирус "):
@@ -331,19 +331,19 @@ async def handler(message: types.message):
             patName = message.text[7::].strip()
 
             if len(patName) > 50:
-                await message.reply("Длина названия вируса не может быть больше 50 символов")
+                await bot.send_message(message.chat.id, "Длина названия вируса не может быть больше 50 символов")
                 return
             if len(patName) == 0:
-                await message.reply("Вирус не может быть пустым!")
+                await bot.send_message(message.chat.id, "Вирус не может быть пустым!")
                 return
             if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
-                await message.reply("В вирусе не может быть недопустимых символов!")
+                await bot.send_message(message.chat.id, "В вирусе не может быть недопустимых символов!")
                 return
 
             lab.patogen_name = patName
             lab.save()
 
-            await message.reply("✅ Название патогена успешно обновлено!")
+            await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
@@ -370,7 +370,7 @@ async def handler(message: types.message):
         )
 
 
-        await message.reply(text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
         
@@ -382,7 +382,7 @@ async def handler(message: types.message):
 
         text = f'Вы успешно пофармили и получили {profit} коинов 💰!'
 
-        await message.reply(text=text, parse_mode="Markdown")
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
     if message.text.lower() in ("биомеш", "биомешок", "биобаланс", "коины"):
 
@@ -392,11 +392,11 @@ async def handler(message: types.message):
                f'Коины: _{lab.coins}_ 💰\n' \
                f'Био-коины: _{lab.bio_valuta}_ 🥑'
 
-        await message.reply(text=text, parse_mode="Markdown")
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
     
     if message.text.lower() == "биохелп":
-        await message.reply(f"[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)", parse_mode="Markdown")
+        await bot.send_message(message.chat.id, f"[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)", parse_mode="Markdown")
 
 
 
