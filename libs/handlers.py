@@ -116,6 +116,11 @@ async def handler(message: types.message):
 
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
+
+    if message.chat.id != -1001920018449:
+        await message.reply("вам нельзя пользоватся ботом")
+        return
+
     save_message(message)
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
     if bio_infect != None:
