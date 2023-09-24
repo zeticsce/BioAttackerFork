@@ -25,9 +25,7 @@ conn = pymysql.connect(
     cursorclass=DictCursor
 )
 def query(query):
-    start_time = time.time()
     with conn.cursor() as cursor:
         cursor.execute(query)
         conn.commit()
-        print("query", time.time() - start_time, query)
         return cursor.fetchall()
