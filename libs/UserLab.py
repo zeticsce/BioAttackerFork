@@ -70,7 +70,7 @@ class UserLab:
             """Начислене ежи"""
 
             minday30 = datetime.datetime.today() # тридцать минут текущего дня 
-            minday30 = minday30.replace(hour=0, minute=30, second=0) 
+            minday30 = minday30.replace(hour=23, minute=0, second=0) 
             minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
             if self.last_daily < minday30ts:
                 count = math.ceil((minday30ts - self.last_daily) / 86400)
