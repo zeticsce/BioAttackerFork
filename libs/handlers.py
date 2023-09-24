@@ -135,6 +135,9 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
 
+    if message.text.lower() == "+вирусы":
+        await bot.send_message(message.chat.id, text="Сообщения службы безопасности перенесены в этот чат", parse_mode="Markdown", reply_markup=victims_keyboard)
+
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
         text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
