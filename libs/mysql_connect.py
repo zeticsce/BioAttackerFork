@@ -2,6 +2,7 @@ import os
 import sys 
 import requests
 import traceback
+import time
 
 import pymysql
 from pymysql.cursors import DictCursor
@@ -24,7 +25,9 @@ conn = pymysql.connect(
     cursorclass=DictCursor
 )
 def query(query):
+    start_time = time.time()
     with conn.cursor() as cursor:
         cursor.execute(query)
         conn.commit()
+        print("infect", time.time() - start_time)
         return cursor.fetchall()
