@@ -143,7 +143,11 @@ async def handler(message: types.message):
             await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
 
     if message.text.lower() == "+вирусы":
-        await bot.send_message(message.chat.id, text="Сообщения службы безопасности перенесены в этот чат", parse_mode="Markdown", reply_markup=victims_keyboard)
+        lab = labs.get_lab(message['from']['id'])
+        if lab.has_lab: 
+            lab.virus_chat = message.chat.id
+            lab.save()
+            await bot.send_message(message.chat.id, text="Сообщения службы безопасности перенесены в этот чат", parse_mode="Markdown")
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
