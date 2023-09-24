@@ -9,7 +9,7 @@ import re
 import time
 import datetime
 
-from app import dp, bot, query, strconv, save_message, is_host
+from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from libs.handlers import labs
 

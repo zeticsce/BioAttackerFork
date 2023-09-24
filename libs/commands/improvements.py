@@ -7,7 +7,7 @@
 import os
 import re
 
-from app import dp, bot, query, strconv, save_message, is_host
+from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from Labs import Labs
 from libs.handlers import labs
@@ -25,7 +25,7 @@ def impr_price(start, end, power):
         price += floor((int(start) + i + 1) ** power)
     return price
 
-@dp.message_handler(content_types=['text'])
+@dp.message_handler(IsAdmin())
 async def improve(message: types.Message):
     
     if message.text.startswith("+"):

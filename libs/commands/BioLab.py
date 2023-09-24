@@ -9,7 +9,7 @@ import re
 import time
 import datetime
 
-from app import dp, bot, query, strconv, save_message, is_host
+from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from libs.handlers import labs
 
@@ -35,7 +35,7 @@ def get_keyboard_first(message: types.Message):
     return keyboard_markup
 
 
-@dp.message_handler(content_types=['text'])
+@dp.message_handler(IsAdmin())
 async def show_lab(message: types.Message):
 
     if message.text.lower() == "биолаб":

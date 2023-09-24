@@ -10,7 +10,7 @@ import time
 import math
 import random
 
-from app import dp, bot, query, strconv, save_message, is_host
+from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from libs.handlers import labs
 
@@ -28,7 +28,7 @@ def skloneniye(num):
     return names[2]
 
 
-@dp.message_handler(content_types=['text'])
+@dp.message_handler(IsAdmin())
 async def show_lab(message: types.Message):
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
     if bio_infect != None:

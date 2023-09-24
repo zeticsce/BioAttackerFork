@@ -10,7 +10,7 @@ import re
 import time
 import math
 
-from app import dp, bot, query, strconv, save_message, is_host
+from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from Labs import Labs
 
@@ -106,12 +106,14 @@ async def handler(message: types.message):
         else: await bot.send_message(message.chat.id, f"🪛 Путь `{message.text}` не найден")
 
 
-@dp.message_handler(content_types=['text']) 
+@dp.message_handler() # ответ юзерам без админки
 async def handler(message: types.message):
+    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740]:
+        await bot.send_message(message.chat.id, f"*Бот в разработке*", parse_mode='Markdown')
 
-    if message.chat.id not in (-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740) :
-        await message.reply("вам нельзя пользоватся ботом")
-        return
+
+@dp.message_handler(IsAdmin()) 
+async def handler(message: types.message):
 
     save_message(message)
 

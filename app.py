@@ -2,6 +2,13 @@ from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
+from aiogram.dispatcher.filters import Filter
+
+class IsAdmin(Filter):
+    key = "is_admin"
+
+    async def check(self, message: types.Message):
+        return message.from_user.id in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740] and message.text
 
 import os
 
@@ -48,6 +55,7 @@ async def on_startup(dp):
 
 if __name__ == '__main__':
     from libs.handlers import dp
+    dp.bind_filter(IsAdmin)
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
 
 
