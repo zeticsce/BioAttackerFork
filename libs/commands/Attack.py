@@ -30,7 +30,6 @@ def skloneniye(num):
 
 @dp.message_handler(content_types=['text'])
 async def show_lab(message: types.Message):
-    start_time = time.time()
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
     if bio_infect != None:
         lab = labs.get_lab(message['from']['id'])
@@ -231,4 +230,3 @@ async def show_lab(message: types.Message):
                     await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
 
                     lab.save()
-    print("infect", time.time() - start_time)
