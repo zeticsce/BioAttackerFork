@@ -181,7 +181,7 @@ async def show_lab(message: types.Message):
                             try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                             except utils.exceptions.ChatNotFound: pass
                         else:
-                            patogen_name =  f"патогеном {lab.patogen_name}" if lab.patogen_name != None else "неизветным патогеном"
+                            patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
                             sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n☣️ Вы потряли _{profit} био._"
                             try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                             except utils.exceptions.ChatNotFound: pass
