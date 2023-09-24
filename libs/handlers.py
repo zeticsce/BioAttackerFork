@@ -109,7 +109,7 @@ async def handler(message: types.message):
 @dp.message_handler(content_types=['text']) 
 async def handler(message: types.message):
 
-    if message.chat.id not in (-1001864961488, 1058211493, 5770061336, 780882761, 1202336740) :
+    if message.chat.id not in (-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740) :
         await message.reply("вам нельзя пользоватся ботом")
         return
 
