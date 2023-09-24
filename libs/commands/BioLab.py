@@ -173,7 +173,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
-            types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, message_name=query.from_user.first_name, chat_id=chat_id)),
+            types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
         )
 
         await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
