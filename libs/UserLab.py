@@ -109,7 +109,7 @@ class UserLab:
             params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
         """
         if params == None: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}`;")
-        else: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` WHERE {params};")
+        else: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` {params};")
 
         
     def save_victum(self, victum_id, profit):
@@ -128,7 +128,18 @@ class UserLab:
         q = query(f"SELECT count(victums{self.user_id}.id) FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `until_infect` >= {int(time.time())}")
         self.victums = q[0][list(q[0].keys())[0]]
         self.last_patogen_time = int(time.time())
-        self.save()
+
+    def save_issue(self, from_id, patogen, until, hide = False):
+        """
+            Функция записывает болезнь в базу
+
+            from_id     юзер айди атакующего
+            patogen     имя патогена заразившего
+            until       юникс мента времени действия болезни
+            hide        скрывать ид заразившего в списке болезней/нет
+        """
+        query(f"INSERT INTO `bio_attacker_data`.`issues{self.user_id}` (`id`, `user_id`, `pat_name`, `hidden`, `from_infect`, `until_infect`) VALUES (NULL, '{from_id}', '{patogen}', '{1 if hide else 0}', '{int(time.time())}', '{until}')")
+
     
 
     def save(self):

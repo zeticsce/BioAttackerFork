@@ -132,6 +132,7 @@ async def show_lab(message: types.Message):
                 profit = int(lab.bio_exp / 10)
 
                 lab.save_victum(victim['user_id'], profit)
+                lab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60))
                 lab.patogens -= 1
                 lab.save()
                 patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
@@ -165,11 +166,13 @@ async def show_lab(message: types.Message):
 
                         VictimLab.prevented_issue += atts - 1
                         VictimLab.all_issue += atts
+                        VictimLab.last_issue = int(time.time())
                         lab.all_operations += atts
                         lab.suc_operations += 1
                         lab.patogens -= atts
 
                         lab.save_victum(VictimLab.user_id, profit)
+                        VictimLab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60))
                         
                         patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
 

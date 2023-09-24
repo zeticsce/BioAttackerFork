@@ -21,6 +21,8 @@ from commands.BioTop import *
 from commands.BioLab import *
 from commands.AddUsersToDB import *
 from commands.Attack import *
+from commands.issues import *
+
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
