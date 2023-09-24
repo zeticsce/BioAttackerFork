@@ -134,6 +134,7 @@ async def show_lab(message: types.Message):
                 lab.save_victum(victim['user_id'], profit)
                 lab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60))
                 lab.patogens -= 1
+                lab.last_issue = int(time.time())
                 lab.save()
                 patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
 

@@ -18,6 +18,7 @@ class UserLab:
     def __init__(self, user_id):
         self.user_id = user_id
         self.has_lab = False 
+        self.illness = None
         self.__convert_lab()
         if self.has_lab and self.virus_chat == None: self.virus_chat = str(self.user_id)
 
@@ -66,9 +67,20 @@ class UserLab:
             else:
                 self.patogens = int(self.all_patogens)
                 self.last_patogen_time = int(time.time())
+            
+            """Проверка горячки"""
+            if self.last_issue + 60*60 > int(time.time()):
+                iss = query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` ORDER BY id DESC LIMIT 1")
+                if len(iss) != 0:
+                    iss = iss[0]
+                    self.illness = {
+                        "patogen": iss['pat_name'],
+                        "from_id": iss['user_id'],
+                        "hidden": False if iss['hidden'] == 0 else True, # применять для сокрытия ида заразившего
+                        "illness": self.last_issue + 60*60- int(time.time())
+                    }
 
             """Начислене ежи"""
-
             minday30 = datetime.datetime.today() # тридцать минут текущего дня 
             minday30 = minday30.replace(hour=23, minute=0, second=0) 
             minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
@@ -138,7 +150,8 @@ class UserLab:
             until       юникс мента времени действия болезни
             hide        скрывать ид заразившего в списке болезней/нет
         """
-        query(f"INSERT INTO `bio_attacker_data`.`issues{self.user_id}` (`id`, `user_id`, `pat_name`, `hidden`, `from_infect`, `until_infect`) VALUES (NULL, '{from_id}', '{patogen}', '{1 if hide else 0}', '{int(time.time())}', '{until}')")
+        patogen = "NULL" if patogen == None else f"'{strconv.escape_sql(patogen)}'"
+        query(f"INSERT INTO `bio_attacker_data`.`issues{self.user_id}` (`id`, `user_id`, `pat_name`, `hidden`, `from_infect`, `until_infect`) VALUES (NULL, '{from_id}', {patogen}, '{1 if hide else 0}', '{int(time.time())}', '{until}')")
 
     
 
