@@ -159,7 +159,7 @@ async def show_lab(message: types.Message):
                         profit = int(VictimLab.bio_exp / 10) # 10% профита юзера
                         profit = 1 if profit < 1 else profit # мин профит 1
 
-                        lab.bio_exp += (profit*1.01) # рост био на 1% при заражении
+                        lab.bio_exp += profit 
                         VictimLab.bio_exp -= profit
                         VictimLab.bio_exp = 1 if VictimLab.bio_exp <= 0 else VictimLab.bio_exp #минимальный био у юзера 
 
