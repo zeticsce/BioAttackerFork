@@ -137,4 +137,4 @@ async def improve(message: types.Message):
 
             else: text = f"Вы не можете прокачать более _1000 уровней_ за раз!"
 
-            if text != None: await message.reply(text=text, parse_mode="Markdown")
+            if text != None: await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")

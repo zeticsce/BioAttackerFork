@@ -33,8 +33,8 @@ class StringConv:
 
     def escape_markdown(self, text):
         """функция для экранирования символов sql"""
-        result = re.sub(r"([\`\*\[\]])", r"\\\1", str(text))
-        return result
+        escape_chars = r'_*[]()~`>#+-=|{}.!'
+        return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
     
     def deEmojify(self, text):
         regrex_pattern = re.compile(pattern = "["

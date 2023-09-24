@@ -2,6 +2,7 @@ import os
 import sys 
 import requests
 import traceback
+import time
 
 import pymysql
 from pymysql.cursors import DictCursor

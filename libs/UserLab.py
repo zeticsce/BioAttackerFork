@@ -42,17 +42,17 @@ class UserLab:
             Выбирает лабу из бд, чистит ее от лишнего
         """
         
-        result = query(f"SELECT * FROM `bio_attacker`.`labs` LEFT JOIN `telegram_data`.`tg_users` ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id WHERE `bio_attacker`.`labs`.`user_id` = {self.user_id} LIMIT 1;")
+        result = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `bio_attacker`.`labs`.`user_id` = {self.user_id} LIMIT 1;")
         if len(result) != 0: 
-
+            result = query(f"SELECT * FROM `bio_attacker`.`labs` LEFT JOIN `telegram_data`.`tg_users` ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id WHERE `bio_attacker`.`labs`.`user_id` = {self.user_id} LIMIT 1;")[0]
             """Очистка от лишних полей"""
-            result[0].pop("patogen_names")
-            result[0].pop("iris_name")
-            result[0].pop("tg_users.id")
-            result[0].pop("tg_users.user_id")
+            result.pop("patogen_names")
+            result.pop("iris_name")
+            result.pop("tg_users.id")
+            result.pop("tg_users.user_id")
             
-            self.__dict__ = dict(result[0])
-            self.__start_data = dict(result[0])
+            self.__dict__ = dict(result)
+            self.__start_data = dict(result)
             self.has_lab = True
 
 
@@ -127,8 +127,6 @@ class UserLab:
             query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
         q = query(f"SELECT count(victums{self.user_id}.id) FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `until_infect` >= {int(time.time())}")
         self.victums = q[0][list(q[0].keys())[0]]
-        self.suc_operations += 1
-        self.bio_exp += profit
         self.last_patogen_time = int(time.time())
         self.save()
     

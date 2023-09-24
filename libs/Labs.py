@@ -1,5 +1,8 @@
-from app import query
+from app import query, bot, OWNER_ID, BOT_TOKEN
 import time
+import random
+import asyncio
+import requests
 
 class Labs:
     def __init__(self) -> None:
@@ -16,7 +19,17 @@ class Labs:
             query(f"CREATE TABLE `bio_attacker_data`.`victums{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` VARCHAR(255) NULL , `profit` INT(11) NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             query(f"CREATE TABLE `bio_attacker_data`.`issues{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `pat_name` VARCHAR(255) NULL , `hidden` BOOLEAN NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             self.has_lab_users.append(user_id)
+            user = self.get_user(user_id)
+            labs_count = query("SELECT COUNT(*) as count FROM  `bio_attacker`.`labs`;")[0]['count']
+            
+            requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
+                'method': 'sendMessage', 
+                'chat_id': OWNER_ID, 
+                'text': f"🔬 Cоздана новая лаба\n📕 {user['name']} / @{user_id}\n🧮 Всего лаб {labs_count}"
+            })
+            
             from libs.UserLab import UserLab
+
         return UserLab(user_id)
     
     def get_lab(self, user_id): 
@@ -27,7 +40,7 @@ class Labs:
             Вернет юзера, если он существует, иначе будет None
         """
         if str(tag).isdigit(): 
-            result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_id` LIKE '{tag}'")
+            result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_id` = '{tag}'")
             result = None if len(result) == 0 else result[0] 
         else:
             result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_name` LIKE '{tag}'")
@@ -68,4 +81,7 @@ class Labs:
         else:
             return query(f"SELECT * FROM `bio_attacker_data`.`issues{user_id}` WHERE {params};")
     def get_random_victum(self):
-        return query("SELECT * FROM `telegram_data`.`tg_users` ORDER BY RAND() LIMIT 1;")[0]
+        count = query("SELECT MAX(`id`) as count FROM `telegram_data`.`tg_users`;")[0]['count']
+        try: user = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE id = {random.randint(1, count)} LIMIT 1;")[0]
+        except: user = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE id = {random.randint(1, count)} LIMIT 1;")[0]
+        return user

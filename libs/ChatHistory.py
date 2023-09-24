@@ -1,7 +1,9 @@
 import os
 
-work_path = os.path.abspath(os.curdir)
-
+work_path = __file__.replace("\\", "/").split("/")
+work_path.pop(-1)
+work_path.pop(-1)
+work_path = '/'.join(work_path)
 
 if not os.path.exists(work_path + '/chats'): os.mkdir(work_path + '/chats')
 

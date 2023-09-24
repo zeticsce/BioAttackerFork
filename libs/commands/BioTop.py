@@ -20,7 +20,10 @@ async def improve(message: types.Message):
     if message.text.lower() == "биоб":
         text = "Биотоп чмоней\n"
         count = 0
+        all_bio_exp = query("SELECT SUM(bio_exp) as bio FROM `bio_attacker`.`labs`")[0]['bio']
         for lab in labs.bio_top:
             count += 1
             text += f"\n{count}. [{strconv.deEmojify(lab['name'])}](tg://openmessage?user_id={lab['user_id']}) | {strconv.num_to_str(lab['bio_exp'])} опыта"
-        await message.reply(text=text, parse_mode="Markdown")
+
+        text += f"\n\nОбъем био-опыта в игре: {strconv.num_to_str(all_bio_exp)}"
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
