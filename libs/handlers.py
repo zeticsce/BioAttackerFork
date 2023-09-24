@@ -145,7 +145,7 @@ async def handler(message: types.message):
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
-        text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
+        text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{message.from_user.first_name}</a>\n\n'
         profit = 0
 
         count = 0
@@ -154,12 +154,12 @@ async def handler(message: types.message):
                 profit += item["profit"]
                 name = strconv.deEmojify(item["name"])
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. [{strconv.escape_markdown(name)}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+                text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
                 if count == 50: break
         
-        text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
+        text += f'\nОбщая прибыль: +{strconv.num_to_str(profit)} био-ресурсов 🧬'
 
         
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
@@ -168,7 +168,7 @@ async def handler(message: types.message):
         )
 
 
-        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await bot.send_message(message.chat.id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
         
