@@ -1,7 +1,8 @@
-from app import query, bot, OWNER_ID
+from app import query, bot, OWNER_ID, BOT_TOKEN
 import time
 import random
 import asyncio
+import requests
 
 class Labs:
     def __init__(self) -> None:
@@ -20,7 +21,13 @@ class Labs:
             self.has_lab_users.append(user_id)
             user = self.get_user(user_id)
             labs_count = query("SELECT COUNT(*) as count FROM  `bio_attacker`.`labs`;")[0]['count']
-            bot.send_message(OWNER_ID, f"🔬 *Cоздана новая лаба*{user['name']} / @{user_id}!\n🧮 *Всего лаб* _{labs_count}_",  parse_mode="Markdown")
+            
+            requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
+                'method': 'sendMessage', 
+                'chat_id': OWNER_ID, 
+                'text': f"🔬 Cоздана новая лаба {user['name']} / @{user_id}!\n🧮 Всего лаб {labs_count}"
+            })
+            
             from libs.UserLab import UserLab
 
         return UserLab(user_id)
