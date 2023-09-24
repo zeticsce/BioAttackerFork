@@ -29,5 +29,5 @@ def query(query):
     with conn.cursor() as cursor:
         cursor.execute(query)
         conn.commit()
-        print("query", time.time() - start_time)
+        print("query", time.time() - start_time, query)
         return cursor.fetchall()
