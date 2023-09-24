@@ -19,17 +19,17 @@ from aiogram.utils.callback_data import CallbackData
 
 from math import floor
 
-vote_cb = CallbackData('vote', 'action', 'id', 'message_name', 'chat_id')
+vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 
 def get_keyboard_first(message: types.Message):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
-        types.InlineKeyboardButton('🥴 Показать жертвы', callback_data=vote_cb.new(action='victims', id=message.from_user.id, message_name=message.from_user.first_name, chat_id=message.chat.id)),
+        types.InlineKeyboardButton('🥴 Показать жертвы', callback_data=vote_cb.new(action='victims', id=message.from_user.id, chat_id=message.chat.id)),
         # types.InlineKeyboardButton('.д', callback_data=vote_cb.new(action='d', id=message.from_user.id)),
         # types.InlineKeyboardButton('Другое', callback_data=vote_cb.new(action='other', id=message.from_user.id)),
     )
     keyboard_markup.row(
-        types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message.from_user.id, message_name=message.from_user.first_name, chat_id=message.chat.id)),
+        types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message.from_user.id, chat_id=message.chat.id)),
     )
 
     return keyboard_markup
