@@ -1,6 +1,7 @@
-from app import query
+from app import query, bot, OWNER_ID
 import time
 import random
+import asyncio
 
 class Labs:
     def __init__(self) -> None:
@@ -17,7 +18,11 @@ class Labs:
             query(f"CREATE TABLE `bio_attacker_data`.`victums{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` VARCHAR(255) NULL , `profit` INT(11) NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             query(f"CREATE TABLE `bio_attacker_data`.`issues{user_id}` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `pat_name` VARCHAR(255) NULL , `hidden` BOOLEAN NULL , `from_infect` BIGINT NULL , `until_infect` BIGINT NULL , PRIMARY KEY (`id`), INDEX `user id` (`user_id`)) ENGINE = InnoDB;")
             self.has_lab_users.append(user_id)
+            user = self.get_user(user_id)
+            labs_count = query("SELECT COUNT(*) as count FROM  `bio_attacker`.`labs`;")[0]['count']
+            bot.send_message(OWNER_ID, f"🔬 *Cоздана новая лаба*{user['name']} / @{user_id}!\n🧮 *Всего лаб* _{labs_count}_",  parse_mode="Markdown")
             from libs.UserLab import UserLab
+
         return UserLab(user_id)
     
     def get_lab(self, user_id): 
