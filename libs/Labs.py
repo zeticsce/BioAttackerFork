@@ -1,5 +1,6 @@
 from app import query
 import time
+import random
 
 class Labs:
     def __init__(self) -> None:
@@ -68,4 +69,7 @@ class Labs:
         else:
             return query(f"SELECT * FROM `bio_attacker_data`.`issues{user_id}` WHERE {params};")
     def get_random_victum(self):
-        return query("SELECT * FROM `telegram_data`.`tg_users` ORDER BY RAND() LIMIT 1;")[0]
+        count = query("SELECT MAX(`id`) as count FROM `telegram_data`.`tg_users`;")[0]['count']
+        try: user = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE id = {random.randint(1, count)} LIMIT 1;")[0]
+        except: user = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE id = {random.randint(1, count)} LIMIT 1;")[0]
+        return user
