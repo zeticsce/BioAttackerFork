@@ -149,7 +149,7 @@ async def show_lab(message: types.Message):
 @dp.callback_query_handler(vote_cb.filter(action='victims'))
 async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
     from_user_id = callback_data["id"]
-    message_name = callback_data["message_name"]
+    message_name = query.from_user.first_name
     chat_id = callback_data["chat_id"]
     if from_user_id == str(query.from_user.id):
 
