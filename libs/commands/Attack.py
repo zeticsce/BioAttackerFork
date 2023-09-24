@@ -127,7 +127,7 @@ async def show_lab(message: types.Message):
             if victim == None:
                 await bot.send_message(message.chat.id, text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
                 return
-            if victim['user_id'] == str(lab.user_id):
+            if victim['user_id'] == lab.user_id:
                 """Действия при заражении самого себя"""
                 profit = int(lab.bio_exp / 10)
 
