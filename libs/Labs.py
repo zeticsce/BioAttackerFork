@@ -25,7 +25,7 @@ class Labs:
             requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
                 'method': 'sendMessage', 
                 'chat_id': OWNER_ID, 
-                'text': f"🔬 Cоздана новая лаба {user['name']} / @{user_id}!\n🧮 Всего лаб {labs_count}"
+                'text': f"🔬 Cоздана новая лаба\n📕 {user['name']} / @{user_id}\n🧮 Всего лаб {labs_count}"
             })
             
             from libs.UserLab import UserLab
