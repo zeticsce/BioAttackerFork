@@ -27,7 +27,7 @@ class Labs:
             Вернет юзера, если он существует, иначе будет None
         """
         if str(tag).isdigit(): 
-            result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_id` LIKE '{tag}'")
+            result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_id` = '{tag}'")
             result = None if len(result) == 0 else result[0] 
         else:
             result = query(f"SELECT * FROM `telegram_data`.`tg_users` WHERE `user_name` LIKE '{tag}'")
