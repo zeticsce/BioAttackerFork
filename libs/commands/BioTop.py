@@ -25,5 +25,5 @@ async def improve(message: types.Message):
             count += 1
             text += f"\n{count}. [{strconv.deEmojify(lab['name'])}](tg://openmessage?user_id={lab['user_id']}) | {strconv.num_to_str(lab['bio_exp'])} опыта"
 
-        text += f"\n\nОбъем био-опыта в игре: {strconv.num_to_str(all_bio_exp)}"
+        text += f"\n\nБанк био-опыта в игре: {strconv.num_to_str(all_bio_exp)}"
         await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")

@@ -24,7 +24,8 @@ vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 def get_keyboard_first(message: types.Message):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
-        types.InlineKeyboardButton('🥴 Показать жертвы', callback_data=vote_cb.new(action='victims', id=message.from_user.id, chat_id=message.chat.id)),
+        types.InlineKeyboardButton('Жертвы', callback_data=vote_cb.new(action='victims', id=message.from_user.id, chat_id=message.chat.id)),
+        types.InlineKeyboardButton('Болезни', callback_data=vote_cb.new(action='issues', id=message.from_user.id, chat_id=message.chat.id)),
         # types.InlineKeyboardButton('.д', callback_data=vote_cb.new(action='d', id=message.from_user.id)),
         # types.InlineKeyboardButton('Другое', callback_data=vote_cb.new(action='other', id=message.from_user.id)),
     )
@@ -146,6 +147,43 @@ async def show_lab(message: types.Message):
         lab.save() 
 
 
+@dp.callback_query_handler(vote_cb.filter(action='issues'))
+async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
+    from_user_id = callback_data["id"]
+    message_name = query.from_user.first_name
+    chat_id = callback_data["chat_id"]
+    if from_user_id == str(query.from_user.id):
+
+        lab = labs.get_lab(from_user_id)
+        text = f'Болезни игрока [{message_name}](tg://openmessage?user_id={from_user_id})\n\n'
+        
+        count = 0
+        in_list = []
+        for item in list(reversed(lab.get_issues())):
+            if item['user_id'] in in_list: continue
+            if item['until_infect'] > int(time.time()):
+                until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
+                if item['hidden'] == 0: text += f'{count + 1}. [{strconv.escape_markdown(item["pat_name"])}](tg://openmessage?user_id={item["user_id"]}) | до {until}\n'
+                else: text += f'{count + 1}. {strconv.escape_markdown(item["pat_name"])} | до {until}\n'
+                in_list.append(item['user_id'])
+
+                count += 1
+                if count == 50: break
+                
+        victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
+        victims_keyboard.row(
+            types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
+        )
+
+        await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await query.message.edit_reply_markup(victims_keyboard)
+        await query.answer()
+
+    
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
+
+
 @dp.callback_query_handler(vote_cb.filter(action='victims'))
 async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
     from_user_id = callback_data["id"]
@@ -177,7 +215,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         )
 
         await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
-        await query.message.edit_reply_markup(types.InlineKeyboardMarkup())
+        await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
     
