@@ -84,7 +84,7 @@ class UserLab:
             minday30 = datetime.datetime.today() # тридцать минут текущего дня 
             minday30 = minday30.replace(hour=23, minute=0, second=0) 
             minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
-            if self.last_daily < minday30ts:
+            if self.last_daily <= minday30ts and int(time.time()) >= minday30ts:
                 count = math.ceil((minday30ts - self.last_daily) / 86400)
                 profits = query(f"SELECT SUM(profit) as `result` FROM `bio_attacker_data`.`victums780882761` WHERE `until_infect` > {int(time.time())};")[0]
                 self.bio_res += int(profits['result']) * count
