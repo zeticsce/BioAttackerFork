@@ -116,7 +116,7 @@ async def show_lab(message: types.Message):
         ''' Уровень разработки '''  
         if lab.qualification < 60: 
             qualification_count = get_impr_count(lab.qualification, lab.bio_res, 2.6)
-            qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else lab.qualification - qualification_count
+            qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else 60 - lab.qualification
             text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
         else: text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`1 мин.`) \n\n'
         
