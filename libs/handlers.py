@@ -143,10 +143,6 @@ async def handler(message: types.message):
                 if virus_lab[0]['user_id'] != lab.user_id:
                     await bot.send_message(message.chat.id, "Такой вирус уже существует!")
                     return
-                else:
-                    await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
-                    return
-
 
             lab.patogen_name = patName
             lab.save()
