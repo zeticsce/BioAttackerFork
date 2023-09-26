@@ -180,7 +180,7 @@ async def show_lab(message: types.Message):
                         rslt_text = f"😎 [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id}) подвергл заражению [{strconv.escape_markdown(VictimLab.name)}](tg://openmessage?user_id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов: _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
 
-                        if VictimLab.virus_chat != message.chat.id:
+                        if int(VictimLab.virus_chat) != message.chat.id:
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
@@ -204,7 +204,7 @@ async def show_lab(message: types.Message):
                         infct_text = f"👺 Операция заражения [{strconv.escape_markdown(VictimLab.name)}](tg://openmessage?user_id={VictimLab.user_id}) провалилась!"
                         await bot.send_message(message.chat.id, text=infct_text,  parse_mode="Markdown")
                         
-                        if VictimLab.virus_chat != message.chat.id:
+                        if int(VictimLab.virus_chat) != message.chat.id:
                             """В случае провала, сб всегда попадает к жертве"""
                             if int(VictimLab.virus_chat) == VictimLab.user_id:
                                 sb_text = f"👺 Попытка вашего заражения провалилась! Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\nСовершено минимум {atts} попыток!"
