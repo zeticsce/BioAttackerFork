@@ -8,7 +8,7 @@ import sys
 import datetime
 import re
 import time
-import math
+import html
 
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
@@ -166,21 +166,26 @@ async def handler(message: types.message):
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
-        text = f'Жертвы игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
+        
+        name = html.escape(strconv.deEmojify(message.from_user.first_name), quote=True)
+        name = name if name.replace(" ", "") != "" else item["user_id"]
+
+        text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{name}</a>\n\n'
         profit = 0
 
         count = 0
         for item in list(reversed(lab.get_victums())):
             if item['until_infect'] > int(time.time()):
                 profit += item["profit"]
-                name = strconv.deEmojify(item["name"])
+                name = html.escape(strconv.deEmojify(item["name"]), quote=True)
+                name = name if name.replace(" ", "") != "" else item["user_id"]
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. [{strconv.escape_markdown(name)}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+                text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-                if count == 50: break
+                if count == 25: break
         
-        text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
+        text += f'\nОбщая прибыль: +{strconv.format_nums(profit)} био-ресурсов 🧬'
 
         
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
@@ -189,7 +194,7 @@ async def handler(message: types.message):
         )
 
 
-        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await bot.send_message(message.chat.id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
         
