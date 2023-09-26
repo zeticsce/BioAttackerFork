@@ -138,10 +138,14 @@ async def handler(message: types.message):
             if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
-            if len(query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `patogen_name` = '{strconv.escape_sql(patName)}'")) != None:
-                await bot.send_message(message.chat.id, "Такой вирус уже существует!")
-                return
-
+            virus_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `patogen_name` = '{strconv.escape_sql(patName)}'")
+            if len(virus_lab) != None:
+                if virus_lab[0]['user_id'] != lab.user_id:
+                    await bot.send_message(message.chat.id, "Такой вирус уже существует!")
+                    return
+                else:
+                    await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
+                    return
 
 
             lab.patogen_name = patName
