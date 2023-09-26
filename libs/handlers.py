@@ -129,7 +129,7 @@ async def handler(message: types.message):
             lab.patogen_name = None
             lab.save()
 
-            await bot.send_message(message.chat.id, "✅ Название патогена удално.")
+            await bot.send_message(message.chat.id, "✅ Название патогена удалено.")
 
     if message.text.lower().startswith("+вирус "):
 
