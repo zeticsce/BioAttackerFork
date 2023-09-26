@@ -177,13 +177,13 @@ async def show_lab(message: types.Message):
                         
                         patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
 
-                        rslt_text = f"😎 [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id}) подвергл заражению [{strconv.escape_markdown(VictimLab.name)}](tg://openmessage?user_id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов: _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
+                        rslt_text = f"😎 [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://openmessage?user_id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
 
                         if int(VictimLab.virus_chat) != message.chat.id:
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
-                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
+                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. Организатор [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
                                 else: sb_text = f"👨🏻‍🔬 Была проведена операция заражения [{VictimLab.name}](tg://openmessage?user_id={VictimLab.user_id}) {patogen_name}. Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                                 except utils.exceptions.ChatNotFound: pass
@@ -207,7 +207,7 @@ async def show_lab(message: types.Message):
                         if int(VictimLab.virus_chat) != message.chat.id:
                             """В случае провала, сб всегда попадает к жертве"""
                             if int(VictimLab.virus_chat) == VictimLab.user_id:
-                                sb_text = f"👺 Попытка вашего заражения провалилась! Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\nСовершено минимум {atts} попыток!"
+                                sb_text = f"👺 Попытка вашего заражения провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\nСовершено минимум {atts} попыток!"
                             else:
                                 sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://openmessage?user_id={VictimLab.user_id}) провалилась! Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\nСовершено минимум {atts} попыток!"
                             try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
