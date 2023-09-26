@@ -139,7 +139,7 @@ async def handler(message: types.message):
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
             virus_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `patogen_name` = '{strconv.escape_sql(patName)}'")
-            if len(virus_lab) != None:
+            if len(virus_lab) != 0:
                 if virus_lab[0]['user_id'] != lab.user_id:
                     await bot.send_message(message.chat.id, "Такой вирус уже существует!")
                     return
