@@ -110,7 +110,7 @@ async def handler(message: types.message):
 
 @dp.message_handler() # ответ юзерам без админки
 async def handler(message: types.message):
-    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740]:
+    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740, 1495488713]:
         await bot.send_message(message.chat.id, f"*Бот в разработке*", parse_mode='Markdown')
 
 
