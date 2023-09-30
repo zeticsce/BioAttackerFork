@@ -22,6 +22,7 @@ from commands.BioLab import *
 from commands.AddUsersToDB import *
 from commands.Attack import *
 from commands.issues import *
+from commands.messages import *
 
 
 from aiogram import Bot, types
@@ -81,7 +82,9 @@ async def hi_there(message: types.message):
 
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):
-    await bot.send_message(message.chat.id, "Привет! *** придумать текст ***")
+    text = random.choice(start_text)
+    text += "[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)"
+    await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
 
 @dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
