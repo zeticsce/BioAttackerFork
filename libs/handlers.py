@@ -83,7 +83,7 @@ async def hi_there(message: types.message):
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):
     text = random.choice(start_text)
-    text += "[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)"
+    text += "[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)"
     await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
 
@@ -223,7 +223,7 @@ async def handler(message: types.message):
 
     
     if message.text.lower() == "биохелп":
-        await bot.send_message(message.chat.id, f"[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)", parse_mode="Markdown")
+        await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
 
 
