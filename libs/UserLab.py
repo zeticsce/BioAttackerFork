@@ -51,9 +51,11 @@ class UserLab:
             result.pop("iris_name")
             result.pop("tg_users.id")
             result.pop("tg_users.user_id")
-            
+            result['patogen_name'] = None if result['patogen_name'] == 'None' else result['patogen_name']
+             
             self.__dict__ = dict(result)
             self.__start_data = dict(result)
+
             self.has_lab = True
 
 
@@ -82,7 +84,7 @@ class UserLab:
 
             """Начислене ежи"""
             minday30 = datetime.datetime.today() # тридцать минут текущего дня 
-            minday30 = minday30.replace(hour=23, minute=0, second=0) 
+            minday30 = minday30.replace(hour=20, minute=10, second=0) 
             minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
             if self.last_daily <= minday30ts and int(time.time()) >= minday30ts:
                 count = math.ceil((minday30ts - self.last_daily) / 86400)

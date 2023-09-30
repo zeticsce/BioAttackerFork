@@ -8,6 +8,7 @@ import os
 import re
 import time
 import datetime
+import html
 
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
@@ -192,21 +193,25 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
 
         lab = labs.get_lab(from_user_id)
-        text = f'Жертвы игрока [{message_name}](tg://openmessage?user_id={from_user_id})\n\n'
+        name = html.escape(strconv.deEmojify(query.from_user.first_name), quote=True)
+        name = name if name.replace(" ", "") != "" else item["user_id"]
+
+        text = f'Жертвы игрока <a href="tg://openmessage?user_id={query.from_user.id}">{name}</a>\n\n'
         profit = 0
 
         count = 0
         for item in list(reversed(lab.get_victums())):
             if item['until_infect'] > int(time.time()):
                 profit += item["profit"]
-                name = strconv.deEmojify(item["name"])
+                name = html.escape(strconv.deEmojify(item["name"]), quote=True)
+                name = name if name.replace(" ", "") != "" else item["user_id"]
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. [{strconv.escape_markdown(name)}](tg://openmessage?user_id={item["user_id"]}) | _+{item["profit"]}_ | до {until}\n'
+                text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-                if count == 50: break
+                if count == 25: break
         
-        text += f'\n*Общая прибыль:* _+{profit} био-ресурсов 🧬_'
+        text += f'\nОбщая прибыль: +{strconv.format_nums(profit)} био-ресурсов 🧬'
 
         
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
@@ -214,7 +219,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
         )
 
-        await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)
+        await bot.send_message(chat_id=chat_id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 

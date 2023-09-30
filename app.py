@@ -8,7 +8,7 @@ class IsAdmin(Filter):
     key = "is_admin"
 
     async def check(self, message: types.Message):
-        adms = [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740]
+        adms = [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740, 1495488713]
         return (message.chat.id in adms or message.from_user.id in adms) and message.text
 
 import os
