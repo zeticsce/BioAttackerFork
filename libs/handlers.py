@@ -22,6 +22,7 @@ from commands.BioLab import *
 from commands.AddUsersToDB import *
 from commands.Attack import *
 from commands.issues import *
+from commands.messages import *
 
 
 from aiogram import Bot, types
@@ -81,7 +82,9 @@ async def hi_there(message: types.message):
 
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):
-    await bot.send_message(message.chat.id, "Привет! *** придумать текст ***")
+    text = random.choice(start_text)
+    text += "[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)"
+    await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
 
 @dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
@@ -110,7 +113,7 @@ async def handler(message: types.message):
 
 @dp.message_handler() # ответ юзерам без админки
 async def handler(message: types.message):
-    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740]:
+    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740, 1495488713]:
         await bot.send_message(message.chat.id, f"*Бот в разработке*", parse_mode='Markdown')
 
 
@@ -220,7 +223,7 @@ async def handler(message: types.message):
 
     
     if message.text.lower() == "биохелп":
-        await bot.send_message(message.chat.id, f"[Все команды бота](https://telegra.ph/Komandy-dlya-igry-v-Bio-CHma-09-15-2)", parse_mode="Markdown")
+        await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
 
 
