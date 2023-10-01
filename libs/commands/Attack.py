@@ -279,13 +279,16 @@ async def show_lab(message: types.Message):
     if message.text.lower() in ("хил", "биохил", "биохилл"):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:  #проверка на наличие лабы
-            lab.last_issue = 0
-            lab.bio_res -= 1500
-            lab.save()
+            if lab.illness != None:
+                lab.last_issue = 0
+                lab.bio_res -= 1500
+                lab.save()
 
-            text = "🤓Вы успешно исцелились!\n\n"
-            text += "Потрачено `1500` био-ресурсов 🧬" 
-            await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
+                text = "🤓Вы успешно исцелились!\n\n"
+                text += "Потрачено `1500` био-ресурсов 🧬" 
+                await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
+            else:
+                await message.reply("😃 У вас нету горячки!")
 
 """ Код для хилки """
 @dp.callback_query_handler(vote_cb.filter(action='buy'))
