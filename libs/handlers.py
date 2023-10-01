@@ -177,9 +177,12 @@ async def handler(message: types.message):
         profit = 0
 
         count = 0
-        for item in list(reversed(lab.get_victums())):
+        victims = lab.get_victums()
+        for item in victims: 
             if item['until_infect'] > int(time.time()):
                 profit += item["profit"]
+        for item in list(reversed(victims)):
+            if item['until_infect'] > int(time.time()):
                 name = html.escape(strconv.deEmojify(item["name"]), quote=True)
                 name = name if name.replace(" ", "") != "" else item["user_id"]
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
