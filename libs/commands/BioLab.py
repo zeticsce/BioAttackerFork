@@ -137,6 +137,21 @@ async def show_lab(message: types.Message):
         text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations if lab.all_operations != 0 else 1))}%`)\n'
         text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
 
+        ''' Горячка '''
+        if lab.illness != None:
+            declination = "" # склонение минуту/минуты/минут
+            untill = floor(lab.illness['illness'] / 60)
+            if untill <= 20:
+                if untill == 1: declination = "минута"
+                elif untill <= 4: declination = "минуты"
+                else: declination = "минут"
+            else: 
+                if untill%10 == 1: declination = "минута"
+                elif untill%10 <= 4: declination = "минуты"
+                else: declination = "минут"
+
+            text += f'🥴 Горячка вызванная патогеном `{lab.illness["patogen"]}` ещё `{untill}` {declination}.'
+
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
             reply_to_message_id=message.message_id, 
