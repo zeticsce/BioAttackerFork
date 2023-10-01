@@ -70,6 +70,7 @@ class UserLab:
                 self.patogens = int(self.all_patogens)
                 self.last_patogen_time = int(time.time())
             
+            self.illness = None
             """Проверка горячки"""
             if self.last_issue + 60*60 > int(time.time()):
                 iss = query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` ORDER BY id DESC LIMIT 1")
