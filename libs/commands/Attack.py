@@ -13,6 +13,8 @@ import random
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from libs.handlers import labs
+from commands.messages import *
+from math import floor
 
 from aiogram import types, utils
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -27,6 +29,17 @@ def skloneniye(num):
     if n >= 2 and n <= 4: return names[1]
     return names[2]
 
+vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
+
+def get_keyboard_first(message: types.Message):
+    text = random.choice(heal_text)
+    keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
+    keyboard_markup.row(
+        types.InlineKeyboardButton(text=text, callback_data=vote_cb.new(action='buy', id=message.from_user.id, chat_id=message.chat.id)),
+    )
+
+
+    return keyboard_markup
 
 @dp.message_handler(IsAdmin())
 async def show_lab(message: types.Message):
@@ -34,6 +47,24 @@ async def show_lab(message: types.Message):
     if bio_infect != None:
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab:  #проверка на наличие лабы
+
+            """ Проверка на горячку"""
+            if lab.illness != None:
+                text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
+                declination = "" # склонение минуту/минуты/минут
+                untill = floor(lab.illness['illness'] / 60)
+                if untill <= 20:
+                    if untill == 1: declination = "минута"
+                    elif untill <= 4: declination = "минуты"
+                    else: declination = "минут"
+                else: 
+                    if untill%10 == 1: declination = "минута"
+                    elif untill%10 <= 4: declination = "минуты"
+                    else: declination = "минут"
+                text += f"Осталось времени `{untill}` {declination}."
+                await bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=get_keyboard_first(message), reply_to_message_id=message.message_id)
+                return
+
 
             """Задание стартовых параметров колво попыток/тег"""
             attempts = int(bio_infect.group(2)) if bio_infect.group(2) != None else 1 # колво попыток
@@ -76,6 +107,7 @@ async def show_lab(message: types.Message):
                     victim = db_user
 
             """Генерация жертвы, если victim_tag == None"""
+            
             if victim == None:
                 if message.reply_to_message:
                     if message.reply_to_message["from"]["is_bot"] == True: # фильтр на ботов
@@ -129,6 +161,7 @@ async def show_lab(message: types.Message):
                 return
             if victim['user_id'] == lab.user_id:
                 """Действия при заражении самого себя"""
+
                 profit = int(lab.bio_exp / 10)
 
                 lab.save_victum(victim['user_id'], profit)
@@ -242,3 +275,39 @@ async def show_lab(message: types.Message):
                     await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
 
                     lab.save()
+    
+    if message.text.lower() in ("хил", "биохил", "биохилл"):
+        lab = labs.get_lab(message.from_user.id)
+        if lab.has_lab:  #проверка на наличие лабы
+            lab.last_issue = 0
+            lab.bio_res -= 1500
+            lab.save()
+
+            text = "🤓Вы успешно исцелились!\n\n"
+            text += "Потрачено `1500` био-ресурсов 🧬" 
+            await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
+
+""" Код для хилки """
+@dp.callback_query_handler(vote_cb.filter(action='buy'))
+async def treat(query: types.CallbackQuery, callback_data: dict):
+    print("Нажали!")
+    from_user_id = callback_data["id"]
+    message_name = query.from_user.first_name
+    chat_id = callback_data["chat_id"]
+    if from_user_id == str(query.from_user.id):
+        lab = labs.get_lab(from_user_id)
+        if lab.has_lab:  #проверка на наличие лабы
+            lab.last_issue = 0
+            lab.bio_res -= 1500
+            lab.save()
+
+            text = "🤓Вы успешно исцелились!\n\n"
+            text += "Потрачено `1500` био-ресурсов 🧬" 
+            await bot.edit_message_text(
+                chat_id=query.message.chat.id, 
+                text=text, 
+                parse_mode="Markdown", 
+                message_id=query.message.message_id,
+            )
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
