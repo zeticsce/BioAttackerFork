@@ -215,7 +215,11 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         profit = 0
 
         count = 0
-        for item in list(reversed(lab.get_victums())):
+        victims = lab.get_victums()
+        for item in victims: 
+            if item['until_infect'] > int(time.time()):
+                profit += item["profit"]
+        for item in list(reversed(victims)):
             if item['until_infect'] > int(time.time()):
                 profit += item["profit"]
                 name = html.escape(strconv.deEmojify(item["name"]), quote=True)
