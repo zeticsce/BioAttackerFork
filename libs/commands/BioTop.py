@@ -15,7 +15,7 @@ from aiogram import types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 
 
-@dp.message_handler(IsAdmin())
+@dp.message_handler(content_types=["text"])
 async def improve(message: types.Message):
     if message.text.lower() == "биоб":
         text = "Биотоп чмоней\n"

@@ -110,14 +110,7 @@ async def handler(message: types.message):
                 await bot.send_document(message.chat.id,  InputFile(work_path + message.text, filename=message.text))
         else: await bot.send_message(message.chat.id, f"🪛 Путь `{message.text}` не найден")
 
-
-@dp.message_handler() # ответ юзерам без админки
-async def handler(message: types.message):
-    if message.chat.id == message.from_user.id and message.from_user.id not in [-1001864961488,-1001920018449, 1058211493, 5770061336, 780882761, 1202336740, 1495488713]:
-        await bot.send_message(message.chat.id, f"*Бот в разработке*", parse_mode='Markdown')
-
-
-@dp.message_handler(IsAdmin()) 
+@dp.message_handler(content_types=["text"]) 
 async def handler(message: types.message):
 
     save_message(message)

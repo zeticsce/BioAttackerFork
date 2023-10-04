@@ -25,7 +25,7 @@ def impr_price(start, end, power):
         price += floor((int(start) + i + 1) ** power)
     return price
 
-@dp.message_handler(IsAdmin())
+@dp.message_handler(content_types=["text"])
 async def improve(message: types.Message):
     
     if message.text.startswith("+"):

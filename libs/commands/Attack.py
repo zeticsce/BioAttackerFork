@@ -9,6 +9,7 @@ import re
 import time
 import math
 import random
+from typing import Any
 
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
@@ -31,6 +32,16 @@ def skloneniye(num):
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 
+class Waiting:
+    def __init__(self):
+        self.users = {}
+        self.last_clean = time.time()
+    def clean(self):
+        if self.last_clean + 240 < time.time(): self.users = {} # очищает стек юзеров раз в 20 минут
+
+waiting = Waiting()
+
+
 def get_keyboard_first(message: types.Message):
     text = random.choice(heal_text)
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
@@ -41,10 +52,17 @@ def get_keyboard_first(message: types.Message):
 
     return keyboard_markup
 
-@dp.message_handler(IsAdmin())
+@dp.message_handler(content_types=["text"])
 async def show_lab(message: types.Message):
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
     if bio_infect != None:
+
+        time_start = time.time()
+        try: 
+            if waiting.users[str(message.from_id)] + 1 > time_start: return # прерывает выполнение, если кд не прошло
+        except KeyError: waiting.users[str(message.from_id)] = time_start # сохраняет время исполнения команды
+        finally:  waiting.users[str(message.from_id)] = time_start # время отработки команды для юзера записывается сюда
+        
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab:  #проверка на наличие лабы
 
@@ -293,7 +311,6 @@ async def show_lab(message: types.Message):
 """ Код для хилки """
 @dp.callback_query_handler(vote_cb.filter(action='buy'))
 async def treat(query: types.CallbackQuery, callback_data: dict):
-    print("Нажали!")
     from_user_id = callback_data["id"]
     message_name = query.from_user.first_name
     chat_id = callback_data["chat_id"]

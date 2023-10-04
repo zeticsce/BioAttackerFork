@@ -37,7 +37,7 @@ def get_keyboard_first(message: types.Message):
     return keyboard_markup
 
 
-@dp.message_handler(IsAdmin())
+@dp.message_handler(content_types=["text"])
 async def show_lab(message: types.Message):
 
     if message.text.lower() == "биолаб":

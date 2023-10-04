@@ -26,7 +26,7 @@ def impr_price(start, end, power):
         price += floor((int(start) + i + 1) ** power)
     return price
 
-@dp.message_handler(IsAdmin())
+@dp.message_handler(content_types=["text"])
 async def issues(message: types.Message):
     if message.text.lower() == "биоболь":
         lab = labs.get_lab(message.from_user.id)
