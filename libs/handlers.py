@@ -198,9 +198,25 @@ async def handler(message: types.message):
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
         
         lab = labs.get_lab(message['from']['id'])
+        if lab.last_farma + (60*60) > int(time.time()):
+            minuts = 60 - int((int(time.time()) - lab.last_farma)/60)
+            if minuts <= 20:
+                if minuts == 1: declination = "минута"
+                elif minuts <= 4: declination = "минуты"
+                else: declination = "минут"
+            else: 
+                if minuts%10 == 1: declination = "минута"
+                elif minuts%10 <= 4: declination = "минуты"
+                else: declination = "минут"
+
+            await bot.send_message(message.chat.id, text=f'Ожидайте еще {minuts} {declination} до следующей фармы!!', parse_mode="Markdown")
+            lab.save()
+            return
+        
         profit = random.randint(20, 200)
 
         lab.coins += profit
+        lab.last_farma = int(time.time())
         lab.save()
 
         text = f'Вы успешно пофармили и получили {profit} коинов 💰!'
