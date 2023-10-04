@@ -59,9 +59,10 @@ async def show_lab(message: types.Message):
 
         time_start = time.time()
         try: 
-            if waiting.users[str(message.from_id)] + 1 > time_start: return # прерывает выполнение, если кд не прошло
+            if waiting.users[str(message.from_id)] + 0.75 > time_start: return # прерывает выполнение, если кд не прошло
         except KeyError: waiting.users[str(message.from_id)] = time_start # сохраняет время исполнения команды
         finally:  waiting.users[str(message.from_id)] = time_start # время отработки команды для юзера записывается сюда
+        waiting.clean()
         
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab:  #проверка на наличие лабы
