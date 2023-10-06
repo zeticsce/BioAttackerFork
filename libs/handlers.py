@@ -113,11 +113,8 @@ async def handler(message: types.message):
 @dp.message_handler(content_types=["text"]) 
 async def handler(message: types.message):
 
-    save_message(message)
-
     if message.text.lower() == "био":
         await bot.send_message(message.chat.id, f"*Бот на месте*", parse_mode='Markdown')
-
 
     if message.text.lower() == "-вирус":
         lab = labs.get_lab(message['from']['id'])

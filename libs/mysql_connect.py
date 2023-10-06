@@ -20,12 +20,16 @@ conn = pymysql.connect(
     port=3306,
     user=MYSQL_USER,
     password=MYSQL_PASSWORD,
+    connect_timeout=60*60*24,
     database="",
     charset='utf8mb4',
     cursorclass=DictCursor
 )
 def query(query):
     with conn.cursor() as cursor:
-        cursor.execute(query)
+        try: cursor.execute(query)
+        except pymysql.err.OperationalError: 
+            conn.ping()
+            cursor.execute(query)
         conn.commit()
         return cursor.fetchall()
