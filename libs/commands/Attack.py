@@ -300,13 +300,13 @@ async def show_lab(message: types.Message):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:  #проверка на наличие лабы
             if lab.illness != None:
-                if lab.bio_res - 1500 >= 0:
+                if lab.bio_res - 10 >= 0:
                     lab.last_issue = 0
-                    lab.bio_res -= 1500
+                    lab.bio_res -= 10
                     lab.save()
 
                     text = "🤓Вы успешно исцелились!\n\n"
-                    text += "Потрачено `1500` био-ресурсов 🧬" 
+                    text += "Потрачено `10` био-ресурсов 🧬" 
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
                 else:
                     await message.reply("Недостаточно био-ресурса!")
@@ -323,13 +323,13 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:  #проверка на наличие лабы
 
-            if lab.bio_res - 1500 >= 0:
+            if lab.bio_res - 10 >= 0:
                 lab.last_issue = 0
-                lab.bio_res -= 1500
+                lab.bio_res -= 10
                 lab.save()
 
                 text = "🤓Вы успешно исцелились!\n\n"
-                text += "Потрачено `1500` био-ресурсов 🧬" 
+                text += "Потрачено `10` био-ресурсов 🧬" 
                 await bot.edit_message_text(
                     chat_id=query.message.chat.id, 
                     text=text, 
