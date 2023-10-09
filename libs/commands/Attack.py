@@ -299,13 +299,16 @@ async def show_lab(message: types.Message):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:  #проверка на наличие лабы
             if lab.illness != None:
-                lab.last_issue = 0
-                lab.bio_res -= 1500
-                lab.save()
+                if lab.bio_res - 1500 >= 0:
+                    lab.last_issue = 0
+                    lab.bio_res -= 1500
+                    lab.save()
 
-                text = "🤓Вы успешно исцелились!\n\n"
-                text += "Потрачено `1500` био-ресурсов 🧬" 
-                await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
+                    text = "🤓Вы успешно исцелились!\n\n"
+                    text += "Потрачено `1500` био-ресурсов 🧬" 
+                    await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
+                else:
+                    await message.reply("Недостаточно био-ресурса!")
             else:
                 await message.reply("😃 У вас нету горячки!")
 
@@ -318,17 +321,21 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:  #проверка на наличие лабы
-            lab.last_issue = 0
-            lab.bio_res -= 1500
-            lab.save()
 
-            text = "🤓Вы успешно исцелились!\n\n"
-            text += "Потрачено `1500` био-ресурсов 🧬" 
-            await bot.edit_message_text(
-                chat_id=query.message.chat.id, 
-                text=text, 
-                parse_mode="Markdown", 
-                message_id=query.message.message_id,
-            )
+            if lab.bio_res - 1500 >= 0:
+                lab.last_issue = 0
+                lab.bio_res -= 1500
+                lab.save()
+
+                text = "🤓Вы успешно исцелились!\n\n"
+                text += "Потрачено `1500` био-ресурсов 🧬" 
+                await bot.edit_message_text(
+                    chat_id=query.message.chat.id, 
+                    text=text, 
+                    parse_mode="Markdown", 
+                    message_id=query.message.message_id,
+                )
+            else:
+                await query.answer("Кажется тебе био-реса не хватает :)")
     else:
         await query.answer("Эта кнопка не для тебя :)")
