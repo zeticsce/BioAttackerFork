@@ -182,6 +182,7 @@ async def show_lab(message: types.Message):
                 """Действия при заражении самого себя"""
 
                 profit = int(lab.bio_exp / 10)
+                profit = 1 if profit < 1 else profit
 
                 lab.save_victum(victim['user_id'], profit)
                 lab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60))
