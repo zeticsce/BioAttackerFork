@@ -80,21 +80,20 @@ class UserLab:
                         "patogen": iss['pat_name'],
                         "from_id": iss['user_id'],
                         "hidden": False if iss['hidden'] == 0 else True, # применять для сокрытия ида заразившего
-                        "illness": self.last_issue + 60*60- int(time.time())
+                        "illness": self.last_issue + 60*60 - int(time.time())
                     }
 
             """Начислене ежи"""
-            minday30 = datetime.datetime.today() # тридцать минут текущего дня 
-            minday30 = minday30.replace(hour=0, minute=0, second=0) 
-            minday30ts = int(datetime.datetime.timestamp(minday30)) # timestamp
-            if self.last_daily <= minday30ts and int(time.time()) >= minday30ts:
-                count = math.ceil((minday30ts - self.last_daily) / 86400)
+            if self.last_daily <= int(time.time()) - 60: # начисление ежи раз в минуту
+                count = (int(time.time()) - self.last_daily) # колво секунд с последней выдачи
                 profit = 0
                 for item in self.get_victums(): 
                     if item['until_infect'] > int(time.time()):
                         profit += item["profit"]
-                self.bio_res += int(profit) * count
-                self.last_daily = int(time.time())
+                profit = int(profit/86400) * count
+                if profit >= 1: # чтобы не начислял меньше 1
+                    self.bio_res += profit
+                    self.last_daily = int(time.time())
                 
                 
 

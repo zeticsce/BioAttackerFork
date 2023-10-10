@@ -168,18 +168,16 @@ async def handler(message: types.message):
 
         count = 0
         victims = lab.get_victums()
-        for item in victims: 
-            if item['until_infect'] > int(time.time()):
-                profit += item["profit"]
         for item in list(reversed(victims)):
             if item['until_infect'] > int(time.time()):
-                name = html.escape(strconv.deEmojify(item["name"]), quote=True)
-                name = name if name.replace(" ", "") != "" else item["user_id"]
-                until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
+                profit += item["profit"]
+                if count < 25: 
+                    name = html.escape(strconv.deEmojify(item["name"]), quote=True)
+                    name = name if name.replace(" ", "") != "" else item["user_id"]
+                    until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
+                    text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-                if count == 25: break
         
         text += f'\nОбщая прибыль: +{strconv.format_nums(profit)} био-ресурсов 🧬'
 

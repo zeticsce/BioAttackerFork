@@ -184,7 +184,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                 in_list.append(item['user_id'])
 
                 count += 1
-                if count == 50: break
+                if count == 25: break
                 
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
@@ -216,19 +216,16 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
         count = 0
         victims = lab.get_victums()
-        for item in victims: 
-            if item['until_infect'] > int(time.time()):
-                profit += item["profit"]
         for item in list(reversed(victims)):
             if item['until_infect'] > int(time.time()):
                 profit += item["profit"]
-                name = html.escape(strconv.deEmojify(item["name"]), quote=True)
-                name = name if name.replace(" ", "") != "" else item["user_id"]
-                until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
+                if count < 25:
+                    name = html.escape(strconv.deEmojify(item["name"]), quote=True)
+                    name = name if name.replace(" ", "") != "" else item["user_id"]
+                    until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
+                    text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-                if count == 25: break
         
         text += f'\nОбщая прибыль: +{strconv.format_nums(profit)} био-ресурсов 🧬'
 
