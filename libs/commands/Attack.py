@@ -243,8 +243,8 @@ async def show_lab(message: types.Message):
                                 except: pass
                             else:
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
-                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n☣️ Вы потеряли _{strconv.format_nums(profit)} био._"
-                                else: sb_text = f"👨🏻‍🔬 [{VictimLab.name}](tg://user?id={VictimLab.user_id}) был подвергнут заражению {patogen_name}\n☣️ Потерял _{strconv.format_nums(profit)} био._"
+                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n\n☣️ Вы потеряли _{strconv.format_nums(profit)} био._"
+                                else: sb_text = f"👨🏻‍🔬 [{VictimLab.name}](tg://user?id={VictimLab.user_id}) был подвергнут заражению {patogen_name}\n\n☣️ Потерял _{strconv.format_nums(profit)} био._"
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                                 except: pass
 
