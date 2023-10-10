@@ -173,7 +173,7 @@ async def handler(message: types.message):
             if item['until_infect'] > int(time.time()):
                 actual += 1
                 profit += item["profit"]
-                if count < 25: 
+                if count < 50: 
                     name = html.escape(strconv.deEmojify(item["name"]), quote=True)
                     name = name if name.replace(" ", "") != "" else item["user_id"]
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
