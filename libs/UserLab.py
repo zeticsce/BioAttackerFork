@@ -86,13 +86,13 @@ class UserLab:
                     }
 
             """Начислене ежи"""
-            if self.last_daily <= int(time.time()) - 60: # начисление ежи раз в минуту
+            if self.last_daily <= int(time.time()) - 5: # начисление ежи раз в минуту
                 count = (int(time.time()) - self.last_daily) # колво секунд с последней выдачи
                 profit = 0
                 for item in self.get_victums(): 
                     if item['until_infect'] > int(time.time()):
                         profit += item["profit"]
-                profit = int(profit/86400) * count
+                profit = int(profit/86400 * count)
                 if profit >= 1: # чтобы не начислял меньше 1
                     self.bio_res += profit
                     self.last_daily = int(time.time())
