@@ -87,7 +87,7 @@ async def show_lab(message: types.Message):
 
             """Задание стартовых параметров колво попыток/тег"""
             attempts = int(bio_infect.group(2)) if bio_infect.group(2) != None else 1 # колво попыток
-            victim_tag = bio_infect.group(3).strip().replace("tg://user?id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
+            victim_tag = bio_infect.group(3).strip().replace("tg://user?id=", "").replace("tg://openmessage?user_id=", "").replace("https://t.me/", "").replace("@", "") if bio_infect.group(3) != None else None # тег жертвы из сообщения, None если его небыло
             victim = None #обьект жертвы содержит user_id, name, username
             """Проверка валидности стартовых параметров"""
             if lab.patogens <= 0: # проверка на паты
