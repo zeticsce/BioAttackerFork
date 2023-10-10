@@ -61,10 +61,11 @@ class UserLab:
 
             """Начисление патогенов"""
             delta = int(time.time()) - self.last_patogen_time # клво секунд с последнего начисления патогенов
-            qual_time = ((61 - self.qualification) * 60) # время восстановления одного патогена в секундах
-            pats = 1 / qual_time # колво патогенов в секунду
-            if delta * pats >= 1:
-                pats = math.ceil(delta * pats) # округленное колличество патогенов
+            qual_time = (61 - self.qualification) * 60 # время восстановления одного патогена в секундах
+            pats_s = 1 / qual_time # колво патогенов в секунду
+            pats = math.floor(delta * pats_s)
+            print(pats, delta * pats_s)
+            if pats >= 1:
                 if self.patogens + pats <= self.all_patogens:
                     self.last_patogen_time = self.last_patogen_time + (qual_time * pats)
                     self.patogens += pats
