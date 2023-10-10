@@ -226,7 +226,8 @@ async def show_lab(message: types.Message):
                         lab.patogens -= atts
 
                         lab.save_victum(VictimLab.user_id, profit)
-                        VictimLab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60))
+                        # если у жертвы VictimLab.security сб больше, чем у атакующего lab.security, жертва получает сообщение о болезни
+                        VictimLab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60), lab.security > VictimLab.security)
                         
                         patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
 
@@ -239,13 +240,13 @@ async def show_lab(message: types.Message):
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. Организатор [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
                                 else: sb_text = f"👨🏻‍🔬 Была проведена операция заражения [{VictimLab.name}](tg://openmessage?user_id={VictimLab.user_id}) {patogen_name}. Организатор: [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потряли {profit} био."
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
-                                except utils.exceptions.ChatNotFound: pass
+                                except: pass
                             else:
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n☣️ Вы потряли _{strconv.format_nums(profit)} био._"
                                 else: sb_text = f"👨🏻‍🔬 [{VictimLab.name}](tg://openmessage?user_id={VictimLab.user_id}) был подвергнут заражению {patogen_name}\n☣️ Потерял _{strconv.format_nums(profit)} био._"
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
-                                except utils.exceptions.ChatNotFound: pass
+                                except: pass
 
                     else: # действия при нуедаче заражения
 
@@ -264,7 +265,7 @@ async def show_lab(message: types.Message):
                             else:
                                 sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://openmessage?user_id={VictimLab.user_id}) провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://openmessage?user_id={lab.user_id})\nСовершено минимум {atts} попыток!"
                             try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
-                            except utils.exceptions.ChatNotFound: pass
+                            except: pass
 
                     lab.save()
                     VictimLab.save()
