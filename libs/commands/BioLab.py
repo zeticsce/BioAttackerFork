@@ -239,7 +239,8 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
                 count += 1
         
-        text += f'\nОбщая прибыль: +{strconv.format_nums(profit)} био-ресурсов 🧬'
+        text += f'\n🤒 Итого {len(victims)} зараженных'
+        text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
         
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
