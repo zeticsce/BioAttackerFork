@@ -39,8 +39,19 @@ async def issues(message: types.Message):
                 if item['user_id'] in in_list: continue
                 if item['until_infect'] > int(time.time()):
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
-                    if item['hidden'] == 0: text += f'{count + 1}. [{strconv.escape_markdown(item["pat_name"])}](tg://openmessage?user_id={item["user_id"]}) | до {until}\n'
-                    else: text += f'{count + 1}. {strconv.escape_markdown(item["pat_name"])} | до {until}\n'
+                    if item['hidden'] == 0: 
+                        text += f'{count + 1}. '
+                        if item['pat_name'] != None:
+                            text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
+                        else:
+                            text += "[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
+                        text += f" | до {until}\n"
+                    else: 
+                        text += f'{count + 1}. '
+                        if item['pat_name'] != None:
+                            text += f"{strconv.escape_markdown(item['pat_name'])}"
+                        else:
+                            text += "Неизвестный патоген"
                     in_list.append(item['user_id'])
 
                     count += 1
