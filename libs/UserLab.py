@@ -64,7 +64,6 @@ class UserLab:
             qual_time = (61 - self.qualification) * 60 # время восстановления одного патогена в секундах
             pats_s = 1 / qual_time # колво патогенов в секунду
             pats = math.floor(delta * pats_s)
-            print(pats, delta * pats_s)
             if pats >= 1:
                 if self.patogens + pats <= self.all_patogens:
                     self.last_patogen_time = self.last_patogen_time + (qual_time * pats)
