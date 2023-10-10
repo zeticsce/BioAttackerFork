@@ -168,8 +168,10 @@ async def handler(message: types.message):
 
         count = 0
         victims = lab.get_victums()
+        actual = 0
         for item in list(reversed(victims)):
             if item['until_infect'] > int(time.time()):
+                actual += 1
                 profit += item["profit"]
                 if count < 25: 
                     name = html.escape(strconv.deEmojify(item["name"]), quote=True)
@@ -179,7 +181,7 @@ async def handler(message: types.message):
 
                 count += 1
         
-        text += f'\n🤒 Итого {len(victims)} зараженных'
+        text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
         
