@@ -59,7 +59,7 @@ async def improve(message: types.Message):
                         text = f"Прокачка квалификации с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._ обойдется вам в _{price} био_"
                         if lab.qualification < 60:
                             atts = atts if lab.qualification + atts <= 60 else 60 - lab.qualification
-                            price = impr_price(lab.qualification, lab.qualification + atts, 2.0)
+                            price = impr_price(lab.qualification, lab.qualification + atts, 2.6)
                             text = f"Прокачка квалификации с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._ обойдется вам в _{price} био_"
                         else: text = f"У вас уже максимальный уровень!"
 
