@@ -151,6 +151,10 @@ async def show_lab(message: types.Message):
                 else: declination = "минут"
 
             text += f'🥴 Горячка вызванная патогеном `{lab.illness["patogen"]}` ещё `{untill}` {declination}.'
+            if lab.patogen_name != None:
+                text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
+            else:
+                text = f"🥴 У вас горячка вызванная неизвестным патогеном ещё `{untill}` {declination}\n\n"
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 

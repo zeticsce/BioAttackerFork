@@ -69,7 +69,12 @@ async def show_lab(message: types.Message):
 
             """ Проверка на горячку"""
             if lab.illness != None:
-                text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
+                text = f""
+                if lab.patogen_name != None:
+                    text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
+                else:
+                    text = f"🥴 У вас горячка вызванная неизвестным патогеном \n\n"
+
                 declination = "" # склонение минуту/минуты/минут
                 untill = floor(lab.illness['illness'] / 60)
                 if untill <= 20:
@@ -237,15 +242,15 @@ async def show_lab(message: types.Message):
                         if int(VictimLab.virus_chat) != message.chat.id:
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
-                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био."
-                                else: sb_text = f"👨🏻‍🔬 Была проведена операция заражения [{VictimLab.name}](tg://user?id={VictimLab.user_id}) {patogen_name}. \n\nОрганизатор: [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био."
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
+                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f'👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
+                                else: sb_text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> {patogen_name}. \n\nОрганизатор: <a href="tg://user?id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
+                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
                                 except: pass
                             else:
                                 patogen_name =  f"патогеном `{lab.patogen_name}`" if lab.patogen_name != None else "неизветным патогеном"
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n\n☣️ Вы потеряли _{strconv.format_nums(profit)} био._"
-                                else: sb_text = f"👨🏻‍🔬 [{VictimLab.name}](tg://user?id={VictimLab.user_id}) был подвергнут заражению {patogen_name}\n\n☣️ Потерял _{strconv.format_nums(profit)} био._"
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
+                                else: sb_text = f'👨🏻‍🔬 <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> был подвергнут заражению {patogen_name}\n\n☣️ Потерял _{strconv.format_nums(profit)} био._'
+                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
                                 except: pass
 
                     else: # действия при нуедаче заражения
