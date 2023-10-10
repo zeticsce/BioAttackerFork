@@ -236,6 +236,12 @@ async def handler(message: types.message):
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
 
+@dp.message_handler(commands=["ид"], commands_prefix='!/.')
+async def handler(message: types.message):
+    if message.reply_to_message:
+        print(message.reply_to_message.from_user.first_name)
+        text = f"🌊 Айди игрока [{message.reply_to_message.from_user.first_name}](tg://openmessage?user_id={message.reply_to_message.from_user.id}) равен `@{message.reply_to_message.from_user.id}`"
+        await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.reply_to_message.message_id)
 
 
 
