@@ -69,7 +69,7 @@ class UserLab:
                     self.last_patogen_time = self.last_patogen_time + (qual_time * pats)
                     self.patogens += pats
                 else:
-                    self.last_patogen_time = time.time()
+                    self.last_patogen_time = int(time.time())
                     self.patogens = self.all_patogens
             
             """Проверка горячки"""
