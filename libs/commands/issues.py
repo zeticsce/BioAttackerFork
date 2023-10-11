@@ -44,7 +44,7 @@ async def issues(message: types.Message):
                         if item['pat_name'] != None:
                             text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
                         else:
-                            text += "[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
+                            text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
                         text += f" | до {until}\n"
                     else: 
                         text += f'{count + 1}. '
