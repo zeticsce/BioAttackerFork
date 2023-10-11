@@ -401,16 +401,13 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
             return
 
         # await bot.send_message(chat_id, "очко",  parse_mode="Markdown")
-
+        atts = 0
+        suc = False
         if VictimLab.immunity > lab.infectiousness: # просчет успеха удара, если имун жертвы больше заразности атакующего
-            atts = 0
-            for i in range(attempts):
-                atts += 1
-                if random.random() < 1/(VictimLab.immunity-lab.infectiousness):
-                    suc = True
-                    break
-            else:
-                suc = False
+            
+            if random.random() < 1/(VictimLab.immunity-lab.infectiousness):
+                atts = 1
+                suc = True
         else:
             suc = True
             atts = 1 #затрачено патогенов
@@ -444,7 +441,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                     if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f'👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
                     else: sb_text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> {patogen_name}. \n\nОрганизатор: <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
                     # try: 
-                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id))
+                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(query.message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id))
                     # except Exception as e:
                     #     print(e) 
                 else:
@@ -462,9 +459,9 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
             lab.patogens -= atts
         
             infct_text = f"👺 Операция заражения [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) провалилась!"
-            await bot.send_message(message.chat.id, text=infct_text,  parse_mode="Markdown")
+            await bot.send_message(query.message.chat.id, text=infct_text,  parse_mode="Markdown")
             
-            if int(VictimLab.virus_chat) != message.chat.id:
+            if int(VictimLab.virus_chat) != query.message.chat.id:
                 """В случае провала, сб всегда попадает к жертве"""
                 if int(VictimLab.virus_chat) == VictimLab.user_id:
                     sb_text = f"👺 Попытка вашего заражения провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
