@@ -250,7 +250,7 @@ async def show_lab(message: types.Message):
                         
                         patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
 
-                        rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
+                        rslt_text = f'😎 <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a> подверг заражению <a href="tg://user?id={VictimLab.user_id}">{strconv.escape_markdown(VictimLab.name)}</a> {patogen_name}\n\n🧪 Затрачено патогенов <i>{atts}</i>\n☣️ Получено <i>{strconv.format_nums(profit)} био-опыта</i>\n☠️ Заражение на <i>{lab.mortality} {skloneniye(lab.mortality)}</i>'
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
 
                         if int(VictimLab.virus_chat) != message.chat.id:
