@@ -400,7 +400,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
         text_message = query.message.text.split("\n")
         patogen_name =  f"патогеном «<code>{VictimLab.patogen_name}</code>»" if VictimLab.patogen_name != None else "неизветным патогеном"
         text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={lab.user_id}">{lab.name}</a> {patogen_name}\n\n'
-        text += f'Организатор: <a href="tg://openmessage?user_id={VictimLab.user_id}"></a>{VictimLab.name}\n\n'
+        text += f'Организатор: <a href="tg://openmessage?user_id={VictimLab.user_id}">{VictimLab.name}</a>\n\n'
         text += text_message[4] + "\n"
         text += text_message[5]
         await bot.edit_message_text(
@@ -429,7 +429,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                 elif untill%10 <= 4: declination = "минуты"
                 else: declination = "минут"
             text += f"Осталось времени `{untill}` {declination}."
-            await bot.send_message(query.message.chat.id, text, parse_mode="Markdown", reply_markup=get_keyboard_first(query.message), reply_to_message_id=query.message.message_id)
+            await bot.send_message(query.message.chat.id, text, parse_mode="Markdown", reply_to_message_id=query.message.message_id)
             return
 
         if lab.patogens <= 0: # проверка на паты
