@@ -258,10 +258,10 @@ async def show_lab(message: types.Message):
                                 patogen_name =  f"патогеном <code>{lab.patogen_name}</code>" if lab.patogen_name != None else "неизветным патогеном"
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f'👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
                                 else: sb_text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> {patogen_name}. \n\nОрганизатор: <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
-                                # try: 
-                                await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id))
-                                # except Exception as e:
-                                #     print(e) 
+                                try: 
+                                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id))
+                                except: pass
+
                             else:
                                 patogen_name =  f"патогеном <code>{lab.patogen_name}</code>" if lab.patogen_name != None else "неизветным патогеном"
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n\n☣️ Вы потеряли <i>{strconv.format_nums(profit)} био.</i>"
@@ -284,7 +284,7 @@ async def show_lab(message: types.Message):
                             if int(VictimLab.virus_chat) == VictimLab.user_id:
                                 sb_text = f"👺 Попытка вашего заражения провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
                             else:
-                                sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://user?id={VictimLab.user_id}) провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
+                                sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://user?id={VictimLab.user_id}) провалилась! \n\nОрганизатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
                             try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                             except: pass
 
@@ -521,7 +521,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                 if int(VictimLab.virus_chat) == VictimLab.user_id:
                     sb_text = f"👺 Попытка вашего заражения провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
                 else:
-                    sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://user?id={VictimLab.user_id}) провалилась! Организатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
+                    sb_text = f"👺 Попытка заразить [{VictimLab.name}](tg://user?id={VictimLab.user_id}) провалилась! \n\nОрганизатор [{strconv.escape_markdown(lab.name)}](tg://user?id={lab.user_id})\nСовершено минимум {atts} попыток!"
                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="Markdown")
                 except: pass
 
