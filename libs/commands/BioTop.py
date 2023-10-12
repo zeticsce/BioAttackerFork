@@ -24,9 +24,9 @@ async def improve(message: types.Message):
         for lab in labs.bio_top:
             count += 1
             if strconv.deEmojify(lab["name"]) == "":
-                lab["name"] = "Лох"
+                lab["name"] = "Я пидор"
             
-            text += f'\n{count}. <a href="tg://openmessage?user_id={lab["user_id"]}">{strconv.deEmojify(lab["name"])}</a> | {strconv.num_to_str(lab["bio_exp"])} опыта'
+            text += f'\n{count}. <a href="{lab["user_id"]}">{strconv.deEmojify(lab["name"])}</a> | {strconv.num_to_str(lab["bio_exp"])} опыта'
 
         text += f"\n\nБанк био-опыта в игре: {strconv.num_to_str(all_bio_exp)} ☣️"
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML")
