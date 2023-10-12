@@ -398,7 +398,6 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         # await bot.delete_message(query.message.chat.id, query.message.message_id)
         text_message = query.message.text.split("\n")
-        print(text_message)
         patogen_name =  f"патогеном «<code>{VictimLab.patogen_name}</code>»" if VictimLab.patogen_name != None else "неизветным патогеном"
         text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={lab.user_id}">{lab.name}</a> {patogen_name}\n\n'
         text += f'Организатор: <a href="tg://openmessage?user_id={VictimLab.user_id}"></a>{VictimLab.name}\n\n'
@@ -456,7 +455,6 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                     await bot.send_message(message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
                     return 
 
-        # await bot.send_message(chat_id, "очко",  parse_mode="Markdown")
         atts = 0
         suc = False
         if VictimLab.immunity > lab.infectiousness: # просчет успеха удара, если имун жертвы больше заразности атакующего
