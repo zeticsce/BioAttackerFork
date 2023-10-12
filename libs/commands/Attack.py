@@ -408,6 +408,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                     text=text, 
                     parse_mode="HTML", 
                     message_id=query.message.message_id,
+                    disable_web_page_preview=True
                 )
 
         if lab.illness != None:
