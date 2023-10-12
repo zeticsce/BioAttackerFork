@@ -453,7 +453,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                         elif untill%10 <= 4: declination = "минуты"
                         else: declination = "минут"
 
-                    await bot.send_message(message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
+                    await bot.send_message(query.message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
                     return 
 
         atts = 0
