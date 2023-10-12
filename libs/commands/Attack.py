@@ -396,6 +396,13 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
     lab = labs.get_lab(from_user_id)
     VictimLab = labs.get_lab(victim)
     if from_user_id == str(query.from_user.id):
+        await bot.delete_message(query.message.chat.id, query.message.message_id)
+        # await bot.edit_message_text(
+        #             chat_id=query.message.chat.id, 
+        #             text=query.message.text, 
+        #             parse_mode="Markdown", 
+        #             message_id=query.message.message_id,
+        #         )
         if lab.patogens <= 0: # проверка на паты
             await bot.send_message(query.message.chat.id, text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
             return
