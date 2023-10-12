@@ -396,16 +396,65 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
     lab = labs.get_lab(from_user_id)
     VictimLab = labs.get_lab(victim)
     if from_user_id == str(query.from_user.id):
-        await bot.delete_message(query.message.chat.id, query.message.message_id)
-        # await bot.edit_message_text(
-        #             chat_id=query.message.chat.id, 
-        #             text=query.message.text, 
-        #             parse_mode="Markdown", 
-        #             message_id=query.message.message_id,
-        #         )
+        # await bot.delete_message(query.message.chat.id, query.message.message_id)
+        text_message = query.message.text.split("\n")
+        print(text_message)
+        patogen_name =  f"патогеном «<code>{VictimLab.patogen_name}</code>»" if VictimLab.patogen_name != None else "неизветным патогеном"
+        text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={lab.user_id}">{lab.name}</a> {patogen_name}\n\n'
+        text += f'Организатор: <a href="tg://openmessage?user_id={VictimLab.user_id}"></a>{VictimLab.name}\n\n'
+        text += text_message[4] + "\n"
+        text += text_message[5]
+        await bot.edit_message_text(
+                    chat_id=query.message.chat.id, 
+                    text=text, 
+                    parse_mode="HTML", 
+                    message_id=query.message.message_id,
+                )
+
+        if lab.illness != None:
+            text = f""
+            if lab.patogen_name != None:
+                text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
+            else:
+                text = f"🥴 У вас горячка вызванная неизвестным патогеном \n\n"
+
+            declination = "" # склонение минуту/минуты/минут
+            untill = floor(lab.illness['illness'] / 60)
+            if untill <= 20:
+                if untill == 1: declination = "минута"
+                elif untill <= 4: declination = "минуты"
+                else: declination = "минут"
+            else: 
+                if untill%10 == 1: declination = "минута"
+                elif untill%10 <= 4: declination = "минуты"
+                else: declination = "минут"
+            text += f"Осталось времени `{untill}` {declination}."
+            await bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=get_keyboard_first(message), reply_to_message_id=message.message_id)
+            return
+
         if lab.patogens <= 0: # проверка на паты
             await bot.send_message(query.message.chat.id, text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
             return
+
+        
+        if is_host: # на хосте проверяет кд до следующего удара по юзеру
+            victim_in_list = lab.get_victums(f"WHERE `victums{lab.user_id}`.`user_id` LIKE '{VictimLab['user_id']}'")
+            if len(victim_in_list) != 0:
+                victim_in_list = victim_in_list[0]
+                if victim_in_list['from_infect'] > (int(time.time())-3600):
+                    untill = math.floor((victim_in_list['from_infect'] - (int(time.time())-3600)) / 60) # колво минут
+                    declination = "" # склонение минуту/минуты/минут
+                    if untill <= 20:
+                        if untill == 1: declination = "минута"
+                        elif untill <= 4: declination = "минуты"
+                        else: declination = "минут"
+                    else: 
+                        if untill%10 == 1: declination = "минута"
+                        elif untill%10 <= 4: declination = "минуты"
+                        else: declination = "минут"
+
+                    await bot.send_message(message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
+                    return 
 
         # await bot.send_message(chat_id, "очко",  parse_mode="Markdown")
         atts = 0
