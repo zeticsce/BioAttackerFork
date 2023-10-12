@@ -34,6 +34,11 @@ class StringConv:
     def escape_markdown(self, text):
         """функция для экранирования символов sql"""
         return re.sub(r"([`_'*\[\]])", r"\\\1", str(text))
+
+    def delinkify(self, text):
+        """ функция для удаления ссылок"""
+        # return re.sub(r'^https?:\/\/.*[\r\n]*', '', str(text))
+        return re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', str(text))
     
     def deEmojify(self, text):
         regrex_pattern = re.compile(pattern = "["
