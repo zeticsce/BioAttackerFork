@@ -406,7 +406,6 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         # await bot.delete_message(query.message.chat.id, query.message.message_id)
         text_message = query.message.text.split("\n")
-        print(text_message)
         if hidden == 0:
             patogen_name =  f"патогеном «<code>{VictimLab.patogen_name}</code>»" if VictimLab.patogen_name != None else "неизветным патогеном"
             text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={lab.user_id}">{lab.name}</a> {patogen_name}\n\n'
