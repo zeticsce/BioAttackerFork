@@ -138,7 +138,7 @@ async def handler(message: types.message):
         if lab.has_lab: 
             labName = message.text[5::].strip()
 
-            if len(labName) > 50:
+            if len(labName) > 20:
                 await bot.send_message(message.chat.id, "Длина имени лаборатории не может быть больше 50 символов")
                 return
             if len(labName) == 0:
@@ -147,6 +147,13 @@ async def handler(message: types.message):
             if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) == None: # Проверка на валидность имени
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
+
+            this_name_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `lab_name` = '{strconv.escape_sql(patName)}'")
+            if len(this_name_lab) != 0:
+                if this_name_lab[0]['user_id'] != lab.user_id:
+                    await bot.send_message(message.chat.id, "Такое имя лаборатории уже существует!")
+                    lab.save()
+                    return
 
             lab.lab_name = labName
             lab.save()
