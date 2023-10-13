@@ -124,6 +124,35 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Название патогена удалено.")
 
+    if message.text.lower() == "-имя лаборатории":
+        lab = labs.get_lab(message['from']['id'])
+        if lab.has_lab: 
+            lab.lab_name = None
+            lab.save()
+
+            await bot.send_message(message.chat.id, "✅ Имя лаборатории удалено.")
+
+    if message.text.lower().startswith("+имя лаборатории "):
+
+        lab = labs.get_lab(message['from']['id'])
+        if lab.has_lab: 
+            labName = message.text[17::].strip()
+
+            if len(labName) > 50:
+                await bot.send_message(message.chat.id, "Длина имени лаборатории не может быть больше 50 символов")
+                return
+            if len(labName) == 0:
+                await bot.send_message(message.chat.id, "Имя лаборатории не может быть пустым!")
+                return
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) == None: # Проверка на валидность имени
+                await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
+                return
+
+            lab.lab_name = labName
+            lab.save()
+
+            await bot.send_message(message.chat.id, "✅ Имя лаборатории успешно обновлено!")
+
     if message.text.lower().startswith("+вирус "):
 
         lab = labs.get_lab(message['from']['id'])
