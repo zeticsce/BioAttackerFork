@@ -269,12 +269,37 @@ async def handler(message: types.message):
     if message.text.lower() == "биохелп":
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
+    reg = re.fullmatch(r'[\./!]ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
+    if reg != None:
+        url = reg.group(2)
+        name = None
+        if url != None:
+            clear_url = url.replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
+            if re.fullmatch(r"[a-z0-9_]+", clear_url) != None:
+                user = labs.get_user(clear_url)
+                if user != None:
+                    name = strconv.normalaze(user['name'], str(user['user_id']))
+                    user_id = user['user_id']
+        elif message.reply_to_message:
+            name = strconv.normalaze(message.reply_to_message.from_user.first_name, str(message.reply_to_message.from_user.id))
+            user_id = message.reply_to_message.from_user.id
+        else:
+            name = strconv.normalaze(message.from_user.first_name, str(message.from_user.id))
+            user_id = message.from_user.id
+        if name != None:
+            text = f'🌊 Айди игрока <a href="tg://openmessage?user_id={user_id}">{name}</a> равен <code>@{user_id}</code>'
+            await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
+        elif url != None:
+            await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
+        
 
-@dp.message_handler(commands=["ид"], commands_prefix='!/.')
-async def handler(message: types.message):
-    if message.reply_to_message:
-        text = f"🌊 Айди игрока [{message.reply_to_message.from_user.first_name}](tg://openmessage?user_id={message.reply_to_message.from_user.id}) равен `@{message.reply_to_message.from_user.id}`"
-        await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.reply_to_message.message_id)
+
+
+# @dp.message_handler(commands=["ид"], commands_prefix='!/.')
+# async def handler(message: types.message):
+#     if message.reply_to_message:
+#         text = f"🌊 Айди игрока [{message.reply_to_message.from_user.first_name}](tg://openmessage?user_id={message.reply_to_message.from_user.id}) равен `@{message.reply_to_message.from_user.id}`"
+#         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.reply_to_message.message_id)
 
 
 
