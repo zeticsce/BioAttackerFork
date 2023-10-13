@@ -118,12 +118,11 @@ async def show_lab(message: types.Message):
             text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
         else:
             declination = "" # склонение минуту/минуты/минут
+            
             untill = int()
             quala = int()
-            if (60 - lab.qualification) * 60 == 0:
-                quala = 60
-            else:
-                quala = (60 - lab.qualification) * 60
+
+            quala = (61 - lab.qualification) * 60
             if ( quala - ( int(time.time()) - lab.last_patogen_time )) < 60:
                 untill = (quala - ( int(time.time()) - lab.last_patogen_time ))
                 if untill <= 20:
