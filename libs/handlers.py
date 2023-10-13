@@ -124,7 +124,7 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Название патогена удалено.")
 
-    if message.text.lower() == "-имя лаборатории":
+    if message.text.lower() == "-лаб":
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
             lab.lab_name = None
@@ -132,11 +132,11 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Имя лаборатории удалено.")
 
-    if message.text.lower().startswith("+имя лаборатории "):
+    if message.text.lower().startswith("+лаб "):
 
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
-            labName = message.text[17::].strip()
+            labName = message.text[5::].strip()
 
             if len(labName) > 50:
                 await bot.send_message(message.chat.id, "Длина имени лаборатории не может быть больше 50 символов")
