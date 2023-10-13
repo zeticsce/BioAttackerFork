@@ -550,7 +550,7 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                         sb_text = f'👺 Попытка вашего заражения провалилась! \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\nСовершено минимум {atts} попыток!'
                     else:
                         sb_text = f'👺 Попытка заразить <a href="tg://user?id={VictimLab.user_id}">{strconv.delinkify(VictimLab.name)}</a> провалилась! \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\nСовершено минимум {atts} попыток!'
-                    try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(quey.message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
+                    try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(query.message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
                     except: pass
                 else:
                     if int(VictimLab.virus_chat) == VictimLab.user_id:
