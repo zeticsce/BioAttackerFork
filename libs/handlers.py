@@ -23,6 +23,7 @@ from commands.AddUsersToDB import *
 from commands.Attack import *
 from commands.issues import *
 from commands.messages import *
+from commands.rp_module import *
 
 
 from aiogram import Bot, types
