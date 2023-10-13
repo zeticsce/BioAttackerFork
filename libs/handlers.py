@@ -148,7 +148,7 @@ async def handler(message: types.message):
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
 
-            this_name_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `lab_name` = '{strconv.escape_sql(patName)}'")
+            this_name_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `lab_name` = '{strconv.escape_sql(labName)}'")
             if len(this_name_lab) != 0:
                 if this_name_lab[0]['user_id'] != lab.user_id:
                     await bot.send_message(message.chat.id, "Такое имя лаборатории уже существует!")
