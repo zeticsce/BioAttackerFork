@@ -9,7 +9,31 @@ class StringConv:
         for key in self.keys:
             for symv in self.keys[key]:
                 self.conversion_dict[symv] = key
-        keys = {'Σ': 'С', 'σ': 'o', 'φ': 'ф', 'α': 'а', "ʂ": "s", "ɬ": "i", "ყ": "y", "Ɩ": "l", "ɛ": "e", "ҳ": "x", "Ꮎ": "O"}
+        "им. ᴠᴏᴅɪᴄʜᴋᴀ. (tg://openmessage?user_id=5291004538)"
+        keys = {
+            'Σ': 'С', 
+            'σ': 'o', 
+            'φ': 'ф', 
+            'α': 'а',
+            "ʂ": "s", 
+            "ɬ": "i", 
+            "ყ": "y", 
+            "Ɩ": "l", 
+            "ɛ": "e", 
+            "ҳ": "x", 
+            "Ꮎ": "O", 
+            "૯": "E", 
+            "ᑯ": "d", 
+            # "ʀ": "R",
+            # "ᴠ": "V",
+            # "ᴏ": "O",
+            # "ᴅ": "D",
+            # "ɪ": "I",
+            # "ᴄ": "C",
+            # "ʜ": "H",
+            # "ᴋ": "K",
+            # "ᴀ": "A"
+        }
         for key in keys:
             self.conversion_dict[key] = keys[key]
 
