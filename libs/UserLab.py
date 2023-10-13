@@ -166,7 +166,9 @@ class UserLab:
         """Сохраняет значение лабы, если никакие значения не были изменены, то ничего не делает"""
         result = []
         for i in self.__start_data:
-            if self.__start_data[i] != self.__dict__[i]: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
+            if self.__start_data[i] != self.__dict__[i]: 
+                if self.__dict__[i] != None: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
+                else: result.append(f"`{i}` = NULL") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 
         if self['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
