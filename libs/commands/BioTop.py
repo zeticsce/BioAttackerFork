@@ -25,7 +25,11 @@ async def improve(message: types.Message):
             count += 1
             if strconv.deEmojify(lab["name"]) == "":
                 lab["name"] = "Неизвестный ник"
-            text += f'\n{count}. <a href="tg://openmessage?user_id={lab["user_id"]}">{strconv.delinkify(strconv.deEmojify(lab["name"]))}</a> | {strconv.num_to_str(lab["bio_exp"])} опыта'
+            if lab["lab_name"] != None:
+                lab_name = lab["lab_name"]
+            else:
+                lab_name = "им. " + strconv.delinkify(strconv.deEmojify(lab["name"]))
+            text += f'\n{count}. <a href="tg://openmessage?user_id={lab["user_id"]}">{lab_name}</a> | {strconv.num_to_str(lab["bio_exp"])} опыта'
 
         text += f"\n\nБанк био-опыта в игре: {strconv.num_to_str(all_bio_exp)} ☣️"
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML", disable_web_page_preview=True)
