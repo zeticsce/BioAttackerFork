@@ -138,8 +138,8 @@ async def handler(message: types.message):
         if lab.has_lab: 
             labName = message.text[5::].strip()
 
-            if len(labName) > 20:
-                await bot.send_message(message.chat.id, "Длина имени лаборатории не может быть больше 20 символов")
+            if len(labName) > 30:
+                await bot.send_message(message.chat.id, "Длина имени лаборатории не может быть больше 30 символов")
                 return
             if len(labName) == 0:
                 await bot.send_message(message.chat.id, "Имя лаборатории не может быть пустым!")
