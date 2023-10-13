@@ -70,8 +70,8 @@ class StringConv:
             count += 1
         return ''.join(reversed(str(result)))
     def normalaze(self, text: str, for_html: bool=True, replace=None, with_emoji: bool=False):
-        text = unicodedata.normalize('NFKD', text)
-        text = ''.join([char for char in text if not unicodedata.combining(char)])
+        text = unicodedata.normalize('NFKD', text.replace("й", "*h234*")) # *h234* нужно для того, чтобы буква й пережила фильтрацию, иначе оно просто очищает его
+        text = ''.join([char for char in text if not unicodedata.combining(char)]).replace("*h234*", "й")
         text = re.sub(r'[\u0600-\u06FF]+', '', text)
         if for_html: text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         if not with_emoji: text = self.deEmojify(text)
@@ -79,3 +79,5 @@ class StringConv:
         # text = emoji.demojize(text)
 
         return text
+    
+print(StringConv().normalaze("йййй"))
