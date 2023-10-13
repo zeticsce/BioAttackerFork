@@ -55,7 +55,7 @@ async def improve(message: types.Message):
                         text = f"Прокачка патоегна с _{lab.all_patogens} ур._ до _{lab.all_patogens + atts} ур._ обойдется вам в _{price} био_"
 
                     elif imps["квалификация"] != None:
-                        price = strconv.format_nums(impr_price(lab.qualification, lab.qualification + atts, 2.6))
+                        price = strconv.format_nums(impr_price(lab.qualification, lab.qualification + atts, 2.4))
                         text = f"Прокачка квалификации с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._ обойдется вам в _{price} био_"
                         if lab.qualification < 60:
                             atts = atts if lab.qualification + atts <= 60 else 60 - lab.qualification
@@ -83,54 +83,92 @@ async def improve(message: types.Message):
 
                     if imps["патоген"] != None:
                         price = impr_price(lab.all_patogens, lab.all_patogens + atts, 2.0)
-                        text = f"Вы успешно увелчили максимальное колличество патоегенов с _{lab.all_patogens}_ до _{lab.all_patogens + atts}_, это обошлось вам в _{strconv.format_nums(price)} био_"
+                        text = f"Вы успешно увеличили максимальное колличество патоегенов с _{lab.all_patogens}_ до _{lab.all_patogens + atts}_\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.all_patogens += atts
                             lab.patogens = lab.patogens + atts if lab.patogens + atts <= lab.all_patogens else lab.all_patogens
                             lab.bio_res -= price
+                        elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                            text = f"Вы успешно увеличили максимальное колличество патоегенов с _{lab.all_patogens}_ до _{lab.all_patogens + atts}_."
+                            text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                            lab.coins -= (price - lab.bio_res)
+                            lab.bio_res -= lab.bio_res
+                            lab.all_patogens += atts
+                            lab.patogens = lab.patogens + atts if lab.patogens + atts <= lab.all_patogens else lab.all_patogens
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["квалификация"] != None:
                         if lab.qualification < 60:
                             atts = atts if lab.qualification + atts <= 60 else 60 - lab.qualification
                             price = impr_price(lab.qualification, lab.qualification + atts, 2.6)
-                            text = f"Вы успешно прокачали квалификацию с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
+                            text = f"Вы успешно прокачали квалификацию с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                             if lab.bio_res > price:
                                 lab.qualification += atts
                                 lab.bio_res -= price
+                            elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                                text = f"Вы успешно прокачали квалификацию с _{lab.qualification} ур._ до _{lab.qualification + atts} ур_."
+                                text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                                lab.coins -= (price - lab.bio_res)
+                                lab.bio_res -= lab.bio_res
+                                lab.qualification += atts
+                            
                             else: text = f"Недостаточно био-ресурса!"
                         else: text = f"У вас уже максимальный уровень!"
 
                     elif imps["заразность"] != None:
                         price = impr_price(lab.infectiousness, lab.infectiousness + atts, 2.5)
-                        text = f"Вы успешно прокачали заразность с _{lab.infectiousness} ур._ до _{lab.infectiousness + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
+                        text = f"Вы успешно прокачали заразность с _{lab.infectiousness} ур._ до _{lab.infectiousness + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.infectiousness += atts
                             lab.bio_res -= price
+                        elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                            text = f"Вы успешно прокачали заразность с _{lab.infectiousness} ур._ до _{lab.infectiousness + atts} ур._"
+                            text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                            lab.coins -= (price - lab.bio_res)
+                            lab.bio_res -= lab.bio_res
+                            lab.infectiousness += atts
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["иммунитет"] != None:
                         price = impr_price(lab.immunity, lab.immunity + atts, 2.45)
-                        text = f"Вы успешно прокачали иммунитет с _{lab.immunity} ур._ до _{lab.immunity + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
+                        text = f"Вы успешно прокачали иммунитет с _{lab.immunity} ур._ до _{lab.immunity + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.immunity += atts
                             lab.bio_res -= price
+                        elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                            text = f"Вы успешно прокачали иммунитет с _{lab.immunity} ур._ до _{lab.immunity + atts} ур._"
+                            text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                            lab.coins -= (price - lab.bio_res)
+                            lab.bio_res -= lab.bio_res
+                            lab.immunity += atts
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["летальность"] != None:
                         price = impr_price(lab.mortality, lab.mortality + atts, 1.95)
-                        text = f"Вы успешно прокачали летальность с _{lab.mortality} ур._ до _{lab.mortality + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
+                        text = f"Вы успешно прокачали летальность с _{lab.mortality} ур._ до _{lab.mortality + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.mortality += atts
                             lab.bio_res -= price
+                        elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                            text = f"Вы успешно прокачали летальность с _{lab.mortality} ур._ до _{lab.mortality + atts} ур_."
+                            text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                            lab.coins -= (price - lab.bio_res)
+                            lab.bio_res -= lab.bio_res
+                            lab.mortality += atts
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["безопасность"] != None:
                         price = impr_price(lab.security, lab.security + atts, 2.1)
-                        text = f"Вы успешно прокачали безопасность с _{lab.security} ур._ до _{lab.security + atts} ур._, это обошлось вам в _{strconv.format_nums(price)} био_"
+                        text = f"Вы успешно прокачали безопасность с _{lab.security} ур._ до _{lab.security + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.security += atts
                             lab.bio_res -= price
+                        elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
+                            text = f"Вы успешно прокачали безопасность с _{lab.security} ур._ до _{lab.security + atts} ур._"
+                            text += f"\nЭто обошлось вам в _{strconv.format_nums(lab.bio_res)}_ 🧬 и _{strconv.format_nums(price - lab.bio_res)}_ 💰" 
+                            lab.coins -= (price - lab.bio_res)
+                            lab.bio_res -= lab.bio_res
+                            lab.security += atts
                         else: text = f"Недостаточно био-ресурса!"
                     
                     lab.save()
