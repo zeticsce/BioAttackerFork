@@ -336,7 +336,7 @@ async def show_lab(message: types.Message):
                     text = "🤓Вы успешно исцелились!\n\n"
                     text += "Потрачено `10` био-ресурсов 🧬" 
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
-                elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 0:
+                elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 10:
                     text = "🤓Вы успешно исцелились!\n\n"
                     text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
                     lab.last_issue = 0
@@ -374,7 +374,7 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
                     parse_mode="Markdown", 
                     message_id=query.message.message_id,
                 )
-            elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 0:
+            elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 10:
                 text = "🤓Вы успешно исцелились!\n\n"
                 text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
                 lab.last_issue = 0
