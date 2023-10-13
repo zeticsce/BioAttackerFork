@@ -169,17 +169,16 @@ class UserLab:
             if self.__start_data[i] != self.__dict__[i]: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 
-        if self.__start_data['bio_exp'] != self['bio_exp']: # действия при изменении колва биоопыта
-            if self['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
-                count = 0
-                for i in labs.bio_top: # удаление собственных дубликатов
-                    if i['user_id'] == self.user_id: labs.bio_top.pop(count)
-                    count += 1
+        if self['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
+            count = 0
+            for i in labs.bio_top: # удаление собственных дубликатов
+                if i['user_id'] == self.user_id: labs.bio_top.pop(count)
+                count += 1
 
-                labs.bio_top.append(self.__dict__)
-                labs.bio_top.sort(key=lambda i: -i.get('bio_exp'))
-                
+            labs.bio_top.append(self.__dict__)
+            labs.bio_top.sort(key=lambda i: -i.get('bio_exp'))
+            
 
-                labs.bio_top = labs.bio_top[0:25]
+            labs.bio_top = labs.bio_top[0:25]
 
 
