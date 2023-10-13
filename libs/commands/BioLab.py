@@ -109,12 +109,10 @@ async def show_lab(message: types.Message):
 
         '''  Владелец лабы '''
         owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
-        print(lab["lab_name"])
-        if lab["lab_name"] != None:
-            lab_name = lab["lab_name"]
-        else:
-            lab_name = "им. " + strconv.delinkify(strconv.deEmojify(lab["name"]))
-        print(lab_name)
+
+        if lab["lab_name"] != None: lab_name = lab["lab_name"]
+        else: lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab.user_id)))
+
         text += f'👺 Владелец: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
@@ -127,9 +125,6 @@ async def show_lab(message: types.Message):
             text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
         else:
             declination = "" # склонение минуту/минуты/минут
-
-            untill = int()
-            quala = int()
 
             quala = (61 - lab.qualification) * 60
             if ( quala - ( int(time.time()) - lab.last_patogen_time )) < 60:
@@ -222,7 +217,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
 
         lab = labs.get_lab(from_user_id)
-        text = f'Болезни игрока [{message_name}](tg://openmessage?user_id={from_user_id})\n\n'
+        text = f'Болезни игрока [{strconv.normalaze(message_name, replace=str(from_user_id))}](tg://openmessage?user_id={from_user_id})\n\n'
         
         count = 0
         in_list = []
@@ -271,10 +266,8 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
 
         lab = labs.get_lab(from_user_id)
-        name = html.escape(strconv.deEmojify(query.from_user.first_name), quote=True)
-        name = name if name.replace(" ", "") != "" else item["user_id"]
 
-        text = f'Жертвы игрока <a href="tg://openmessage?user_id={query.from_user.id}">{name}</a>\n\n'
+        text = f'Жертвы игрока <a href="tg://openmessage?user_id={query.from_user.id}">{strconv.normalaze(message_name, replace=str(from_user_id))}</a>\n\n'
         profit = 0
 
         count = 0
@@ -285,8 +278,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                 actual += 1
                 profit += item["profit"]
                 if count < 50: 
-                    name = html.escape(strconv.deEmojify(item["name"]), quote=True)
-                    name = name if name.replace(" ", "") != "" else item["user_id"]
+                    name = strconv.normalaze(item["name"], replace=str(item["user_id"]))
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 

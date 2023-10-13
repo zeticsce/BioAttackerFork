@@ -196,10 +196,7 @@ async def handler(message: types.message):
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
         
-        name = html.escape(strconv.deEmojify(message.from_user.first_name), quote=True)
-        name = name if name.replace(" ", "") != "" else item["user_id"]
-
-        text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{name}</a>\n\n'
+        text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"]))}</a>\n\n'
         profit = 0
 
         count = 0
@@ -210,8 +207,8 @@ async def handler(message: types.message):
                 actual += 1
                 profit += item["profit"]
                 if count < 50: 
-                    name = html.escape(strconv.deEmojify(item["name"]), quote=True)
-                    name = name if name.replace(" ", "") != "" else item["user_id"]
+                    
+                    name = strconv.normalaze(item["name"], replace=str(item["user_id"]))
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 

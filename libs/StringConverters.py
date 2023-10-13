@@ -44,10 +44,20 @@ class StringConv:
     
     def deEmojify(self, text):
         regrex_pattern = re.compile(pattern = "["
-            u"\U0001F600-\U0001F64F"  # emoticons
-            u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-            u"\U0001F680-\U0001F6FF"  # transport & map symbols
-            u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                               u"\U0001F600-\U0001F64F"  # эмодзи в категории эмоций
+                               u"\U0001F300-\U0001F5FF"  # эмодзи в категории символов
+                               u"\U0001F680-\U0001F6FF"  # эмодзи в категории транспорта
+                               u"\U0001F700-\U0001F77F"  # эмодзи в категории символов (дополнительные)
+                               u"\U0001F780-\U0001F7FF"  # эмодзи в категории символов (дополнительные)
+                               u"\U0001F800-\U0001F8FF"  # эмодзи в категории символов (дополнительные)
+                               u"\U0001F900-\U0001F9FF"  # эмодзи в категории символов (дополнительные)
+                               u"\U0001FA00-\U0001FA6F"  # эмодзи в категории символов (дополнительные)
+                               u"\U0001FA70-\U0001FAFF"  # эмодзи в категории символов (дополнительные)"
+                               u"\U0001F004-\U0001F0CF"  # эмодзи из дополнительной таблицы
+                               u"\U0001F170-\U0001F251"  # эмодзи из дополнительной таблицы
+                               u"\U0001F004-\U0001F251"  # эмодзи из дополнительной таблицы
+                               u"\U000025AA-\U00002B06"  # графические символы и стрелки
+                               u"\U0000231A-\U0001F251"
                                "]+", flags = re.UNICODE)
         return regrex_pattern.sub(r'',text)
     def format_nums(self, num):
@@ -59,9 +69,13 @@ class StringConv:
             result += i
             count += 1
         return ''.join(reversed(str(result)))
-    def normalaze(self, text: str, for_html: bool=True):
+    def normalaze(self, text: str, for_html: bool=True, replace=None, with_emoji: bool=False):
         text = unicodedata.normalize('NFKD', text)
         text = ''.join([char for char in text if not unicodedata.combining(char)])
+        text = re.sub(r'[\u0600-\u06FF]+', '', text)
         if for_html: text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        if not with_emoji: text = self.deEmojify(text)
+        if replace != None and text.replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "") == "": text = replace
         # text = emoji.demojize(text)
+
         return text
