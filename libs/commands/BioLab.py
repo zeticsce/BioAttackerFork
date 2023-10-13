@@ -109,7 +109,13 @@ async def show_lab(message: types.Message):
 
         '''  Владелец лабы '''
         owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
-        text += f'👺 Владелец: [{lab.name}]({owner_link})\n'
+        print(lab["lab_name"])
+        if lab["lab_name"] != Noneч:
+            lab_name = lab["lab_name"]
+        else:
+            lab_name = "им. " + strconv.delinkify(strconv.deEmojify(lab["name"]))
+        print(lab_name)
+        text += f'👺 Владелец: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
         if lab.corp != None: text += f'🏢 Относится к корпорации: [{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})\n\n'
