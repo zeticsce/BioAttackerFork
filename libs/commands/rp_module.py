@@ -15,8 +15,16 @@ from aiogram import types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 
 rp = {
-    "пнуть": ["{op} пнул {to}", "{op} пнул {to} с репликой {repl}"],
-    "погладить": ["{op} погладил {to}", "{op} пнул {to} с репликой {repl}"]
+    "пнуть": ["{op} пнул(а) {to}", "{op} пнул(а) {to} с репликой {repl}"],
+    "погладить": ["{op} погладил(а) {to}", "{op} погладил(а) {to} с репликой {repl}"],
+    "бан": ["{op} забанил(а) {to}", "{op} забанил(а) {to} с вердиктом {repl}"],
+    "мут": ["{op} замутил(а) {to}", "{op} замутил(а) {to} по причине {repl}"],
+    "варн": ["{op} кинул(а) варн {to}", "{op} кинул(а) варн {to} с репликой {repl}"],
+    "расстрелять": ["{op} расстрелял(а) {to}", "{op} расстрелял(а) {to} с репликой {repl}"],
+    "убить": ["{op} убил(а) {to}", "{op} убил(а) {to} с фразой {repl}"],
+    "повесить": ["{op} повесил(а) {to}", "{op} повесил(а) {to} по причине {repl}"],
+    "принудить": ["{op} принудил(а) {to}", "{op} принудил(а) {to} {repl}"],
+    "приклеить": ["{op} приклеил(а) {to}", "{op} приклеил(а) {to} с репликой {repl}"]
 }
 
 @dp.message_handler(content_types=["text"])
