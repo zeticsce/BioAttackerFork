@@ -113,7 +113,47 @@ async def show_lab(message: types.Message):
         else: text += f'\n'
         
         ''' Количество патогенов ''' 
-        text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
+        
+        if lab.patogens == lab.all_patogens:
+            text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
+        else:
+            declination = "" # склонение минуту/минуты/минут
+            untill = int()
+            quala = int()
+            if (60 - lab.qualification) * 60 == 0:
+                quala = 60
+            else:
+                quala = (60 - lab.qualification) * 60
+            if ( quala - ( int(time.time()) - lab.last_patogen_time )) < 60:
+                untill = (quala - ( int(time.time()) - lab.last_patogen_time ))
+                if untill <= 20:
+                    if untill == 1: declination = "секунда"
+                    elif untill <= 4: declination = "секунды"
+                    else: declination = "секунд"
+                else: 
+                    if untill%10 == 1: declination = "секунда"
+                    elif untill%10 <= 4: declination = "секунды"
+                    else: declination = "секунд"
+
+            else:
+                untill = round(quala - ( int(time.time()) - lab.last_patogen_time )) / 60
+                if untill <= 20:
+                    if untill == 1: declination = "минута"
+                    elif untill <= 4: declination = "минуты"
+                    else: declination = "минут"
+                else: 
+                    if untill%10 == 1: declination = "минута"
+                    elif untill%10 <= 4: declination = "минуты"
+                    else: declination = "минут"
+
+            # if untill < 0:
+            #     untill = untill * -1
+                
+            
+            
+            text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
+            text += f'⏱ До нового патогена: `{floor(untill)}` {declination}.\n'
+            
 
         ''' Уровень разработки '''  
         if lab.qualification < 60: 
