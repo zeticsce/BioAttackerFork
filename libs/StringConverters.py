@@ -79,5 +79,3 @@ class StringConv:
         # text = emoji.demojize(text)
 
         return text
-    
-print(StringConv().normalaze("йййй"))
