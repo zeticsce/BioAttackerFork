@@ -307,13 +307,13 @@ async def show_lab(message: types.Message):
 
                 else: 
                     """Рандом профит"""
-                    profit = random.randint(0, 100)
+                    profit = random.randint(1, 100)
                     lab.bio_exp += profit
 
                     atts = 0
                     for i in range(attempts):
                         atts += 1
-                        if random.random() < 90/100:
+                        if random.random() < 95/100:
                             suc = True
                             break
                     else:
