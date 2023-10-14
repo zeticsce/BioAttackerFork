@@ -57,7 +57,7 @@ async def show_lab(message: types.Message):
             user_id             юзер айди пользователя
             name                имя пользователя
             user_name           юз пользователя
-            corp корп           айди корпы
+            corp                айди корпы
             patogen_name        имя патогена пользователя
             lab_name            имя лаборатории пользователя
 

@@ -1,6 +1,6 @@
 import os
 import shutil
-import asyncio
+import string
 import requests
 import random
 import subprocess
@@ -8,7 +8,8 @@ import sys
 import datetime
 import re
 import time
-import html
+import json
+import copy
 
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
@@ -24,6 +25,7 @@ from commands.Attack import *
 from commands.issues import *
 from commands.messages import *
 from commands.rp_module import *
+# from commands.corps import *
 
 
 from aiogram import Bot, types
@@ -291,15 +293,6 @@ async def handler(message: types.message):
             await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
         elif url != None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
-        
-
-
-
-# @dp.message_handler(commands=["ид"], commands_prefix='!/.')
-# async def handler(message: types.message):
-#     if message.reply_to_message:
-#         text = f"🌊 Айди игрока [{message.reply_to_message.from_user.first_name}](tg://openmessage?user_id={message.reply_to_message.from_user.id}) равен `@{message.reply_to_message.from_user.id}`"
-#         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.reply_to_message.message_id)
 
 
 

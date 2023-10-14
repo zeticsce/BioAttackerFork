@@ -26,10 +26,12 @@ conn = pymysql.connect(
     cursorclass=DictCursor
 )
 def query(query):
+    # time_start = time.time()
     with conn.cursor() as cursor:
         try: cursor.execute(query)
         except pymysql.err.OperationalError: 
             conn.ping()
             cursor.execute(query)
         conn.commit()
+        # print("query:", 1000*(time.time() - time_start), "ms", query)
         return cursor.fetchall()

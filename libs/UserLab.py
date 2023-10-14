@@ -19,6 +19,36 @@ class UserLab:
         self.user_id = user_id
         self.has_lab = False 
         self.illness = None
+
+        self.corp: int
+        self.bio_res: int
+        self.last_issue: int
+        self.all_patogens: int
+        self.qualification: int
+        self.patogen_name: str
+        self.name: str
+        self.security: int
+        self.mortality: int
+        self.prevented_issue: int
+        self.all_issue: int
+        self.infectiousness: str
+        self.immunity: int
+        self.all_operations: int
+        self.suc_operations: int
+        self.user_name: str
+        self.lab_name: str
+        self.last_patogen_time: int
+        self.prevented_issue: int
+        self.victims: int
+        self.disease: int
+        self.coins: int
+        self.bio_valuta: int
+        self.last_farma: int
+        self.last_issue: int
+        self.last_daily: int
+        self.virus_chat: int
+        self.modules: json
+
         self.__convert_lab()
         if self.has_lab and self.virus_chat == None: self.virus_chat = str(self.user_id)
 
@@ -96,12 +126,6 @@ class UserLab:
                 if profit >= 1: # чтобы не начислял меньше 1
                     self.bio_res += profit
                     self.last_daily = int(time.time())
-                
-                
-
-            
-
-
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -139,14 +163,16 @@ class UserLab:
             profit      профит, который получил юзер
         """
         victums = query(f"SELECT * FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `user_id` = {victum_id} LIMIT 1")
+        is_new = False
         if len(victums) == 0:
+            is_new = True
             query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
         else:
             query(f"DELETE FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `victums{self.user_id}`.`id` = {victums[0]['id']}")
             query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
         q = query(f"SELECT count(victums{self.user_id}.id) FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `until_infect` >= {int(time.time())}")
-        self.victums = q[0][list(q[0].keys())[0]]
-        # self.last_patogen_time = int(time.time())
+        self.victims = q[0][list(q[0].keys())[0]]
+        return is_new
 
     def save_issue(self, from_id, patogen, until, hide = False):
         """
