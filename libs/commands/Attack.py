@@ -220,11 +220,14 @@ async def show_lab(message: types.Message):
 
                     """алгоритм заражения, когда у юзера есть лаба"""
 
-                    if VictimLab.immunity > lab.infectiousness: # просчет успеха удара, если имун жертвы больше заразности атакующего
+                    if VictimLab.immunity >= lab.infectiousness: # просчет успеха удара, если имун жертвы больше заразности атакующего
                         atts = 0
                         for i in range(attempts):
                             atts += 1
-                            if random.random() < 1/(VictimLab.immunity-lab.infectiousness):
+                            denominator = (VictimLab.immunity-lab.infectiousness)**2 # 1/4 для разницы в 2, 1/9 для 3, 1/16 для 4 и тд
+                            denominator = 2 if denominator == 0 else denominator # 1/2 шанс в случае, если имун и зз равны
+                            denominator = 3 if denominator == 1 else denominator # 1/3 шанс если разница в 1
+                            if random.random() < 1/denominator:
                                 suc = True
                                 break
                         else:
