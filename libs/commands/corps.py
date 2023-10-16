@@ -91,6 +91,9 @@ async def issues(message: types.Message):
         if str(message.from_user.id) in json.loads(corp['members']):
             await bot.send_message(chat_id=message.chat.id, text="Вы уже являетесь участником этой корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
+        if len(query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_head` = {lab.user_id}")) != 0:
+            await bot.send_message(chat_id=message.chat.id, text="Владелец корпорации не пожет подать заявку в другую корпорацию!", parse_mode="HTML", reply_to_message_id=message.message_id)
+            return
         applications = query(f"SELECT * FROM `bio_attacker`.`corps_applications` WHERE `user_id` = {lab.user_id}")
         if len(applications) != 0:
 
