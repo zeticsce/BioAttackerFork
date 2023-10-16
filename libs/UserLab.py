@@ -197,7 +197,7 @@ class UserLab:
                 else: result.append(f"`{i}` = NULL") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 
-        if self.__start_data['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
+        if self.__start_data['bio_exp'] >= labs.bio_top[-1]['bio_exp'] or self['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
             count = 0
             for i in labs.bio_top: # удаление собственных дубликатов
                 if i['user_id'] == self.user_id: labs.bio_top.pop(count)
