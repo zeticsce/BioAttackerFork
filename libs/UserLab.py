@@ -127,6 +127,17 @@ class UserLab:
                     self.bio_res += profit
                     self.last_daily = int(time.time())
 
+            """Установка корпорации"""
+
+            if self.corp != None:
+                corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_key` = '{self.corp}'")
+                if len(corp) == 0: 
+                    self.corp = None
+                else:
+                    corp = corp[0]
+                    self.corp_name = corp['corp_name']
+                    self.corp_owner_id = corp['corp_head']
+
     def __getitem__(self, item):
         return self.__dict__[item]
     def __repr__(self):

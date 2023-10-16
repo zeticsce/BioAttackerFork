@@ -25,7 +25,7 @@ from commands.Attack import *
 from commands.issues import *
 from commands.messages import *
 from commands.rp_module import *
-# from commands.corps import *
+from commands.corps import *
 
 
 from aiogram import Bot, types
