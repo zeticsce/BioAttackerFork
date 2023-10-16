@@ -116,7 +116,7 @@ async def show_lab(message: types.Message):
         text += f'👺 Владелец: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
-        if lab.corp != None: text += f'🏢 Относится к корпорации: [{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})\n\n'
+        if lab.corp != None: text += f'🏛  Корпорация «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
         else: text += f'\n'
         
         ''' Количество патогенов ''' 
