@@ -100,7 +100,7 @@ async def improve(message: types.Message):
                     elif imps["квалификация"] != None:
                         if lab.qualification < 60:
                             atts = atts if lab.qualification + atts <= 60 else 60 - lab.qualification
-                            price = impr_price(lab.qualification, lab.qualification + atts, 2.4)
+                            price = impr_price(lab.qualification, lab.qualification + atts, 2.6)
                             text = f"Вы успешно прокачали квалификацию с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                             if lab.bio_res > price:
                                 lab.qualification += atts
