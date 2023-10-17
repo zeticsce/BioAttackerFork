@@ -55,11 +55,11 @@ async def improve(message: types.Message):
                         text = f"Прокачка патоегна с _{lab.all_patogens} ур._ до _{lab.all_patogens + atts} ур._ обойдется вам в _{price} био_"
 
                     elif imps["квалификация"] != None:
-                        price = strconv.format_nums(impr_price(lab.qualification, lab.qualification + atts, 2.4))
+                        price = strconv.format_nums(impr_price(lab.qualification, lab.qualification + atts, 2.6))
                         text = f"Прокачка квалификации с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._ обойдется вам в _{price} био_"
                         if lab.qualification < 60:
                             atts = atts if lab.qualification + atts <= 60 else 60 - lab.qualification
-                            price = impr_price(lab.qualification, lab.qualification + atts, 2.4)
+                            price = impr_price(lab.qualification, lab.qualification + atts, 2.6)
                             text = f"Прокачка квалификации с _{lab.qualification} ур._ до _{lab.qualification + atts} ур._ обойдется вам в _{price} био_"
                         else: text = f"У вас уже максимальный уровень!"
 
