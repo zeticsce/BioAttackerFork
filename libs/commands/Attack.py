@@ -309,7 +309,7 @@ async def show_lab(message: types.Message):
 
                 else: 
                     """Рандом профит"""
-                    profit = random.randint(1, 100)
+                    profit = random.randint(1, 30)
                     lab.bio_exp += profit
 
                     atts = 0
