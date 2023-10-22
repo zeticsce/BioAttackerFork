@@ -250,7 +250,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
                 sb_text = f'{short_attempt} '\
                         f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> провалилась!'\
                         f'\n\{organizer}: '\
-                        f'<a href="tg://openmessage?user_id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\n'\
+                        f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n'\
                         f'Совершено минимум <i>{atts}</i> попыток!'\
                         f'{hide_victim_link}'
         else:
