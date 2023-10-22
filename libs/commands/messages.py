@@ -152,7 +152,7 @@ def patogenName(lab, theme=""):
         else:
             howfuck = "патогеном"
         
-    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else f"неизветным {howfuck}"
+    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else f"неизвестным {howfuck}"
 
 
 def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
