@@ -132,17 +132,132 @@ def illness_check(lab):
         text = f"🥴 У вас горячка вызванная неизвестным патогеном \n\n"
     return text
 
-def patogenName(lab):
-    if lab.theme == "azeri":
-        howfuck = "баздыгом"
-    elif lab.theme == "mafia":
-        howfuck = "приемом"
-    elif lab.theme == "hell":
-        howfuck = "розыгрышем"
+def patogenName(lab, theme=""):
+    if theme == "":
+        if lab.theme == "azeri":
+            howfuck = "баздыгом"
+        elif lab.theme == "mafia":
+            howfuck = "приемом"
+        elif lab.theme == "hell":
+            howfuck = "розыгрышем"
+        else:
+            howfuck = "патогеном"
     else:
-        howfuck = "патогеном"
+        if theme == "azeri":
+            howfuck = "баздыгом"
+        elif theme == "mafia":
+            howfuck = "приемом"
+        elif theme == "hell":
+            howfuck = "розыгрышем"
+        else:
+            howfuck = "патогеном"
+        
     return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else f"неизветным {howfuck}"
 
+
+def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
+    
+    hide_victim_link = f'<a href="tg://user?id={second_id}">\xad</a>'
+    hide_attacker_link = f'<a href="tg://user?id={first_id}">\xad</a>'
+    if suc == 1:
+
+        if theme == None:
+            organizer = "Организатор"
+            full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
+            short_attempt = "👨🏻‍🔬 Была проведена операция заражения"
+            lost = "🧪 Совершено минимум"
+            you_lost = "☣️ Вы потеряли"
+            bio = "био"
+
+            alternative = "👨🏻‍🔬 Вас подвергли заражению"
+            alter_lost = "☣️ Потерял"
+            alter_attempt = "был подвергнут заражению"
+
+        elif theme == "azeri":
+            organizer = "Пейсяр"
+            full_attempt = "👨🏻‍🔬 Сын пейсяр чыхдын"
+            short_attempt = "👨🏻‍🔬 Сяни сикди"
+            lost = "🧪 Патогенляр сычды"
+            you_lost = "☣️ мантлары сычдын"
+            bio = "манат"
+
+            alternative = "👨🏻‍🔬 Сяни сиктиляр"
+            alter_lost = "☣️ Сычдын"
+            alter_attempt = "ону сиктиляр"
+        
+        if theme == "hell":
+            organizer = "Организатор"
+            full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
+            short_attempt = "👨🏻‍🔬 Была проведена операция заражения"
+            lost = "🧪 Совершено минимум"
+            you_lost = "☣️ Вы потеряли"
+            bio = "био"
+
+            alternative = "👨🏻‍🔬 Вас подвергли заражению"
+            alter_lost = "☣️ Потерял"
+            alter_attempt = "был подвергнут заражению"
+
+        if hidden:
+            if equal:
+                sb_text = f'{full_attempt} {patogen_name}.\n\n'\
+                        f'{organizer}: '\
+                        f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n\n'\
+                        f'{lost} {atts} попыток!\n'\
+                        f'{you_lost} <code>{profit}</code> {bio}.'
+            else:
+                sb_text = f'{short_attempt} '\
+                        f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> {patogen_name}.\n\n'\
+                        f'{organizer}: '\
+                        f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n\n'\
+                        f'{lost} {atts} попыток!\n'\
+                        f'{you_lost} <code>{profit}</code> {bio}.'\
+                        f'{hide_victim_link}'
+        else:
+            if equal:
+                sb_text = f"{alternative} {patogen_name}\n\n"\
+                        f"{you_lost} <code>{strconv.format_nums(profit)}</code> {bio}."
+            else:
+                sb_text = f'👨🏻‍🔬 <a href="tg://openmessage?user_id={second_id}">{second_name}</a> '\
+                        f'{alter_attempt} {patogen_name}\n\n'\
+                        f'{alter_lost} <code>{strconv.format_nums(profit)}</code> {bio}.'
+        
+        sb_text += f"{hide_victim_link}"            
+        
+
+    else:
+        if theme == None:
+            organizer = "Организатор"
+            full_attempt = "👺 Попытка вашего заражения провалилась!"
+            short_attempt = "👺 Попытка заразить"
+        
+        elif theme == "azeri":
+            organizer = "Пейсяр"
+            full_attempt = "👺 Сяни вуранда озю пейсяр чыхды!"
+            short_attempt = "👺 Сяни сикмяк"
+
+        if hidden:
+            if equal:
+                sb_text = f'{full_attempt}\n\n'\
+                        f'{organizer}: '\
+                        f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n'\
+                        f'Совершено минимум <i>{atts}</i> попыток!'
+            else:
+                sb_text = f'👺 Попытка заразить '\
+                        f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> провалилась!'\
+                        f'\n\{organizer}: '\
+                        f'<a href="tg://openmessage?user_id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\n'\
+                        f'Совершено минимум <i>{atts}</i> попыток!'\
+                        f'{hide_victim_link}'
+        else:
+            if equal:
+                sb_text = f'{full_attempt}\n\n'\
+                    f'Совершено минимум <i>{atts}</i> попыток!'
+            else:
+                sb_text = f'{short_attempt} '\
+                    f'<a href="tg://user?id={second_id}">{second_name}</a> провалилась!\n\n'\
+                    f'Совершено минимум <i>{atts}</i> попыток!'
+
+    return sb_text
 
 
 def attackText(theme, new, first_name, second_name, first_id, second_id, patogen_name, atts, profit, mortality):
@@ -211,6 +326,6 @@ heal_text = (
 )
 
 fuck_against = {
-    "standart" : "Заразить в ответ",
+    "standard" : "Заразить в ответ",
     "agro" : "Выебать"
 }

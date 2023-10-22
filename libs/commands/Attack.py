@@ -56,7 +56,7 @@ def get_keyboard_first(message: types.Message):
 
 def against( message: types.Message, id_of_organizator, id_id, chat_id, hidden):
 
-    text = fuck_against
+    text = fuck_against["standard"]
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
         types.InlineKeyboardButton(text=text, callback_data=attack_against.new(action='against', id=id_id, chat_id=chat_id, id_of_organizator=id_of_organizator, hidden=hidden)),
@@ -110,6 +110,9 @@ async def show_lab(message: types.Message):
                 return
             if attempts > 10: # ограничивает колво попыток до 10
                 await bot.send_message(message.chat.id, text=group_theme["errors"]["10"],  parse_mode="Markdown")
+                return
+            if attempts == 0:
+                await message.reply("Не надо читерить)")
                 return
             if attempts > lab.patogens: # следит, чтобы в итоге колво патов не стало меньше 0
                 attempts = lab.patogens # клво попыток равное колву оставшихся патогенов
@@ -288,20 +291,30 @@ async def show_lab(message: types.Message):
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
 
                         if int(VictimLab.virus_chat) != message.chat.id:
+
+                            sb_text = sbService(
+                                1,
+                                VictimLab.security >= lab.security,
+                                int(VictimLab.virus_chat) == VictimLab.user_id,
+                                VictimLab.theme,
+                                lab.user_id,
+                                strconv.delinkify(strconv.escape_markdown(lab.name)),
+                                VictimLab.user_id,
+                                strconv.delinkify(strconv.escape_markdown(VictimLab.name)),
+                                atts,
+                                patogenName(lab, VictimLab.theme),
+                                profit
+                            )
+
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                patogen_name = patogeName(lab)
-                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f'👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
-                                else: sb_text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={VictimLab.user_id}">{VictimLab.name}</a> {patogen_name}. \n\nОрганизатор: <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
-                                try: 
-                                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
-                                except: pass
+                                try: await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+                                except Exception as e:
+                                    print(e)
 
                             else:
-                                patogen_name = patogeName(lab)
-                                if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n\n☣️ Вы потеряли <i>{strconv.format_nums(profit)} био.</i>"
-                                else: sb_text = f'👨🏻‍🔬 <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> был подвергнут заражению {patogen_name}\n\n☣️ Потерял <i>{strconv.format_nums(profit)} био.</i>'
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
-                                except: pass
+                                except Exception as e:
+                                    print(e)
 
                     else: # действия при нуедаче заражения
 
@@ -315,20 +328,41 @@ async def show_lab(message: types.Message):
                         
                         if int(VictimLab.virus_chat) != message.chat.id:
                             """В случае провала, сб не всегда попадает к жертве"""
+
+                            sb_text = sbService(
+                                0,
+                                VictimLab.security >= lab.security,
+                                int(VictimLab.virus_chat) == VictimLab.user_id,
+                                VictimLab.theme,
+                                lab.user_id,
+                                strconv.delinkify(strconv.escape_markdown(lab.name)),
+                                VictimLab.user_id,
+                                strconv.delinkify(strconv.escape_markdown(VictimLab.name)),
+                                atts
+                            )
+
                             if VictimLab.security >= lab.security:
-                                if int(VictimLab.virus_chat) == VictimLab.user_id:
-                                    sb_text = f'👺 Попытка вашего заражения провалилась! \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\nСовершено минимум {atts} попыток!'
-                                else:
-                                    sb_text = f'👺 Попытка заразить <a href="tg://user?id={VictimLab.user_id}">{strconv.delinkify(VictimLab.name)}</a> провалилась! \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\nСовершено минимум {atts} попыток!'
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
-                                except: pass
+                                except Exception as e:
+                                    print(e)
                             else:
-                                if int(VictimLab.virus_chat) == VictimLab.user_id:
-                                    sb_text = f'👺 Попытка вашего заражения провалилась! \n\nСовершено минимум {atts} попыток!'
-                                else:
-                                    sb_text = f'👺 Попытка заразить <a href="tg://user?id={VictimLab.user_id}">{strconv.delinkify(VictimLab.name)}</a> провалилась! \n\nСовершено минимум {atts} попыток!'
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", disable_web_page_preview=True)
-                                except: pass
+                                except Exception as e:
+                                    print(e)
+
+
+                            # if VictimLab.security >= lab.security:
+                            #     if int(VictimLab.virus_chat) == VictimLab.user_id:
+                            #         sb_text = f'👺 Попытка вашего заражения провалилась! \n\nОрганизатор <a href="tg://user?id={}">{strconv.delinkify()}</a>\nСовершено минимум {atts} попыток!'
+                            #     else:
+                            #         sb_text = f'👺 Попытка заразить <a href="tg://user?id={}">{}</a> провалилась! \n\nОрганизатор <a href="tg://user?id={lab.user_id}">{strconv.delinkify(strconv.escape_markdown(lab.name))}</a>\nСовершено минимум {atts} попыток!'
+                            
+                            # else:
+                            #     if int(VictimLab.virus_chat) == VictimLab.user_id:
+                            #         sb_text = f'👺 Попытка вашего заражения провалилась! \n\nСовершено минимум {atts} попыток!'
+                            #     else:
+                            #         sb_text = f'👺 Попытка заразить <a href="tg://user?id={VictimLab.user_id}">{strconv.delinkify(VictimLab.name)}</a> провалилась! \n\nСовершено минимум {atts} попыток!'
+                            
                     lab.save()
                     VictimLab.save()
 
