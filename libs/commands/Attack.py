@@ -56,10 +56,10 @@ def get_keyboard_first(message: types.Message):
 
 def against( message: types.Message, id_of_organizator, id_id, chat_id, hidden):
 
-    text = "Заразить в ответ"
+    text = fuck_against
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
-        types.InlineKeyboardButton(text="Заразить в ответ", callback_data=attack_against.new(action='against', id=id_id, chat_id=chat_id, id_of_organizator=id_of_organizator, hidden=hidden)),
+        types.InlineKeyboardButton(text=text, callback_data=attack_against.new(action='against', id=id_id, chat_id=chat_id, id_of_organizator=id_of_organizator, hidden=hidden)),
     )
 
 
@@ -79,14 +79,11 @@ async def show_lab(message: types.Message):
         
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab:  #проверка на наличие лабы
-
+            group_theme = theme["standard"]
             """ Проверка на горячку"""
             if lab.illness != None:
-                text = f""
-                if lab.patogen_name != None:
-                    text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
-                else:
-                    text = f"🥴 У вас горячка вызванная неизвестным патогеном \n\n"
+                text = illness_check(lab)
+                
 
                 declination = "" # склонение минуту/минуты/минут
                 untill = floor(lab.illness['illness'] / 60)
@@ -109,10 +106,10 @@ async def show_lab(message: types.Message):
             victim = None #обьект жертвы содержит user_id, name, username
             """Проверка валидности стартовых параметров"""
             if lab.patogens <= 0: # проверка на паты
-                await bot.send_message(message.chat.id, text=f"👺 Жди новых патогенов!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=group_theme["errors"]["wait"],  parse_mode="Markdown")
                 return
             if attempts > 10: # ограничивает колво попыток до 10
-                await bot.send_message(message.chat.id, text=f"👺 За раз максимум 10 попыток!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=group_theme["errors"]["10"],  parse_mode="Markdown")
                 return
             if attempts > lab.patogens: # следит, чтобы в итоге колво патов не стало меньше 0
                 attempts = lab.patogens # клво попыток равное колву оставшихся патогенов
@@ -120,7 +117,7 @@ async def show_lab(message: types.Message):
             if victim_tag != None: # если в сообщении был тег
                 db_user = labs.get_user(victim_tag)
                 if db_user == None:
-                    await bot.send_message(message.chat.id, text=f"👺 Юзер не найден!",  parse_mode="Markdown")
+                    await bot.send_message(message.chat.id, text=group_theme["errors"]["404"],  parse_mode="Markdown")
                     return # прерывает функцию в случае не нахождения юзера
                 else: 
                     if is_host: # на хосте проверяет кд до следующего удара по юзеру
@@ -138,8 +135,8 @@ async def show_lab(message: types.Message):
                                     if untill%10 == 1: declination = "минута"
                                     elif untill%10 <= 4: declination = "минуты"
                                     else: declination = "минут"
-
-                                await bot.send_message(message.chat.id, text=f"👺 Ты сможешь заразить его повторно через {untill} {declination}!",  parse_mode="Markdown")
+                                text = group_theme["errors"]["again"] + f" {untill} {declination}!"
+                                await bot.send_message(message.chat.id, text=text,  parse_mode="Markdown")
                                 return 
                     victim = db_user
 
@@ -148,7 +145,7 @@ async def show_lab(message: types.Message):
             if victim == None:
                 if message.reply_to_message:
                     if message.reply_to_message["from"]["is_bot"] == True: # фильтр на ботов
-                        await bot.send_message(message.chat.id, "👺 Нельзя заразить бота!")
+                        await bot.send_message(message.chat.id, group_theme["errors"]["bot"])
                         return
                     victim = labs.get_user(message.reply_to_message["from"]["id"]) # обьект жертвы user_id, user_name, name
                     if is_host: # на хосте проверяет кд до следующего удара по юзеру
@@ -194,7 +191,7 @@ async def show_lab(message: types.Message):
                         victim = None
 
             if victim == None:
-                await bot.send_message(message.chat.id, text=f"👺 Жертва не найдена!",  parse_mode="Markdown")
+                await bot.send_message(message.chat.id, text=group_theme["errors"]["victim"],  parse_mode="Markdown")
                 return
             if victim['user_id'] == lab.user_id:
                 """Действия при заражении самого себя"""
@@ -207,10 +204,26 @@ async def show_lab(message: types.Message):
                 lab.patogens -= 1
                 lab.last_issue = int(time.time())
                 lab.save()
-                patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
-                if new: rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(victim['name'])}](tg://user?id={victim['user_id']}) {patogen_name}\n\n🧪 Затрачено патогенов: _{1}_\n☣️ Жертва приносит _{strconv.format_nums(profit)} био-ресурса_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_\n\n_👨‍🔬 Объект ещё не подвергался заражению вашим патогеном_"
-                else: rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(victim['name'])}](tg://user?id={victim['user_id']}) {patogen_name}\n\n🧪 Затрачено патогенов: _{1}_\n☣️ Жертва приносит _{strconv.format_nums(profit)} био-ресурса_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
-                await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
+                patogen_name = patogenName(lab)
+                atts = 1
+
+                rslt_text = attackText(
+                    lab.theme, 
+                    new, 
+                    message.from_user.first_name, 
+                    victim['name'], 
+                    message.from_user.id, 
+                    victim['user_id'], 
+                    patogen_name, 
+                    atts, 
+                    profit, 
+                    lab.mortality
+                
+                )
+
+                # if new: rslt_text = f"😎 [{}](tg://user?id={}) подверг заражению [{strconv.escape_markdown()}](tg://user?id={}) {patogen_name}\n\n🧪 Затрачено патогенов: _{1}_\n☣️ Жертва приносит _{strconv.format_nums(profit)} био-ресурса_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_\n\n_👨‍🔬 Объект ещё не подвергался заражению вашим патогеном_"
+                # else: rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(victim['name'])}](tg://user?id={victim['user_id']}) {patogen_name}\n\n🧪 Затрачено патогенов: _{1}_\n☣️ Жертва приносит _{strconv.format_nums(profit)} био-ресурса_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
+                await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
             else:
                 VictimLab = labs.get_lab(victim['user_id'])
                 if VictimLab.has_lab: 
@@ -254,17 +267,29 @@ async def show_lab(message: types.Message):
                         # если у жертвы VictimLab.security сб больше, чем у атакующего lab.security, жертва получает сообщение о болезни
                         VictimLab.save_issue(lab.user_id, lab.patogen_name, int(time.time()) + (lab.mortality * 24 * 60 * 60), lab.security > VictimLab.security)
                         
-                        patogen_name =  f"патогеном «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else "неизветным патогеном"
+                        patogen_name = patogenName(lab)
 
-                        rslt_text = f''
-                        if new: rslt_text = f'😎 <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message.from_user.id))}</a> подверг заражению <a href="tg://openmessage?user_id={VictimLab.user_id}">{strconv.normalaze(VictimLab.name)}</a> {patogen_name}\n\n🧪 Затрачено патогенов <i>{atts}</i>\n☣️ Получено <i>{strconv.format_nums(profit)} био-опыта</i>\n☠️ Заражение на <i>{lab.mortality} {skloneniye(lab.mortality)}</i>{hide_victim_link}\n\n<i>👨‍🔬 Объект ещё не подвергался заражению вашим патогеном</i>'
-                        else: rslt_text = f'😎 <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message.from_user.id))}</a> подверг заражению <a href="tg://openmessage?user_id={VictimLab.user_id}">{strconv.normalaze(VictimLab.name)}</a> {patogen_name}\n\n🧪 Затрачено патогенов <i>{atts}</i>\n☣️ Получено <i>{strconv.format_nums(profit)} био-опыта</i>\n☠️ Заражение на <i>{lab.mortality} {skloneniye(lab.mortality)}</i>{hide_victim_link}'
+                        rslt_text = attackText(
+                            lab.theme, 
+                            new, 
+                            message.from_user.first_name, 
+                            VictimLab.name, 
+                            message.from_user.id, 
+                            VictimLab.user_id, 
+                            patogen_name, 
+                            atts, 
+                            profit, 
+                            lab.mortality
+                        
+                        )
+                        # if new: rslt_text = f'😎 <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message.from_user.id))}</a> подверг заражению <a href="tg://openmessage?user_id={VictimLab.user_id}">{strconv.normalaze(VictimLab.name)}</a> {patogen_name}\n\n🧪 Затрачено патогенов <i>{atts}</i>\n☣️ Получено <i>{strconv.format_nums(profit)} био-опыта</i>\n☠️ Заражение на <i>{lab.mortality} {skloneniye(lab.mortality)}</i>{hide_victim_link}\n\n<i>👨‍🔬 Объект ещё не подвергался заражению вашим патогеном</i>'
+                        # else: rslt_text = f'😎 <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message.from_user.id))}</a> подверг заражению <a href="tg://openmessage?user_id={VictimLab.user_id}">{strconv.normalaze(VictimLab.name)}</a> {patogen_name}\n\n🧪 Затрачено патогенов <i>{atts}</i>\n☣️ Получено <i>{strconv.format_nums(profit)} био-опыта</i>\n☠️ Заражение на <i>{lab.mortality} {skloneniye(lab.mortality)}</i>{hide_victim_link}'
 
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
 
                         if int(VictimLab.virus_chat) != message.chat.id:
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                patogen_name =  f"патогеном <code>{lab.patogen_name}</code>" if lab.patogen_name != None else "неизветным патогеном"
+                                patogen_name = patogeName(lab)
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f'👨🏻‍🔬 Была проведена операция вашего заражения {patogen_name}. \n\nОрганизатор <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
                                 else: sb_text = f'👨🏻‍🔬 Была проведена операция заражения <a href="tg://openmessage?user_id={VictimLab.user_id}">{VictimLab.name}</a> {patogen_name}. \n\nОрганизатор: <a href="tg://openmessage?user_id={lab.user_id}">{strconv.escape_markdown(lab.name)}</a>\n\n🧪 Совершено минимум {atts} попыток!\n☣️ Вы потеряли {profit} био.'
                                 try: 
@@ -272,7 +297,7 @@ async def show_lab(message: types.Message):
                                 except: pass
 
                             else:
-                                patogen_name =  f"патогеном «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else "неизветным патогеном"
+                                patogen_name = patogeName(lab)
                                 if int(VictimLab.virus_chat) == VictimLab.user_id: sb_text = f"👨🏻‍🔬 Вас подвергли заражению {patogen_name}\n\n☣️ Вы потеряли <i>{strconv.format_nums(profit)} био.</i>"
                                 else: sb_text = f'👨🏻‍🔬 <a href="tg://user?id={VictimLab.user_id}">{VictimLab.name}</a> был подвергнут заражению {patogen_name}\n\n☣️ Потерял <i>{strconv.format_nums(profit)} био.</i>'
                                 try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
@@ -327,13 +352,23 @@ async def show_lab(message: types.Message):
 
                     new = lab.save_victum(victim['user_id'], profit)
                     
-                    patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name != None else "неизветным патогеном"
+                    patogen_name = patogenName(lab)
 
-                    rslt_text = f""
-                    if new: rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(victim['name'])}](tg://openmessage?user_id={victim['user_id']}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_\n\n_👨‍🔬 Объект ещё не подвергался заражению вашим патогеном_"
-                    else: rslt_text = f"😎 [{message.from_user.first_name}](tg://user?id={message.from_user.id}) подверг заражению [{strconv.escape_markdown(victim['name'])}](tg://openmessage?user_id={victim['user_id']}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
+                    rslt_text = attackText(
+                        lab.theme, 
+                        new, 
+                        message.from_user.first_name, 
+                        victim['name'], 
+                        message.from_user.id, 
+                        victim['user_id'], 
+                        patogen_name, 
+                        atts, 
+                        profit, 
+                        lab.mortality
+                    
+                    )
 
-                    await bot.send_message(message.chat.id, rslt_text,  parse_mode="Markdown")
+                    await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
 
                     lab.save()
     

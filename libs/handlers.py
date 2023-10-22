@@ -294,7 +294,22 @@ async def handler(message: types.message):
         elif url != None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
-
+@dp.message_handler(commands=["тема", "т"], commands_prefix='!/.')
+async def handler(message: types.message):
+    lab = labs.get_lab(message['from']['id'])
+    if lab.theme == None:
+        lab.theme = "azeri"
+        await message.reply("Азербайджанская тема")
+    elif lab.theme == "azeri":
+        lab.theme = "mafia"
+        await message.reply("Мафиозная тема")
+    elif lab.theme == "mafia":
+        lab.theme = "hell"
+        await message.reply("Хеллоинская тема")
+    else:
+        lab.theme = None
+        await message.reply("Стандартная тема")
+    lab.save()
 
 @dp.edited_message_handler()
 async def other(message):

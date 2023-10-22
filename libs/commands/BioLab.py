@@ -13,6 +13,7 @@ import html
 from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
 from config import MYSQL_HOST
 from libs.handlers import labs
+from commands.messages import *
 
 from aiogram import types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -100,12 +101,15 @@ async def show_lab(message: types.Message):
                 count += 1
                 price += floor((int(start) + count) ** power)
             return count - 1
+        if lab.theme == None:
+            themeId = "standard"
+        else:
+            themeId = lab.theme
         
-
-
+        labTheme = theme[themeId]["biolab"]
         '''  Название вируса '''
 
-        text = f'🦠 Информация о вирусе: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
+        text = f'{labTheme["info"]}: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
 
         '''  Владелец лабы '''
         owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
@@ -113,16 +117,16 @@ async def show_lab(message: types.Message):
         if lab["lab_name"] != None: lab_name = lab["lab_name"]
         else: lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab.user_id)))
 
-        text += f'👺 Владелец: [{lab_name}]({owner_link})\n'
+        text += f'{labTheme["owner"]}: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
-        if lab.corp != None: text += f'🏛 Корпорация «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
+        if lab.corp != None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
         else: text += f'\n'
         
         ''' Количество патогенов ''' 
         
         if lab.patogens == lab.all_patogens:
-            text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
+            text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
         else:
             declination = "" # склонение минуту/минуты/минут
 
@@ -154,31 +158,31 @@ async def show_lab(message: types.Message):
                 
             
             
-            text += f'🧪 Патогенов: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
-            text += f'⏱ До нового патогена: `{floor(untill)}` {declination}.\n'
+            text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
+            text += f'{labTheme["new"]}: `{floor(untill)}` {declination}.\n'
             
 
         ''' Уровень разработки '''  
         if lab.qualification < 60: 
             qualification_count = get_impr_count(lab.qualification, lab.bio_res, 2.6)
             qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else 60 - lab.qualification
-            text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
-        else: text += f'👨🏻‍🔬 Разработка: {lab.qualification} (`1 мин.`) \n\n'
+            text += f'{labTheme["quala"]}: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
+        else: text += f'{labTheme["quala"]}: {lab.qualification} (`1 мин.`) \n\n'
         
         ''' Навыки '''
         text += f'🔬 **НАВЫКИ:**\n'
-        text += f'🦠 Заразность: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
-        text += f'🛡 Иммунитет: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
-        text += f'☠️ Летальность: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
-        text += f'🕵️‍♂️ Безопасность: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
+        text += f'{labTheme["zz"]}: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
+        text += f'{labTheme["im"]}: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
+        text += f'{labTheme["ll"]}: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
+        text += f'{labTheme["bp"]}: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
 
         ''' Данные ''' 
         text += f'⛩ **ДАННЫЕ:**\n'
-        text += f'☣️ Био-опыт: {strconv.num_to_str(lab.bio_exp)}\n'
-        text += f'🧬 Био-ресурс: {strconv.num_to_str(lab.bio_res)}\n'
+        text += f'{labTheme["exp"]}: {strconv.num_to_str(lab.bio_exp)}\n'
+        text += f'{labTheme["res"]}: {strconv.num_to_str(lab.bio_res)}\n'
 
-        text += f'😷 Спецопераций: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations if lab.all_operations != 0 else 1))}%`)\n'
-        text += f'🥽 Предотвращены: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
+        text += f'{labTheme["operate"]}: {lab.suc_operations}/{lab.all_operations} (`{round(100 * int(lab.suc_operations) / int(lab.all_operations if lab.all_operations != 0 else 1))}%`)\n'
+        text += f'{labTheme["issue"]}: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
 
         ''' Горячка '''
         if lab.illness != None:
