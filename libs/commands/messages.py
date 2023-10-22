@@ -332,5 +332,6 @@ heal_text = (
 
 fuck_against = {
     "standard" : "Заразить в ответ",
-    "agro" : "Выебать"
+    "azeri" : "Выебать",
+    "hell" : "Напугать в ответ"
 }

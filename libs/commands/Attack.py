@@ -54,9 +54,9 @@ def get_keyboard_first(message: types.Message):
     return keyboard_markup
 
 
-def against( message: types.Message, id_of_organizator, id_id, chat_id, hidden):
+def against( message: types.Message,theme, id_of_organizator, id_id, chat_id, hidden):
 
-    text = fuck_against["standard"]
+    text = fuck_against[theme]
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
         types.InlineKeyboardButton(text=text, callback_data=attack_against.new(action='against', id=id_id, chat_id=chat_id, id_of_organizator=id_of_organizator, hidden=hidden)),
@@ -302,7 +302,7 @@ async def show_lab(message: types.Message):
                             )
 
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                try: await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+                                try: await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
                                 except Exception as e:
                                     print(e)
 
@@ -337,7 +337,7 @@ async def show_lab(message: types.Message):
                             )
 
                             if VictimLab.security >= lab.security:
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
+                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme,id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
                                 except Exception as e:
                                     print(e)
                             else:
