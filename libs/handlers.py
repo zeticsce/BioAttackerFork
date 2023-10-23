@@ -330,10 +330,14 @@ def second_change_theme_btn(message: types.Message, usid):
 
     )
     keyboard_markup.add(
-        types.InlineKeyboardButton(text='Азербайджанская тема', callback_data=vote_cb.new(action='desc_azeri', id=usid, chat_id=message.chat.id)),
+        types.InlineKeyboardButton(text='🇦🇿 Азербайджанская тема', callback_data=vote_cb.new(action='desc_azeri', id=usid, chat_id=message.chat.id)),
     )
     keyboard_markup.add(
         types.InlineKeyboardButton(text='Хеллоуинская тема', callback_data=vote_cb.new(action='desc_hell', id=usid, chat_id=message.chat.id)),
+    )
+
+    keyboard_markup.add(
+        types.InlineKeyboardButton(text='🇺🇦 Украинская тема', callback_data=vote_cb.new(action='desc_ukraine', id=usid, chat_id=message.chat.id)),
     )
 
     keyboard_markup.add(
@@ -346,8 +350,9 @@ def change_theme_btn(message: types.Message, usid):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
     keyboard_markup.row(
         types.InlineKeyboardButton(text='Стандартная', callback_data=vote_cb.new(action='standard', id=usid, chat_id=message.chat.id)),
-        types.InlineKeyboardButton(text='Азербайджанская', callback_data=vote_cb.new(action='azeri', id=usid, chat_id=message.chat.id)),
+        types.InlineKeyboardButton(text='🇦🇿 Азербайджанская', callback_data=vote_cb.new(action='azeri', id=usid, chat_id=message.chat.id)),
         types.InlineKeyboardButton(text='Хеллоуинская', callback_data=vote_cb.new(action='hell', id=usid, chat_id=message.chat.id)),
+        types.InlineKeyboardButton(text='🇺🇦 Украинская', callback_data=vote_cb.new(action='ukraine', id=usid, chat_id=message.chat.id)),
     )
 
     keyboard_markup.add(
@@ -379,6 +384,17 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         text = f"Название темы: {theme['standard']['theme_name']}\n\n"
         text += f"Описание темы: {theme['standard']['theme_desc']}"
+        await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(vote_cb.filter(action='desc_ukraine'))
+async def change_theme(query: types.CallbackQuery, callback_data: dict):
+    chat_id = callback_data["chat_id"]
+    from_user_id = callback_data["id"]
+    if from_user_id == str(query.from_user.id):
+        text = f"Название темы: {theme['ukraine']['theme_name']}\n\n"
+        text += f"Описание темы: {theme['ukraine']['theme_desc']}"
         await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
     else:
         await query.answer("Эта кнопка не для тебя :)")
@@ -447,6 +463,24 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
             lab.theme = None
             lab.save()
             await bot.edit_message_text(chat_id=chat_id, text="✅ Стандартная тема установлена!", message_id=query.message.message_id)
+
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(vote_cb.filter(action='ukraine'))
+async def change_theme(query: types.CallbackQuery, callback_data: dict):
+    from_user_id = callback_data["id"]
+    chat_id = callback_data["chat_id"]
+    lab = labs.get_lab(from_user_id)
+    if from_user_id == str(query.from_user.id):
+        if lab.theme == "ukraine":
+
+            await bot.edit_message_text(chat_id=chat_id, text="У вас українська тема!", message_id=query.message.message_id)
+            return
+        else:
+            lab.theme = "ukraine"
+            lab.save()
+            await bot.edit_message_text(chat_id=chat_id, text="✅ Українську тему встановлено!", message_id=query.message.message_id)
 
     else:
         await query.answer("Эта кнопка не для тебя :)")
