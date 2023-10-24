@@ -54,7 +54,7 @@ def against( message: types.Message, theme, id_of_organizator, id_id, chat_id, h
 
     if theme in (None, "None"):
         print("до " + str(theme))
-        theme == "standard"
+        theme = "standard"
         print("после " + str(theme))
     
     text = fuck_against[theme]
