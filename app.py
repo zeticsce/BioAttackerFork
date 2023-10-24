@@ -1,8 +1,32 @@
+from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST
+import datetime
+import sys
+import requests
+
+class Out(object):
+    def write(self, data):
+        data = str(data)
+        open('chats/errors.txt', 'a+').write(f"\n -- {datetime.datetime.now()}:\n" + data)
+        requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
+            'method': 'sendMessage', 
+            'chat_id': -1002146976688, 
+            'text': data
+        })
+
+is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
+# if is_host:
+out = Out()
+sys.stdout = out
+sys.stderr = out
+
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.dispatcher.filters import Filter
+
+import asyncio
+import time
 
 class IsAdmin(Filter):
     key = "is_admin"
@@ -16,13 +40,6 @@ import os
 work_path = __file__.replace("\\", "/").split("/")
 work_path.pop(-1)
 work_path = '/'.join(work_path)
-
-import sys
-import asyncio
-import time
-import datetime
-
-from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST
 
 from libs.mysql_connect import query
 from libs.handlers import *
@@ -48,8 +65,6 @@ bot.send_message = new_send_message
 
 dp = Dispatcher(bot)
 dp.message_handlers.once = False
-
-is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
 
 async def on_startup(dp):
     await dp.bot.send_message(OWNER_ID, f"*Вход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")

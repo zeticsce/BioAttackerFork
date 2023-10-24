@@ -22,6 +22,7 @@ class UserLab:
 
         self.corp: int
         self.bio_res: int
+        self.bio_exp: int
         self.last_issue: int
         self.all_patogens: int
         self.qualification: int
