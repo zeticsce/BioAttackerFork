@@ -1,4 +1,5 @@
 from aiogram import Bot, types
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.dispatcher.filters import Filter
@@ -17,9 +18,13 @@ work_path.pop(-1)
 work_path = '/'.join(work_path)
 
 import sys
+import asyncio
+import time
 import datetime
 
 from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST
+
+from libs.mysql_connect import query
 from libs.handlers import *
 from libs.StringConverters import StringConv
 from libs.ChatHistory import save_message
@@ -52,7 +57,5 @@ async def on_startup(dp):
 if __name__ == '__main__':
     from libs.handlers import dp
     dp.bind_filter(IsAdmin)
-    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
-
-
-
+    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)\
+        
