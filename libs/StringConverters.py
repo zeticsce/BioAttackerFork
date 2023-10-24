@@ -1,6 +1,5 @@
 import re
 import unicodedata
-import emoji
 
 class StringConv:
     def __init__(self):

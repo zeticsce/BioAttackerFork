@@ -13,13 +13,10 @@ import random
 import copy
 import json
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
-from Labs import Labs
+from app import dp, bot, query, strconv
 from libs.handlers import labs
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.utils.callback_data import CallbackData
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')

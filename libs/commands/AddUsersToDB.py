@@ -4,18 +4,9 @@
 
 '''
 
-import os
-import re
-import time
-import datetime
-
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
-from libs.handlers import labs
+from app import dp, query, strconv
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
-from aiogram.utils.callback_data import CallbackData
 
 class LoadUsers:
     def __init__(self):
