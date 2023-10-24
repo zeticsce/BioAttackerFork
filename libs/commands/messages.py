@@ -1,11 +1,5 @@
-import os
-import re
-import time
-import math
-import random
 from typing import Any
-from math import floor
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
+from app import strconv
 
 def skloneniye(num):
     names = ['день', 'дня', 'дней']

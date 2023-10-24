@@ -3,16 +3,12 @@
 Модуль с рп командами
 
 '''
-
-import os
 import re
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
+from app import dp, bot
 from libs.handlers import labs
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 
 rp = {
     "пнуть":             ["{op} пнул(а) {to}", "{op} пнул(а) {to} с репликой {repl}"],

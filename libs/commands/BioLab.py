@@ -3,20 +3,14 @@
 Модуль с показом лабы
 
 '''
-
-import os
-import re
 import time
 import datetime
-import html
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
+from app import dp, bot, query, strconv
 from libs.handlers import labs
 from commands.messages import *
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.utils.callback_data import CallbackData
 
 from math import floor
