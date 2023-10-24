@@ -4,15 +4,10 @@
 
 '''
 
-import os
-import re
-
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
+from app import dp, bot, query, strconv
 from libs.handlers import labs
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 
 
 @dp.message_handler(content_types=["text"])
@@ -23,7 +18,7 @@ async def improve(message: types.Message):
         all_bio_exp = query("SELECT SUM(bio_exp) as bio FROM `bio_attacker`.`labs`")[0]['bio']
         for lab in labs.bio_top:
             count += 1
-            if lab["lab_name"] != None:
+            if lab["lab_name"] is not None:
                 lab_name = lab["lab_name"]
             else:
                 lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab['user_id'])))

@@ -1,6 +1,5 @@
 import re
 import unicodedata
-import emoji
 
 class StringConv:
     def __init__(self):
@@ -67,7 +66,7 @@ class StringConv:
         for key in keys:
             self.conversion_dict[key] = keys[key]
 
-    
+
     def num_to_str(self, num):
         """
             Конвертирует число в строку 
@@ -90,7 +89,7 @@ class StringConv:
             else: result = result[0:-3]
             return ''.join(result).strip() + "k"
         else: return str(num)
-        
+
     def escape_sql(self, text):
         """функция для экранирования символов sql"""
         result = re.sub(r"([\'\`\\])", r"\\\1", str(text))
@@ -104,7 +103,7 @@ class StringConv:
         """ функция для удаления ссылок"""
         # return re.sub(r'^https?:\/\/.*[\r\n]*', '', str(text))
         return re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', str(text))
-    
+
     def deEmojify(self, text):
         regrex_pattern = re.compile(pattern = "["
                                u"\U0001F600-\U0001F64F"  # эмодзи в категории эмоций
@@ -141,7 +140,7 @@ class StringConv:
 
         if for_html: text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         if not with_emoji: text = self.deEmojify(text)
-        if replace != None and text.replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "") == "": text = replace
+        if replace is not None and text.replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "") == "": text = replace
         # text = emoji.demojize(text)
 
         return text

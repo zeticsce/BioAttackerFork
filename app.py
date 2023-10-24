@@ -72,7 +72,5 @@ async def on_startup(dp):
 if __name__ == '__main__':
     from libs.handlers import dp
     dp.bind_filter(IsAdmin)
-    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
-
-
-
+    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)\
+        

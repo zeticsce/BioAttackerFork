@@ -3,20 +3,14 @@
 Модуль с показом лабы
 
 '''
-
-import os
-import re
 import time
 import datetime
-import html
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
-from config import MYSQL_HOST
+from app import dp, bot, query, strconv
 from libs.handlers import labs
 from commands.messages import *
 
 from aiogram import types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 from aiogram.utils.callback_data import CallbackData
 
 from math import floor
@@ -101,30 +95,30 @@ async def show_lab(message: types.Message):
                 count += 1
                 price += floor((int(start) + count) ** power)
             return count - 1
-        if lab.theme == None:
+        if lab.theme is None:
             themeId = "standard"
         else:
             themeId = lab.theme
-        
+
         labTheme = theme[themeId]["biolab"]
         '''  Название вируса '''
 
-        text = f'{labTheme["info"]}: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
+        text = f'{labTheme["info"]}: `{lab.patogen_name if lab.patogen_name is not None else "неизвестно"}`\n\n'
 
         '''  Владелец лабы '''
-        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
+        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name is not None else f'tg://openmessage?user_id={lab.user_id}'
 
-        if lab["lab_name"] != None: lab_name = lab["lab_name"]
+        if lab["lab_name"] is not None: lab_name = lab["lab_name"]
         else: lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab.user_id)))
 
         text += f'{labTheme["owner"]}: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
-        if lab.corp != None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
+        if lab.corp is not None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
         else: text += f'\n'
-        
+
         ''' Количество патогенов ''' 
-        
+
         if lab.patogens == lab.all_patogens:
             text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
         else:
@@ -155,12 +149,12 @@ async def show_lab(message: types.Message):
 
             # if untill < 0:
             #     untill = untill * -1
-                
-            
-            
+
+
+
             text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
             text += f'{labTheme["new"]}: `{floor(untill)}` {declination}.\n'
-            
+
 
         ''' Уровень разработки '''  
         if lab.qualification < 60: 
@@ -168,16 +162,16 @@ async def show_lab(message: types.Message):
             qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else 60 - lab.qualification
             text += f'{labTheme["quala"]}: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
         else: text += f'{labTheme["quala"]}: {lab.qualification} (`1 мин.`) \n\n'
-        
+
         ''' Навыки '''
-        text += f'🔬 **НАВЫКИ:**\n'
+        text += f'🔬 **{labTheme["skills"]}:**\n'
         text += f'{labTheme["zz"]}: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
         text += f'{labTheme["im"]}: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
         text += f'{labTheme["ll"]}: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
         text += f'{labTheme["bp"]}: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
 
         ''' Данные ''' 
-        text += f'⛩ **ДАННЫЕ:**\n'
+        text += f'⛩ **{labTheme["data"]}:**\n'
         text += f'{labTheme["exp"]}: {strconv.num_to_str(lab.bio_exp)}\n'
         text += f'{labTheme["res"]}: {strconv.num_to_str(lab.bio_res)}\n'
 
@@ -185,7 +179,7 @@ async def show_lab(message: types.Message):
         text += f'{labTheme["issue"]}: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
 
         ''' Горячка '''
-        if lab.illness != None:
+        if lab.illness is not None:
             declination = "" # склонение минуту/минуты/минут
             untill = floor(lab.illness['illness'] / 60)
             if untill <= 20:
@@ -197,10 +191,19 @@ async def show_lab(message: types.Message):
                 elif untill%10 <= 4: declination = "минуты"
                 else: declination = "минут"
 
-            if lab.patogen_name != None:
-                text += f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
+            if lab.theme == "azeri":
+                howfuck = "баздыгом"
+            elif lab.theme == "mafia":
+                howfuck = "приемом"
+            elif lab.theme == "hell":
+                howfuck = "розыгрышем"
             else:
-                text += f"🥴 У вас горячка вызванная неизвестным патогеном ещё `{untill}` {declination}\n\n"
+                howfuck = "патогеном"
+
+            if lab.patogen_name is not None:
+                text += f"🥴 У вас горячка вызванная {howfuck} «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
+            else:
+                text += f"🥴 У вас горячка вызванная неизвестным {howfuck} ещё `{untill}` {declination}\n\n"
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
@@ -222,7 +225,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         text = f'Болезни игрока [{strconv.normalaze(message_name, replace=str(from_user_id))}](tg://openmessage?user_id={from_user_id})\n\n'
-        
+
         count = 0
         in_list = []
         for item in list(reversed(lab.get_issues())):
@@ -232,14 +235,14 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                 if item['hidden'] == 0: 
                     if item['hidden'] == 0: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
                         else:
                             text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
                         text += f" | до {until}\n"
                     else: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"{strconv.escape_markdown(item['pat_name'])}"
                         else:
                             text += "Неизвестный патоген"
@@ -247,7 +250,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
                 count += 1
                 if count == 25: break
-                
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -257,7 +260,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -287,11 +290,11 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-        
+
         text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
-        
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -301,7 +304,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 

@@ -1,6 +1,5 @@
 import os
 import shutil
-import string
 import requests
 import random
 import subprocess
@@ -8,10 +7,8 @@ import sys
 import datetime
 import re
 import time
-import json
-import copy
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
+from app import dp, bot, query, strconv, save_message
 from config import MYSQL_HOST
 from Labs import Labs
 
@@ -28,12 +25,8 @@ from commands.rp_module import *
 from commands.corps import *
 
 
-from aiogram import Bot, types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
-
-from math import ceil, floor
+from aiogram import types
+from aiogram.types import InputFile
 
 work_path = os.path.abspath(os.curdir)
 
@@ -100,7 +93,7 @@ async def handler(message: types.message):
     message.text = message.text.split(" ")
     message.text.pop(0)
     message.text = ' '.join(message.text).replace("\\", "/").replace(" ", "")
-    if message.text == '' or message.text == '/':
+    if message.text in ('', '/'):
         await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path), filename='BioAttacker.zip'))
         os.remove(work_path + "/files.zip")
     else:
@@ -147,7 +140,7 @@ async def handler(message: types.message):
             if len(labName) == 0:
                 await bot.send_message(message.chat.id, "Имя лаборатории не может быть пустым!")
                 return
-            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) == None: # Проверка на валидность имени
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) is None: # Проверка на валидность имени
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
 
@@ -175,7 +168,7 @@ async def handler(message: types.message):
             if len(patName) == 0:
                 await bot.send_message(message.chat.id, "Вирус не может быть пустым!")
                 return
-            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) is None: # Проверка на валидность имени патогена
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
             virus_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `patogen_name` = '{strconv.escape_sql(patName)}'")
@@ -198,7 +191,7 @@ async def handler(message: types.message):
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
-        
+
         text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"]))}</a>\n\n'
         profit = 0
 
@@ -210,17 +203,17 @@ async def handler(message: types.message):
                 actual += 1
                 profit += item["profit"]
                 if count < 50: 
-                    
+
                     name = strconv.normalaze(item["name"], replace=str(item["user_id"]))
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-        
+
         text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
-        
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message['from']['id'], chat_id=message['chat']['id'])),
@@ -230,7 +223,7 @@ async def handler(message: types.message):
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
-        
+
         lab = labs.get_lab(message['from']['id'])
         if lab.last_farma + (60*60) > int(time.time()):
             minuts = 60 - int((int(time.time()) - lab.last_farma)/60)
@@ -246,7 +239,7 @@ async def handler(message: types.message):
             await bot.send_message(message.chat.id, text=f'Ожидайте еще {minuts} {declination} до следующей фармы!!', parse_mode="Markdown")
             lab.save()
             return
-        
+
         profit = random.randint(20, 200)
 
         lab.coins += profit
@@ -267,19 +260,19 @@ async def handler(message: types.message):
 
         await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
-    
+
     if message.text.lower() == "биохелп":
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
     reg = re.fullmatch(r'[\./!]ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
-    if reg != None:
+    if reg is not None:
         url = reg.group(2)
         name = None
-        if url != None:
+        if url is not None:
             clear_url = url.replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
-            if re.fullmatch(r"[a-z0-9_]+", clear_url) != None:
+            if re.fullmatch(r"[a-z0-9_]+", clear_url) is not None:
                 user = labs.get_user(clear_url)
-                if user != None:
+                if user is not None:
                     name = strconv.normalaze(user['name'], str(user['user_id']))
                     user_id = user['user_id']
         elif message.reply_to_message:
@@ -288,10 +281,10 @@ async def handler(message: types.message):
         else:
             name = strconv.normalaze(message.from_user.first_name, str(message.from_user.id))
             user_id = message.from_user.id
-        if name != None:
+        if name is not None:
             text = f'🌊 Айди игрока <a href="tg://openmessage?user_id={user_id}">{name}</a> равен <code>@{user_id}</code>'
             await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
-        elif url != None:
+        elif url is not None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
 
@@ -326,7 +319,7 @@ def second_change_theme_btn(message: types.Message, usid):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
     keyboard_markup.row(
         types.InlineKeyboardButton(text='Стандартная тема', callback_data=vote_cb.new(action='desc_standard', id=usid, chat_id=message.chat.id)),
-        
+
 
     )
     keyboard_markup.add(
@@ -409,7 +402,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
         await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
     else:
         await query.answer("Эта кнопка не для тебя :)")
-    
+
 @dp.callback_query_handler(vote_cb.filter(action='desc_hell'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
     chat_id = callback_data["chat_id"]
@@ -455,7 +448,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
     chat_id = callback_data["chat_id"]
     lab = labs.get_lab(from_user_id)
     if from_user_id == str(query.from_user.id):
-        if lab.theme == None:
+        if lab.theme is None:
 
             await bot.edit_message_text(chat_id=chat_id, text="У вас и так стандартная тема!", message_id=query.message.message_id)
             return
@@ -484,7 +477,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
 
     else:
         await query.answer("Эта кнопка не для тебя :)")
-    
+
 @dp.callback_query_handler(vote_cb.filter(action='azeri'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
     from_user_id = callback_data["id"]
