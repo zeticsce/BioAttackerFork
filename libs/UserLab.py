@@ -110,7 +110,7 @@ class UserLab:
                     self.illness = {
                         "patogen": iss['pat_name'],
                         "from_id": iss['user_id'],
-                        "hidden": False if iss['hidden'] == 0 else True, # применять для сокрытия ида заразившего
+                        "hidden": not iss['hidden'] == 0, # применять для сокрытия ида заразившего
                         "illness": self.last_issue + 60*60 - int(time.time())
                     }
 
