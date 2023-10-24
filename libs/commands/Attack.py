@@ -51,10 +51,10 @@ def get_keyboard_first(message: types.Message):
 
 
 def against( message: types.Message, theme, id_of_organizator, id_id, chat_id, hidden):
-    print("до" + theme)
+    print("до" + str(theme))
     if theme in (None, "None"):
         theme == "standard"
-    print("после" + theme)
+    print("после" + str(theme))
     text = fuck_against[theme]
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
