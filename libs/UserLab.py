@@ -50,11 +50,11 @@ class UserLab:
         self.modules: json
 
         self.__convert_lab()
-        if self.has_lab and self.virus_chat == None: self.virus_chat = str(self.user_id)
+        if self.has_lab and self.virus_chat is None: self.virus_chat = str(self.user_id)
 
     def format_dir(self, _item, indent=4, base_indent=None):
 
-        if base_indent == None: 
+        if base_indent is None: 
             base_indent = indent
         result = "{\n"
         count = 0
@@ -129,7 +129,7 @@ class UserLab:
 
             """Установка корпорации"""
 
-            if self.corp != None:
+            if self.corp is not None:
                 corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_key` = '{self.corp}'")
                 if len(corp) == 0: 
                     self.corp = None
@@ -152,7 +152,7 @@ class UserLab:
             Выводит список жертв у юзера
             params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
         """
-        if params == None: 
+        if params is None: 
             return query(f"SELECT bio_attacker_data.victums{self.user_id}.id, bio_attacker_data.victums{self.user_id}.user_id, telegram_data.tg_users.user_name, telegram_data.tg_users.name, bio_attacker_data.victums{self.user_id}.profit, bio_attacker_data.victums{self.user_id}.from_infect, bio_attacker_data.victums{self.user_id}.until_infect  FROM `bio_attacker_data`.`victums{self.user_id}` INNER JOIN `telegram_data`.`tg_users` ON bio_attacker_data.victums{self.user_id}.user_id = telegram_data.tg_users.user_id;")
         else: 
             return query(f"SELECT bio_attacker_data.victums{self.user_id}.id, bio_attacker_data.victums{self.user_id}.user_id, telegram_data.tg_users.user_name, telegram_data.tg_users.name, bio_attacker_data.victums{self.user_id}.profit, bio_attacker_data.victums{self.user_id}.from_infect, bio_attacker_data.victums{self.user_id}.until_infect  FROM `bio_attacker_data`.`victums{self.user_id}` INNER JOIN `telegram_data`.`tg_users` ON bio_attacker_data.victums{self.user_id}.user_id = telegram_data.tg_users.user_id {params};")
@@ -162,7 +162,7 @@ class UserLab:
             Выводит список болезней у юзера
             params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
         """
-        if params == None: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}`;")
+        if params is None: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}`;")
         else: return query(f"SELECT * FROM `bio_attacker_data`.`issues{self.user_id}` {params};")
 
 
@@ -194,7 +194,7 @@ class UserLab:
             until       юникс мента времени действия болезни
             hide        скрывать ид заразившего в списке болезней/нет
         """
-        patogen = "NULL" if patogen == None else f"'{strconv.escape_sql(patogen)}'"
+        patogen = "NULL" if patogen is None else f"'{strconv.escape_sql(patogen)}'"
         query(f"INSERT INTO `bio_attacker_data`.`issues{self.user_id}` (`id`, `user_id`, `pat_name`, `hidden`, `from_infect`, `until_infect`) VALUES (NULL, '{from_id}', {patogen}, '{1 if hide else 0}', '{int(time.time())}', '{until}')")
 
 
@@ -204,7 +204,7 @@ class UserLab:
         result = []
         for i in self.__start_data:
             if self.__start_data[i] != self.__dict__[i]: 
-                if self.__dict__[i] != None: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
+                if self.__dict__[i] is not None: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
                 else: result.append(f"`{i}` = NULL") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 

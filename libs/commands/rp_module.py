@@ -83,27 +83,27 @@ rp = {
 async def improve(message: types.Message):
     split_msg = message.text.split("\n")
     reg = re.fullmatch(r"([a-zA-Zа-яА-Я0-9\s]+)(\s@([0-9a-zA-Z]+))?", split_msg[0])
-    if reg != None:
+    if reg is not None:
         text = None
         command = reg.group(1).strip()
         to = reg.group(3)
-        if to == None:
+        if to is None:
             if message.reply_to_message: 
                 to = f'<a href="tg://openmessage?user_id={message.reply_to_message.from_user.id}">{message.reply_to_message.from_user.first_name}</a>'
                 to_hide = f'<a href="tg://user?id={message.reply_to_message.from_user.id}">\xad</a>'
         else:
             user = labs.get_user(to)
-            if user != None:
+            if user is not None:
                 to = f'<a href="tg://openmessage?user_id={user["user_id"]}">{user["name"]}</a>'
                 to_hide = f'<a href="tg://user?id={user["user_id"]}">\xad</a>'
 
         op = f'<a href="tg://openmessage?user_id={message.from_user.id}">{message.from_user.first_name}</a>'
         repl = '\n'.join(split_msg[1::]) if len(split_msg) != 1 else None
         if command.lower() in rp:
-            if op != None and to != None:
-                if repl == None:
+            if op is not None and to is not None:
+                if repl is None:
                     text = rp[command.lower()][0].replace("{op}", op).replace("{to}", to)
                 else:
                     text = rp[command.lower()][1].replace("{op}", op).replace("{to}", to).replace("{repl}", repl)
 
-            if text != None: await bot.send_message(message.chat.id, text=text+to_hide, parse_mode="HTML", disable_web_page_preview=True)
+            if text is not None: await bot.send_message(message.chat.id, text=text+to_hide, parse_mode="HTML", disable_web_page_preview=True)

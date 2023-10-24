@@ -141,7 +141,7 @@ class StringConv:
 
         if for_html: text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         if not with_emoji: text = self.deEmojify(text)
-        if replace != None and text.replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "") == "": text = replace
+        if replace is not None and text.replace(" ", "").replace("\t", "").replace("\n", "").replace("\r", "") == "": text = replace
         # text = emoji.demojize(text)
 
         return text

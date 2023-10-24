@@ -41,14 +41,14 @@ async def issues(message: types.Message):
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                     if item['hidden'] == 0: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
                         else:
                             text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
                         text += f" | до {until}\n"
                     else: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"{strconv.escape_markdown(item['pat_name'])}"
                         else:
                             text += "Неизвестный патоген"

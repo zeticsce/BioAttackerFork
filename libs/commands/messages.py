@@ -199,7 +199,7 @@ theme = {
 }
 def illness_check(lab):
     text = f""
-    if lab.patogen_name != None:
+    if lab.patogen_name is not None:
         text = f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`»\n\n"
     else:
         text = f"🥴 У вас горячка вызванная неизвестным патогеном \n\n"
@@ -225,7 +225,7 @@ def patogenName(lab, theme=""):
         else:
             howfuck = "патогеном"
 
-    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else f"неизвестным {howfuck}"
+    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"неизвестным {howfuck}"
 
 
 def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
@@ -234,7 +234,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
     hide_attacker_link = f'<a href="tg://user?id={first_id}">\xad</a>'
     if suc == 1:
 
-        if theme == None:
+        if theme is None:
             organizer = "Организатор"
             full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
             short_attempt = "👨🏻‍🔬 Была проведена операция заражения"
@@ -310,7 +310,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
 
 
     else:
-        if theme == None:
+        if theme is None:
             organizer = "Организатор"
             full_attempt = "👺 Попытка вашего заражения провалилась!"
             short_attempt = "👺 Попытка заразить"
