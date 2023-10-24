@@ -213,8 +213,8 @@ async def show_lab(message: types.Message):
                 rslt_text = attackText(
                     lab.theme, 
                     new, 
-                    message.from_user.first_name, 
-                    victim['name'], 
+                    strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"])), 
+                    strconv.normalaze(victim['name'], replace=str(victim['user_id'])), 
                     message.from_user.id, 
                     victim['user_id'], 
                     patogen_name, 
@@ -273,8 +273,8 @@ async def show_lab(message: types.Message):
                         rslt_text = attackText(
                             lab.theme, 
                             new, 
-                            message.from_user.first_name, 
-                            VictimLab.name, 
+                            strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"])), 
+                            strconv.normalaze(VictimLab.name, replace=str(VictimLab.user_id)), 
                             message.from_user.id, 
                             VictimLab.user_id, 
                             patogen_name, 
@@ -283,6 +283,7 @@ async def show_lab(message: types.Message):
                             lab.mortality
                         
                         )
+
                         await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
 
                         if int(VictimLab.virus_chat) != message.chat.id:
@@ -293,9 +294,9 @@ async def show_lab(message: types.Message):
                                 int(VictimLab.virus_chat) == VictimLab.user_id,
                                 VictimLab.theme,
                                 lab.user_id,
-                                strconv.delinkify(strconv.escape_markdown(lab.name)),
+                                strconv.normalaze(lab.name, replace=str(lab.user_id)),
                                 VictimLab.user_id,
-                                strconv.delinkify(strconv.escape_markdown(VictimLab.name)),
+                                strconv.normalaze(VictimLab.name, replace=str(VictimLab.user_id)),
                                 atts,
                                 patogenName(lab, VictimLab.theme),
                                 profit
@@ -330,9 +331,9 @@ async def show_lab(message: types.Message):
                                 int(VictimLab.virus_chat) == VictimLab.user_id,
                                 VictimLab.theme,
                                 lab.user_id,
-                                strconv.delinkify(strconv.escape_markdown(lab.name)),
+                                strconv.normalaze(lab.name, replace=str(lab.user_id)),
                                 VictimLab.user_id,
-                                strconv.delinkify(strconv.escape_markdown(VictimLab.name)),
+                                strconv.normalaze(VictimLab.name, replace=str(VictimLab.user_id)),
                                 atts
                             )
 
@@ -373,8 +374,8 @@ async def show_lab(message: types.Message):
                     rslt_text = attackText(
                         lab.theme, 
                         new, 
-                        message.from_user.first_name, 
-                        victim['name'], 
+                        strconv.normalaze(message.from_user.first_name, replace=str(message.from_user.id)), 
+                        strconv.normalaze(victim['name'], replace=str(victim['user_id'])), 
                         message.from_user.id, 
                         victim['user_id'], 
                         patogen_name, 
@@ -383,6 +384,7 @@ async def show_lab(message: types.Message):
                         lab.mortality
                     
                     )
+
 
                     await bot.send_message(message.chat.id, rslt_text,  parse_mode="HTML")
 
