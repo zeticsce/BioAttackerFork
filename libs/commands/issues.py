@@ -32,7 +32,7 @@ async def issues(message: types.Message):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:
             text = f'Болезни игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'
-            
+
             count = 0
             in_list = []
             for item in list(reversed(lab.get_issues())):

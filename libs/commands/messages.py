@@ -31,7 +31,7 @@ theme = {
     "standard" : {
         "theme_name" : "Стандартная тема",
         "theme_desc" : "Дефолтная тема для олдов био-войн",
-        
+
         "biolab" : {
             "info" : "🦠 Информация о вирусе",
             "owner" : "👺 Владелец",
@@ -65,7 +65,7 @@ theme = {
     "hell" : {
         "theme_name" : "Хеллоуинская тема",
         "theme_desc" : "Тема в честь Хеллоуина",
-        
+
         "biolab" : {
             "info" : "👻 Название розыгрыша",
             "owner" : "👺 Владелец",
@@ -99,7 +99,7 @@ theme = {
     "ukraine" : {
         "theme_name" : "Украинская тема",
         "theme_desc" : "Стандартна тема але українською мовою",
-        
+
         "biolab" : {
             "info" : "🦠Інформація про вірус",
             "owner" : "👺 Власник",
@@ -166,7 +166,7 @@ theme = {
     "mafia" : {
         "theme_name" : "Тема Мафия",
         "theme_desc" : "💰 Деньги и власть – основные ценности мафии, ты поднимешься к вершине преступного мира, либо станешь жертвой своей собственной доверчивости",
-        
+
         "biolab" : {
             "info" : "🗂 Приём вербовки",
             "owner" : "🕵🏻‍♂️ Мафиози",
@@ -224,12 +224,12 @@ def patogenName(lab, theme=""):
             howfuck = "розыгрышем"
         else:
             howfuck = "патогеном"
-        
+
     return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name != None else f"неизвестным {howfuck}"
 
 
 def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
-    
+
     hide_victim_link = f'<a href="tg://user?id={second_id}">\xad</a>'
     hide_attacker_link = f'<a href="tg://user?id={first_id}">\xad</a>'
     if suc == 1:
@@ -257,7 +257,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Сяни сиктиляр"
             alter_lost = "☣️ Сычдын"
             alter_attempt = "ону сиктиляр"
-        
+
         elif theme == "ukraine":
             organizer = "Злочинець"
             full_attempt = "👨🏻‍🔬 Була спроба вашого вбивства "
@@ -269,7 +269,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Вас йобнули"
             alter_lost = "☣️ Проєбав "
             alter_attempt = "був йобнутий"
-        
+
         elif theme == "hell":
             organizer = "Организатор розыгрыша"
             full_attempt = "👨🏻‍🔬 Только что вас напугали"
@@ -305,16 +305,16 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
                 sb_text = f'👨🏻‍🔬 <a href="tg://openmessage?user_id={second_id}">{second_name}</a> '\
                         f'{alter_attempt} {patogen_name}\n\n'\
                         f'{alter_lost} <code>{strconv.format_nums(profit)}</code> {bio}.'
-        
+
         sb_text += f"{hide_victim_link}"            
-        
+
 
     else:
         if theme == None:
             organizer = "Организатор"
             full_attempt = "👺 Попытка вашего заражения провалилась!"
             short_attempt = "👺 Попытка заразить"
-        
+
         elif theme == "azeri":
             organizer = "Пейсяр"
             full_attempt = "👺 Сяни вуранда озю пейсяр чыхды!"
@@ -324,7 +324,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Организатор розыгрыша"
             full_attempt = "👺 Вас пытались напугать, но вы и бровью не пошевелили!"
             short_attempt = "👺 Попытка напугать"
-        
+
         elif theme == "ukraine":
             organizer = "Злочинець"
             full_attempt = "👺 Спроба вашого вбивства провалилася!"
@@ -357,7 +357,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
 
 def attackText(theme, new, first_name, second_name, first_id, second_id, patogen_name, atts, profit, mortality):
     rslt_text = f""
-    
+
     if theme == "azeri":
         ''' Азербайджанская тема '''
         fucked = "сикди"
@@ -366,7 +366,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "био-манатлар"
         infect = "☠️ Заражение на"
         lol = "👨‍🔬 Бу гехпе сенин деильди!!! Амма инди сяниндир)"
-    
+
     elif theme == "mafia":
         ''' Мафиозная тема '''
         fucked = "успешно завербовал"
@@ -375,7 +375,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "манат"
         infect = "⏳ Останется на поводке клана в течение"
         lol = "🥷 Вы пополнили список своих шестерок новым осведомителем"
-    
+
     elif theme == "hell":
         ''' Хеллоуин '''
         fucked = "напугал"
@@ -384,7 +384,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "адреналина"
         infect = "🌙 Пугающий эффект продлится"
         lol = "🎃 Жертва впервые встретилась с вашей шалостью и будет в шоке"
-    
+
     elif theme == "ukraine":
         ''' Украинская тема '''
         fucked = "йобнув"

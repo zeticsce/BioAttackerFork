@@ -105,7 +105,7 @@ async def show_lab(message: types.Message):
             themeId = "standard"
         else:
             themeId = lab.theme
-        
+
         labTheme = theme[themeId]["biolab"]
         '''  Название вируса '''
 
@@ -122,9 +122,9 @@ async def show_lab(message: types.Message):
         ''' Корпорация '''
         if lab.corp != None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
         else: text += f'\n'
-        
+
         ''' Количество патогенов ''' 
-        
+
         if lab.patogens == lab.all_patogens:
             text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
         else:
@@ -155,12 +155,12 @@ async def show_lab(message: types.Message):
 
             # if untill < 0:
             #     untill = untill * -1
-                
-            
-            
+
+
+
             text += f'{labTheme["pats"]}: {lab.patogens} из {lab.all_patogens} (`+{get_impr_count(lab.all_patogens, lab.bio_res, 2)}`)\n'
             text += f'{labTheme["new"]}: `{floor(untill)}` {declination}.\n'
-            
+
 
         ''' Уровень разработки '''  
         if lab.qualification < 60: 
@@ -168,7 +168,7 @@ async def show_lab(message: types.Message):
             qualification_count = qualification_count if qualification_count + lab.qualification <= 60 else 60 - lab.qualification
             text += f'{labTheme["quala"]}: {lab.qualification} (`{61 - lab.qualification} мин.` | `+{qualification_count}`) \n\n'
         else: text += f'{labTheme["quala"]}: {lab.qualification} (`1 мин.`) \n\n'
-        
+
         ''' Навыки '''
         text += f'🔬 **{labTheme["skills"]}:**\n'
         text += f'{labTheme["zz"]}: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
@@ -231,7 +231,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         text = f'Болезни игрока [{strconv.normalaze(message_name, replace=str(from_user_id))}](tg://openmessage?user_id={from_user_id})\n\n'
-        
+
         count = 0
         in_list = []
         for item in list(reversed(lab.get_issues())):
@@ -256,7 +256,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
                 count += 1
                 if count == 25: break
-                
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -266,7 +266,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -296,11 +296,11 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-        
+
         text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
-        
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -310,7 +310,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 

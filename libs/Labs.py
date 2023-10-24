@@ -22,17 +22,17 @@ class Labs:
             self.has_lab_users.append(user_id)
             user = self.get_user(user_id)
             labs_count = query("SELECT COUNT(*) as count FROM  `bio_attacker`.`labs`;")[0]['count']
-            
+
             requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
                 'method': 'sendMessage', 
                 'chat_id': OWNER_ID, 
                 'text': f"🔬 Cоздана новая лаба\n📕 {user['name']} / @{user_id}\n🧮 Всего лаб {labs_count}"
             })
-            
+
             from libs.UserLab import UserLab
 
         return UserLab(user_id)
-    
+
     def get_lab(self, user_id): 
         from libs.UserLab import UserLab
         return UserLab(user_id)
@@ -61,7 +61,7 @@ class Labs:
         else:
             query(f"DELETE FROM `bio_attacker_data`.`victums{user_id}` WHERE `victums{user_id}`.`id` = {victums[0]['id']}")
             query(f"INSERT INTO `bio_attacker_data`.`victums{user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (lab.mortality * 24 * 60 * 60)}')")
-    
+
     def get_victums(self, user_id, params = None):
         """
             user_id  юзер айди пользователя, у которого надо взять жертв
@@ -71,7 +71,7 @@ class Labs:
             return query(f"SELECT bio_attacker_data.victums{user_id}.id, bio_attacker_data.victums{user_id}.user_id, telegram_data.tg_users.user_name, telegram_data.tg_users.name, bio_attacker_data.victums{user_id}.profit, bio_attacker_data.victums{user_id}.from_infect, bio_attacker_data.victums{user_id}.until_infect  FROM `bio_attacker_data`.`victums{user_id}` INNER JOIN `telegram_data`.`tg_users` ON bio_attacker_data.victums{user_id}.user_id = telegram_data.tg_users.user_id;")
         else:
             return query(f"SELECT * FROM `bio_attacker_data`.`victums{user_id}` WHERE {params};")
-        
+
     def get_issues(self, user_id, params = None):
         """
             user_id  юзер айди пользователя, у которого надо взять жертв

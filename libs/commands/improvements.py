@@ -27,16 +27,16 @@ def impr_price(start, end, power):
 
 @dp.message_handler(content_types=["text"])
 async def improve(message: types.Message):
-    
+
     if message.text.startswith("+"):
-    
+
         lab = labs.get_lab(message['from']['id'])
-            
+
         imps={}
         imps["попыток"] = re.fullmatch(r"(\+\+|\+)([а-я]+)(\s\d+)?", message.text.lower()) # если imps["попыток"] будет None, то это невалидное сообщение
-        
+
         if lab.has_lab and imps["попыток"] != None: # проверка существует ли лаба, если лабы нет, то пусть вообще не отвечает
-        
+
             imps["патоген"] =      re.fullmatch(r"(\+\+|\+)(патоген|пат)(\s\d+)?", message.text.lower())
             imps["квалификация"] = re.fullmatch(r"(\+\+|\+)(разработка|квала|квалификация)(\s\d+)?", message.text.lower())
             imps["заразность"] =   re.fullmatch(r"(\+\+|\+)(зз|заразность)(\s\d+)?", message.text.lower())
@@ -78,7 +78,7 @@ async def improve(message: types.Message):
                     elif imps["безопасность"] != None:
                         price = strconv.format_nums(impr_price(lab.security, lab.security + atts, 2.1))
                         text = f"Прокачка безопасности с _{lab.security} ур._ до _{lab.security + atts} ур._ обойдется вам в _{price} био_"
-                        
+
                 else:
 
                     if imps["патоген"] != None:
@@ -111,7 +111,7 @@ async def improve(message: types.Message):
                                 lab.coins -= (price - lab.bio_res)
                                 lab.bio_res -= lab.bio_res
                                 lab.qualification += atts
-                            
+
                             else: text = f"Недостаточно био-ресурса!"
                         else: text = f"У вас уже максимальный уровень!"
 
@@ -170,7 +170,7 @@ async def improve(message: types.Message):
                             lab.bio_res -= lab.bio_res
                             lab.security += atts
                         else: text = f"Недостаточно био-ресурса!"
-                    
+
                     lab.save()
 
             else: text = f"Вы не можете прокачать более _1000 уровней_ за раз!"

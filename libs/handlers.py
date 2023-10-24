@@ -198,7 +198,7 @@ async def handler(message: types.message):
 
     if message.text.lower() in ("биожертвы", "биоежа"):
         lab = labs.get_lab(message['from']['id'])
-        
+
         text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"]))}</a>\n\n'
         profit = 0
 
@@ -210,17 +210,17 @@ async def handler(message: types.message):
                 actual += 1
                 profit += item["profit"]
                 if count < 50: 
-                    
+
                     name = strconv.normalaze(item["name"], replace=str(item["user_id"]))
                     until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-        
+
         text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
-        
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=message['from']['id'], chat_id=message['chat']['id'])),
@@ -230,7 +230,7 @@ async def handler(message: types.message):
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
 
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
-        
+
         lab = labs.get_lab(message['from']['id'])
         if lab.last_farma + (60*60) > int(time.time()):
             minuts = 60 - int((int(time.time()) - lab.last_farma)/60)
@@ -246,7 +246,7 @@ async def handler(message: types.message):
             await bot.send_message(message.chat.id, text=f'Ожидайте еще {minuts} {declination} до следующей фармы!!', parse_mode="Markdown")
             lab.save()
             return
-        
+
         profit = random.randint(20, 200)
 
         lab.coins += profit
@@ -267,7 +267,7 @@ async def handler(message: types.message):
 
         await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
-    
+
     if message.text.lower() == "биохелп":
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
@@ -326,7 +326,7 @@ def second_change_theme_btn(message: types.Message, usid):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
     keyboard_markup.row(
         types.InlineKeyboardButton(text='Стандартная тема', callback_data=vote_cb.new(action='desc_standard', id=usid, chat_id=message.chat.id)),
-        
+
 
     )
     keyboard_markup.add(
@@ -409,7 +409,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
         await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
     else:
         await query.answer("Эта кнопка не для тебя :)")
-    
+
 @dp.callback_query_handler(vote_cb.filter(action='desc_hell'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
     chat_id = callback_data["chat_id"]
@@ -484,7 +484,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
 
     else:
         await query.answer("Эта кнопка не для тебя :)")
-    
+
 @dp.callback_query_handler(vote_cb.filter(action='azeri'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
     from_user_id = callback_data["id"]
