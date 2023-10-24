@@ -299,14 +299,10 @@ async def show_lab(message: types.Message):
                             )
 
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                try: await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
-                                except Exception as e:
-                                    print(e)
+                                await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
 
                             else:
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
-                                except Exception as e:
-                                    print(e)
+                                await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
 
                     else: # действия при нуедаче заражения
 
