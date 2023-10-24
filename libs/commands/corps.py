@@ -37,7 +37,7 @@ def impr_price(start, end, power):
 
 @dp.message_handler(content_types=["text"])
 async def issues(message: types.Message):
-        
+
     reg = re.fullmatch(r'-корп', message.text.lower())
     if reg != None:
         lab = labs.get_lab(message.from_user.id)
@@ -55,18 +55,18 @@ async def issues(message: types.Message):
         if corp['corp_head'] == lab.user_id:
             await bot.send_message(chat_id=message.chat.id, text="Вы не можете выйти из корпорации так как являетесь ее главой!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         lab.corp = None
         lab.save()
 
         corp['members'] = json.loads(corp['members'])
         if str(lab.user_id) in corp['members']:
             await bot.send_message(chat_id=message.chat.id, text=f'Вы вышли из корпорации <a href="tg://openmessage?user_id={corp["corp_head"]}">{corp["corp_name"]}</a>', parse_mode="HTML", reply_to_message_id=message.message_id)
-            
+
         del corp['members'][str(lab.user_id)]
 
         query(f"UPDATE `bio_attacker`.`corporations` SET `members` = '{json.dumps(corp['members'])}' WHERE `corp_key` = '{corp['corp_key']}'")
-            
+
 
 
     reg = re.fullmatch(r'\+корп ([а-яa-z0-9]+)', message.text.lower())
@@ -82,7 +82,7 @@ async def issues(message: types.Message):
         if re.fullmatch(r"[a-z]+", key) == None: 
             await bot.send_message(chat_id=message.chat.id, text="Корп айди не действителен!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_key` = '{key}'")
         if len(corp) == 0:
             await bot.send_message(chat_id=message.chat.id, text="Корп айди не действителен!", parse_mode="HTML", reply_to_message_id=message.message_id)
@@ -112,7 +112,7 @@ async def issues(message: types.Message):
         query(f"INSERT INTO `bio_attacker`.`corps_applications` (`id`, `user_id`, `corp`, `from_date`, `corp_name`) VALUES (NULL, '{lab.user_id}', '{key}', '{int(time.time())}', '{corp['corp_name']}')")
         text = f'Заявка на вступление в корпорацию «<a href="tg://openmessage?user_id={corp["corp_head"]}">{corp["corp_name"]}</a>» отправлена!'
         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
-        
+
     reg = re.fullmatch(r'[\./!][\s]?заявки', message.text.lower())
     if reg != None:
 
@@ -155,7 +155,7 @@ async def issues(message: types.Message):
         if not lab.has_lab:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         if len(query(f"SELECT * FROM `bio_attacker`.`corps_applications` WHERE `user_id` = {user_id} AND `corp` LIKE '{corp['corp_key']}'")) == 0:
             await bot.send_message(chat_id=message.chat.id, text="Заявок в вашу корпорацию не найдено!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
@@ -164,7 +164,7 @@ async def issues(message: types.Message):
         if str(user_id) in corp['members']:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь уже является участником данной корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         lab.corp = None
         lab.save()
 
@@ -195,7 +195,7 @@ async def issues(message: types.Message):
         if not lab.has_lab:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         if len(query(f"SELECT * FROM `bio_attacker`.`corps_applications` WHERE `user_id` = {user_id} AND `corp` LIKE '{corp['corp_key']}'")) == 0:
             await bot.send_message(chat_id=message.chat.id, text="Заявок в вашу корпорацию не найдено!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
@@ -204,7 +204,7 @@ async def issues(message: types.Message):
         if str(user_id) in corp['members']:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь уже является участником данной корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         lab.corp = corp['corp_key']
         lab.save()
 
@@ -225,7 +225,7 @@ async def issues(message: types.Message):
         if user == None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         name = strconv.normalaze(user['name'], str(user['user_id']))
         user_id = user['user_id']
 
@@ -233,7 +233,7 @@ async def issues(message: types.Message):
         if not lab.has_lab:
             await bot.send_message(chat_id=message.chat.id, text="Юзер еще не создал лабораторию!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
-        
+
         clear_lab = copy.copy(lab.__dict__)
         clear_lab.pop("_UserLab__start_data")
         members = {
@@ -242,7 +242,7 @@ async def issues(message: types.Message):
 
         if len(query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_head` = {user_id}")) != 0:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь уже является главой корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
-            
+
             lab.save()
 
             return
