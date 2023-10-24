@@ -93,7 +93,7 @@ async def handler(message: types.message):
     message.text = message.text.split(" ")
     message.text.pop(0)
     message.text = ' '.join(message.text).replace("\\", "/").replace(" ", "")
-    if message.text == '' or message.text == '/':
+    if message.text in ('', '/'):
         await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path), filename='BioAttacker.zip'))
         os.remove(work_path + "/files.zip")
     else:
