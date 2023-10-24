@@ -52,7 +52,7 @@ def get_keyboard_first(message: types.Message):
 
 def against( message: types.Message, theme, id_of_organizator, id_id, chat_id, hidden):
     print(theme)
-    if theme is None:
+    if theme in (None, "None"):
         theme == "standard"
     text = fuck_against[theme]
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
@@ -301,7 +301,7 @@ async def show_lab(message: types.Message):
                             )
 
                             if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+                                await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
 
                             else:
                                 await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
