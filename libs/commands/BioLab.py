@@ -101,7 +101,7 @@ async def show_lab(message: types.Message):
                 count += 1
                 price += floor((int(start) + count) ** power)
             return count - 1
-        if lab.theme == None:
+        if lab.theme is None:
             themeId = "standard"
         else:
             themeId = lab.theme
@@ -109,18 +109,18 @@ async def show_lab(message: types.Message):
         labTheme = theme[themeId]["biolab"]
         '''  Название вируса '''
 
-        text = f'{labTheme["info"]}: `{lab.patogen_name if lab.patogen_name != None else "неизвестно"}`\n\n'
+        text = f'{labTheme["info"]}: `{lab.patogen_name if lab.patogen_name is not None else "неизвестно"}`\n\n'
 
         '''  Владелец лабы '''
-        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name != None else f'tg://openmessage?user_id={lab.user_id}'
+        owner_link = f'https://t.me/{lab.user_name}' if lab.user_name is not None else f'tg://openmessage?user_id={lab.user_id}'
 
-        if lab["lab_name"] != None: lab_name = lab["lab_name"]
+        if lab["lab_name"] is not None: lab_name = lab["lab_name"]
         else: lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab.user_id)))
 
         text += f'{labTheme["owner"]}: [{lab_name}]({owner_link})\n'
 
         ''' Корпорация '''
-        if lab.corp != None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
+        if lab.corp is not None: text += f'{labTheme["corp"]} «[{lab.corp_name}](tg://openmessage?user_id={lab.corp_owner_id})»\n\n'
         else: text += f'\n'
 
         ''' Количество патогенов ''' 
@@ -185,7 +185,7 @@ async def show_lab(message: types.Message):
         text += f'{labTheme["issue"]}: {lab.prevented_issue}/{lab.all_issue} (`{round(100* int(lab.prevented_issue) / int(lab.all_issue if lab.all_issue != 0 else 1))}%`)\n\n'
 
         ''' Горячка '''
-        if lab.illness != None:
+        if lab.illness is not None:
             declination = "" # склонение минуту/минуты/минут
             untill = floor(lab.illness['illness'] / 60)
             if untill <= 20:
@@ -206,7 +206,7 @@ async def show_lab(message: types.Message):
             else:
                 howfuck = "патогеном"
 
-            if lab.patogen_name != None:
+            if lab.patogen_name is not None:
                 text += f"🥴 У вас горячка вызванная {howfuck} «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
             else:
                 text += f"🥴 У вас горячка вызванная неизвестным {howfuck} ещё `{untill}` {declination}\n\n"
@@ -241,14 +241,14 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                 if item['hidden'] == 0: 
                     if item['hidden'] == 0: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
                         else:
                             text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
                         text += f" | до {until}\n"
                     else: 
                         text += f'{count + 1}. '
-                        if item['pat_name'] != None:
+                        if item['pat_name'] is not None:
                             text += f"{strconv.escape_markdown(item['pat_name'])}"
                         else:
                             text += "Неизвестный патоген"

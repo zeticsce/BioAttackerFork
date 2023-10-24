@@ -147,7 +147,7 @@ async def handler(message: types.message):
             if len(labName) == 0:
                 await bot.send_message(message.chat.id, "Имя лаборатории не может быть пустым!")
                 return
-            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) == None: # Проверка на валидность имени
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", labName) is None: # Проверка на валидность имени
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
 
@@ -175,7 +175,7 @@ async def handler(message: types.message):
             if len(patName) == 0:
                 await bot.send_message(message.chat.id, "Вирус не может быть пустым!")
                 return
-            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) == None: # Проверка на валидность имени патогена
+            if re.fullmatch(r"([a-zA-Zа-яА-Я0-9_\s,.!?]*)", patName) is None: # Проверка на валидность имени патогена
                 await bot.send_message(message.chat.id, "В названии присутствуют недопустимые символы!")
                 return
             virus_lab = query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `patogen_name` = '{strconv.escape_sql(patName)}'")
@@ -272,14 +272,14 @@ async def handler(message: types.message):
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
 
     reg = re.fullmatch(r'[\./!]ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
-    if reg != None:
+    if reg is not None:
         url = reg.group(2)
         name = None
-        if url != None:
+        if url is not None:
             clear_url = url.replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
-            if re.fullmatch(r"[a-z0-9_]+", clear_url) != None:
+            if re.fullmatch(r"[a-z0-9_]+", clear_url) is not None:
                 user = labs.get_user(clear_url)
-                if user != None:
+                if user is not None:
                     name = strconv.normalaze(user['name'], str(user['user_id']))
                     user_id = user['user_id']
         elif message.reply_to_message:
@@ -288,10 +288,10 @@ async def handler(message: types.message):
         else:
             name = strconv.normalaze(message.from_user.first_name, str(message.from_user.id))
             user_id = message.from_user.id
-        if name != None:
+        if name is not None:
             text = f'🌊 Айди игрока <a href="tg://openmessage?user_id={user_id}">{name}</a> равен <code>@{user_id}</code>'
             await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
-        elif url != None:
+        elif url is not None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
 
@@ -455,7 +455,7 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
     chat_id = callback_data["chat_id"]
     lab = labs.get_lab(from_user_id)
     if from_user_id == str(query.from_user.id):
-        if lab.theme == None:
+        if lab.theme is None:
 
             await bot.edit_message_text(chat_id=chat_id, text="У вас и так стандартная тема!", message_id=query.message.message_id)
             return

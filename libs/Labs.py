@@ -67,7 +67,7 @@ class Labs:
             user_id  юзер айди пользователя, у которого надо взять жертв
             params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
         """
-        if params == None:
+        if params is None:
             return query(f"SELECT bio_attacker_data.victums{user_id}.id, bio_attacker_data.victums{user_id}.user_id, telegram_data.tg_users.user_name, telegram_data.tg_users.name, bio_attacker_data.victums{user_id}.profit, bio_attacker_data.victums{user_id}.from_infect, bio_attacker_data.victums{user_id}.until_infect  FROM `bio_attacker_data`.`victums{user_id}` INNER JOIN `telegram_data`.`tg_users` ON bio_attacker_data.victums{user_id}.user_id = telegram_data.tg_users.user_id;")
         else:
             return query(f"SELECT * FROM `bio_attacker_data`.`victums{user_id}` WHERE {params};")
@@ -77,7 +77,7 @@ class Labs:
             user_id  юзер айди пользователя, у которого надо взять жертв
             params   условия для поиска жертв, если они не установлены, выдаст все возможные жертвы, условия писать согласно синтаксису sql
         """
-        if params == None:
+        if params is None:
             return query(f"SELECT * FROM `bio_attacker_data`.`issues{user_id}`;")
         else:
             return query(f"SELECT * FROM `bio_attacker_data`.`issues{user_id}` WHERE {params};")

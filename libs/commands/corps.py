@@ -39,11 +39,11 @@ def impr_price(start, end, power):
 async def issues(message: types.Message):
 
     reg = re.fullmatch(r'-корп', message.text.lower())
-    if reg != None:
+    if reg is not None:
         lab = labs.get_lab(message.from_user.id)
         if not lab.has_lab: return
 
-        if lab.corp == None:
+        if lab.corp is None:
             await bot.send_message(chat_id=message.chat.id, text="Вы не являетесь участником какой либо корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
         corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_key` = '{lab.corp}'")
@@ -70,7 +70,7 @@ async def issues(message: types.Message):
 
 
     reg = re.fullmatch(r'\+корп ([а-яa-z0-9]+)', message.text.lower())
-    if reg != None:
+    if reg is not None:
         key = reg.group(1).strip()
 
         lab = labs.get_lab(message.from_user.id)
@@ -79,7 +79,7 @@ async def issues(message: types.Message):
             await bot.send_message(chat_id=message.chat.id, text="Вы уже являетесь участником этой корпорации!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
 
-        if re.fullmatch(r"[a-z]+", key) == None: 
+        if re.fullmatch(r"[a-z]+", key) is None: 
             await bot.send_message(chat_id=message.chat.id, text="Корп айди не действителен!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
 
@@ -114,7 +114,7 @@ async def issues(message: types.Message):
         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
 
     reg = re.fullmatch(r'[\./!][\s]?заявки', message.text.lower())
-    if reg != None:
+    if reg is not None:
 
         corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_head` = {message.from_user.id}")
         if len(corp) == 0:
@@ -133,9 +133,9 @@ async def issues(message: types.Message):
         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="HTML", reply_to_message_id=message.message_id)
 
     reg = re.fullmatch(r'[\./!][\s]?отклонить(\s([@./:\\a-z0-9_?=]+))', message.text.lower())
-    if reg != None:
+    if reg is not None:
         url = reg.group(2).replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
-        if re.fullmatch(r"[a-z0-9_]+", url) == None: return
+        if re.fullmatch(r"[a-z0-9_]+", url) is None: return
 
         corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_head` = {message.from_user.id}")
         if len(corp) == 0:
@@ -144,7 +144,7 @@ async def issues(message: types.Message):
         else: corp = corp[0]
 
         user = labs.get_user(url)
-        if user == None:
+        if user is None:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
 
@@ -172,10 +172,10 @@ async def issues(message: types.Message):
         await bot.send_message(chat_id=message.chat.id, text=f"Заявка пользователя ликвидирована! <b>(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})</b>", parse_mode="HTML", reply_to_message_id=message.message_id)
 
     reg = re.fullmatch(r'[\./!][\s]?принять(\s([@./:\\a-z0-9_?=]+))', message.text.lower())
-    if reg != None:
+    if reg is not None:
         time_start = time.time()
         url = reg.group(2).replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
-        if re.fullmatch(r"[a-z0-9_]+", url) == None: return
+        if re.fullmatch(r"[a-z0-9_]+", url) is None: return
 
         corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_head` = {message.from_user.id}")
         if len(corp) == 0:
@@ -184,7 +184,7 @@ async def issues(message: types.Message):
         else: corp = corp[0]
 
         user = labs.get_user(url)
-        if user == None:
+        if user is None:
             await bot.send_message(chat_id=message.chat.id, text="Пользователь не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
 
@@ -216,13 +216,13 @@ async def issues(message: types.Message):
         await bot.send_message(chat_id=message.chat.id, text=f"Пользователь был принят в корпорацию! <b>(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})</b>", parse_mode="HTML", reply_to_message_id=message.message_id)
 
     reg = re.fullmatch(r'[\./!]создать корп(\s([@./:\\a-z0-9_?=]+))', message.text.lower())
-    if reg != None and message['from']['id'] in [780882761, 1058211493]:
+    if reg is not None and message['from']['id'] in [780882761, 1058211493]:
 
         url = reg.group(2).replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
-        if re.fullmatch(r"[a-z0-9_]+", url) == None: return
+        if re.fullmatch(r"[a-z0-9_]+", url) is None: return
 
         user = labs.get_user(url)
-        if user == None:
+        if user is None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
             return
 
