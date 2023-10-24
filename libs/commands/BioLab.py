@@ -170,14 +170,14 @@ async def show_lab(message: types.Message):
         else: text += f'{labTheme["quala"]}: {lab.qualification} (`1 мин.`) \n\n'
         
         ''' Навыки '''
-        text += f'🔬 **НАВЫКИ:**\n'
+        text += f'🔬 **{labTheme["skills"]}:**\n'
         text += f'{labTheme["zz"]}: {lab.infectiousness} ур. (`+{get_impr_count(lab.infectiousness, lab.bio_res, 2.5)}`)\n'
         text += f'{labTheme["im"]}: {lab.immunity} ур. (`+{get_impr_count(lab.immunity, lab.bio_res, 2.45)}`)\n'
         text += f'{labTheme["ll"]}: {lab.mortality} ур. (`+{get_impr_count(lab.mortality, lab.bio_res, 1.95)}`)\n'
         text += f'{labTheme["bp"]}: {lab.security} ур. (`+{get_impr_count(lab.security, lab.bio_res, 2.1)}`)\n\n'
 
         ''' Данные ''' 
-        text += f'⛩ **ДАННЫЕ:**\n'
+        text += f'⛩ **{labTheme["data"]}:**\n'
         text += f'{labTheme["exp"]}: {strconv.num_to_str(lab.bio_exp)}\n'
         text += f'{labTheme["res"]}: {strconv.num_to_str(lab.bio_res)}\n'
 
@@ -197,10 +197,19 @@ async def show_lab(message: types.Message):
                 elif untill%10 <= 4: declination = "минуты"
                 else: declination = "минут"
 
-            if lab.patogen_name != None:
-                text += f"🥴 У вас горячка вызванная патогеном «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
+            if lab.theme == "azeri":
+                howfuck = "баздыгом"
+            elif lab.theme == "mafia":
+                howfuck = "приемом"
+            elif lab.theme == "hell":
+                howfuck = "розыгрышем"
             else:
-                text += f"🥴 У вас горячка вызванная неизвестным патогеном ещё `{untill}` {declination}\n\n"
+                howfuck = "патогеном"
+
+            if lab.patogen_name != None:
+                text += f"🥴 У вас горячка вызванная {howfuck} «`{lab.illness['patogen']}`» ещё `{untill}` {declination}\n\n"
+            else:
+                text += f"🥴 У вас горячка вызванная неизвестным {howfuck} ещё `{untill}` {declination}\n\n"
 
         await bot.send_message(chat_id=message.chat.id, 
             text=text, 
