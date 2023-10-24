@@ -1,4 +1,4 @@
-from app import query, bot, OWNER_ID, BOT_TOKEN
+from app import query, OWNER_ID, BOT_TOKEN
 import time
 import random
 import pymysql

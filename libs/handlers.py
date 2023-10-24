@@ -1,6 +1,5 @@
 import os
 import shutil
-import string
 import requests
 import random
 import subprocess
@@ -8,10 +7,8 @@ import sys
 import datetime
 import re
 import time
-import json
-import copy
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
+from app import dp, bot, query, strconv, save_message
 from config import MYSQL_HOST
 from Labs import Labs
 
@@ -28,12 +25,8 @@ from commands.rp_module import *
 from commands.corps import *
 
 
-from aiogram import Bot, types
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
-
-from math import ceil, floor
+from aiogram import types
+from aiogram.types import InputFile
 
 work_path = os.path.abspath(os.curdir)
 

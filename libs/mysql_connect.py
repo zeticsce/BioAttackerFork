@@ -1,15 +1,13 @@
 import os
 import sys 
 import requests
-import traceback
-import time
 
 import pymysql
 from pymysql.cursors import DictCursor
 
 if os.path.abspath(os.curdir) in sys.path: sys.path.append(os.path.abspath(os.curdir))
 
-from config import MYSQL_HOST, MYSQL_DB, MYSQL_PASSWORD, MYSQL_USER
+from config import MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER
 
 
 

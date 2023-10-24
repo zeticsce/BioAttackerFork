@@ -1,10 +1,9 @@
 from typing import Any
 from libs.handlers import labs
-from app import dp, bot, query, strconv, save_message, is_host
+from app import query, strconv
 import json
 import time
 import math
-import datetime
 
 
 class UserLab:
