@@ -51,6 +51,7 @@ def get_keyboard_first(message: types.Message):
 
 
 def against( message: types.Message, theme, id_of_organizator, id_id, chat_id, hidden):
+    print(theme)
     if theme is None:
         theme == "standard"
     text = fuck_against[theme]
