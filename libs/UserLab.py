@@ -83,11 +83,12 @@ class UserLab:
             result.pop("tg_users.user_id")
             result['patogen_name'] = None if result['patogen_name'] == 'None' else result['patogen_name']
 
+            result['name'] = strconv.normalaze(result['name'])
+
             self.__dict__ = dict(result)
             self.__start_data = dict(result)
 
             self.has_lab = True
-            self.name = strconv.normalaze(self.name)
 
 
             """Начисление патогенов"""
