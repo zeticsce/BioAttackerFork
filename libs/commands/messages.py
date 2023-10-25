@@ -27,23 +27,37 @@ theme = {
         "theme_desc" : "Дефолтная тема для олдов био-войн",
 
         "biolab" : {
-            "info" : "🦠 Информация о вирусе",
-            "owner" : "👺 Владелец",
-            "corp" : "🏛 Корпорация",
-            "pats" : "🧪 Патогенов",
-            "new" : "⏱ До нового патогена",
-            "quala" : "👨🏻‍🔬 Разработка",
-            "zz" : "🦠 Заразность",
-            "im" : "🛡 Иммунитет",
-            "ll" : "☠️ Летальность",
-            "bp" : "🕵️‍♂️ Безопасность",
-            "exp" : "☣️ Био-опыт",
-            "res" : "🧬 Био-ресурс",
-            "operate" : "😷 Спецопераций",
-            "issue" : "🥽 Предотвращены",
-            "skills" : "НАВЫКИ",
-            "data" : "ДАННЫЕ"
+            "lab": """🦠 Информация о вирусе: <code>{patogen_name}</code>
 
+👺 Владелец: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Патогенов: {pats} из {all_pats} (<code>+{pats_calk}</code>)
+👨🏻‍🔬 Разработка: {qual} (<code>{qualification_calk}</code>){new_patogen}
+
+🔬 НАВЫКИ:
+🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
+🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
+☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
+
+⛩ ДАННЫЕ:
+☣️ Био-опыт: {bio_exp}
+🧬 Био-ресурс: {bio_res}
+😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Предотвращены: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+
+            "no pathogen name": "неизвестно",
+            "no lab name": "им. {name}",
+            "qualification calk": "{qual_time} мин. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} мин.",
+            "corp": '\n🏛 Корпорация «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная патогеном «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным патогеном ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
         },
 
         "errors" : {
@@ -61,23 +75,37 @@ theme = {
         "theme_desc" : "Тема в честь Хеллоуина",
 
         "biolab" : {
-            "info" : "👻 Название розыгрыша",
-            "owner" : "👺 Владелец",
-            "corp" : "🏛 Корпорация",
-            "pats" : "🪄 ужастиков",
-            "new" : "⏱ Новый ужастик",
-            "quala" : "🧛 Квалификация колдунов",
-            "zz" : "🌘 Ужасность",
-            "im" : "🌕 Стойкость",
-            "ll" : "🦇 Кровожадность",
-            "bp" : "🕵️‍♂️ Ночная служба",
-            "exp" : "🩸 Адреналин",
-            "res" : "🧬 Био-ресурс",
-            "operate" : "😷 Розыгрышей",
-            "issue" : "🥽 Предотвращены",
-            "skills" : "НАВЫКИ",
-            "data" : "ДАННЫЕ"
+            "lab": """👻 Название розыгрыша: <code>{patogen_name}</code>
 
+👺 Владелец: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🪄 ужастиков: {pats} из {all_pats} (<code>+{pats_calk}</code>)
+🧛 Квалификация колдунов: {qual} (<code>{qualification_calk}</code>){new_patogen}
+
+🔬 НАВЫКИ:
+🌘 Ужасность: {infect} ур. (<code>+{infect_calk}</code>)
+🌕 Стойкость: {immunity} ур. (<code>+{immunity_calk}</code>)
+🦇 Кровожадность: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Ночная служба: {security} ур. (<code>+{security_calk}</code>)
+
+⛩ ДАННЫЕ:
+🩸 Адреналин: {bio_exp}
+🧬 Сладостей: {bio_res}
+😷 Розыгрышей: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Предотвращены: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+
+            "no pathogen name": "неизвестно",
+            "no lab name": "им. {name}",
+            "qualification calk": "{qual_time} мин. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} мин.",
+            "corp": '\n🏛 Корпорация «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ Новый ужастик: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ Новый ужастик: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 Вы в шоке с розыгрыша «<code>{fever_name}</code>» ещё {fever_time} мин!",
+            "fever": "\n\n🥴 У вас шок от неизвестного розыгрыша ещё {fever_time} мин.",
+            "no fever": "",
         },
 
         "errors" : {
@@ -95,23 +123,37 @@ theme = {
         "theme_desc" : "Стандартна тема але українською мовою",
 
         "biolab" : {
-            "info" : "🦠Інформація про вірус",
-            "owner" : "👺 Власник",
-            "corp" : "🏛 Ватага",
-            "pats" : "🧪 Патогенів",
-            "new" : "⏱ До нового патогена",
-            "quala" : "👨🏻‍🔬 Розробка",
-            "zz" : "🦠 Токсичність",
-            "im" : "🛡 Стійкість",
-            "ll" : "☠️ Час гепертонії",
-            "bp" : "🕵️‍♂️ Антивірус",
-            "exp" : "☣️ Біо-досвід",
-            "res" : "🧬 Біо-ресурс",
-            "operate" : "😷 Спецоперація",
-            "issue" : "🥽 Соснули пипку",
-            "skills" : "НАВИКИ",
-            "data" : "ДАНІ"
+            "lab": """🦠 Інформація про вірус: <code>{patogen_name}</code>
 
+👺 Власник: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Патогенів: {pats} з {all_pats} (<code>+{pats_calk}</code>)
+👨🏻‍🔬 Розробка: {qual} (<code>{qualification_calk}</code>){new_patogen}
+
+🔬 НАВИЧКИ:
+🦠 Заразність: {infect} рів. (<code>+{infect_calk}</code>)
+🛡 Імунітет: {immunity} рів. (<code>+{immunity_calk}</code>)
+☠️ Летальність: {mortality} рів. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Служба безпеки: {security} рів. (<code>+{security_calk}</code>)
+
+⛩ ІНФОРМАЦІЯ:
+☣️ Біо-досвід: {bio_exp}
+🧬 Біо-ресурси: {bio_res}
+😷 Спецоперацій: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Соснули пуцку: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+
+            "no pathogen name": "неизвестно",
+            "no lab name": "им. {name}",
+            "qualification calk": "{qual_time} хв. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} хв.",
+            "corp": '\n🏛 Хата «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> хв.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас лихоманка через вірус «<code>{fever_name}</code>» ще <code>{fever_time} хв.</code>",
+            "fever": "\n\n🥴 У вас лихоманка через невідомий вірус ще <code>{fever_time} хв.</code>",
+            "no fever": "",
         },
 
         "errors" : {
@@ -129,23 +171,37 @@ theme = {
         "theme_desc" : "Тема для Азербайджанцев. ВНИМАНИЕ! СОДЕРЖИТ НЕЦЕНЗУРНУЮ ЛЕКСИКУ 18+!!1!",
 
         "biolab" : {
-            "info" : "🦠 баздыгын сохбети",
-            "owner" : "👺 Хан",
-            "corp" : "🏛 Азерчай",
-            "pats" : "🧪 Баздыглар",
-            "new" : "⏱ До нового баздыга",
-            "quala" : "👨🏻‍🔬 Пейсярляр",
-            "zz" : "🦠 Дашагын бойу",
-            "im" : "🛡 Готунун бойу",
-            "ll" : "☠️ Агзынын бойу",
-            "bp" : "🕵️‍♂️ Атонлар",
-            "exp" : "☣️ Био-манатлар",
-            "res" : "🧬 Био-гяпийляр",
-            "operate" : "😷 Спецопераций",
-            "issue" : "🥽 Предотвращены",
-            "skills" : "ГЕХПЕЕЕЕ",
-            "data" : "ГИЖДЫЛЛАААХ"
+            "lab": """🦠 Баздыгын сохбети: <code>{patogen_name}</code>
 
+👺 Хан: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
+👨🏻‍🔬 Пейсярляр: {qual} (<code>{qualification_calk}</code>)
+
+🔬 ГЕХПЕЕЕЕ:
+🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
+🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
+☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
+
+⛩ ГИЖДЫЛЛАААХ:
+☣️ Био-манатлар: {bio_exp}
+🧬 Био-гяпийляр: {bio_res}
+😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Предотвращены: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+
+            "no pathogen name": "неизвестно",
+            "no lab name": "им. {name}",
+            "qualification calk": "{qual_time} мин. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} мин.",
+            "corp": '\n🏛 Азерчай «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового баздыга: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового баздыга: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная баздыгом «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным баздыгом ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
         },
 
         "errors" : {
@@ -157,28 +213,43 @@ theme = {
             "victim" : "👺 Гяхпяни тампадын!"
         }
     },
-    "mafia" : {
+    
+    "mafia" : { # недоделка
         "theme_name" : "Тема Мафия",
         "theme_desc" : "💰 Деньги и власть – основные ценности мафии, ты поднимешься к вершине преступного мира, либо станешь жертвой своей собственной доверчивости",
 
         "biolab" : {
-            "info" : "🗂 Приём вербовки",
-            "owner" : "🕵🏻‍♂️ Мафиози",
-            "corp" : "🏛 В составе картеля",
-            "pats" : "🚬 Придумано заманух",
-            "new" : "⏳ Новая замануха",
-            "quala" : "🥷 Квалификация вербовщиков",
-            "zz" : "🔪 Убойность",
-            "im" : "🔒 Защищенность",
-            "ll" : "☠️ Смертоносность",
-            "bp" : "🚓 Безнаказанность",
-            "exp" : "💰 Добыча",
-            "res" : "🏦 Криминальные доходы",
-            "operate" : "😎 Выполнено заказов",
-            "issue" : "🥽 Пресечено",
-            "skills" : "НАВЫКИ",
-            "data" : "ДАННЫЕ"
+            "lab": """🦠 Информация о вирусе: {patogen_name}
 
+🕵🏻‍♂️ Мафиози: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🚬 Придумано заманух: {pats} из {all_pats} (<code>+{pats_calk}</code>)
+⏳ Новая замануха: {qual} (<code>{qualification_calk}){new_patogen}
+
+🔬 НАВЫКИ:
+🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
+🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
+☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
+
+⛩ ДАННЫЕ:
+☣️ Био-опыт: {bio_exp}
+🧬 Био-ресурс: {bio_res}
+😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Предотвращены: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+
+            "no pathogen name": "неизвестно",
+            "no lab name": "им. {name}",
+            "qualification calk": "{qual_time} мин. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} мин.",
+            "corp": '\n🏛 В составе картеля «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная патогеном «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным патогеном ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
         },
 
         "errors" : {

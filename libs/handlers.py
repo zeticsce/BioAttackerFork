@@ -45,10 +45,9 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         if "Already up to date.\n" != output:
             await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-            try:
-                dp.stop_polling()
-                await dp.wait_closed()
-                await bot.close()
+            try: await bot.close()
+            except: pass
+            try: dp.stop_polling()
             except: pass
 
             os.system(f"python {work_path}/app.py &")
@@ -60,10 +59,9 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
         await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-        try:
-            dp.stop_polling()
-            await dp.wait_closed()
-            await bot.close()
+        try: await bot.close()
+        except: pass
+        try: dp.stop_polling()
         except: pass
 
 

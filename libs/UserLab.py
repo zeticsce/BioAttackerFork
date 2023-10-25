@@ -87,6 +87,7 @@ class UserLab:
             self.__start_data = dict(result)
 
             self.has_lab = True
+            self.name = strconv.normalaze(self.name)
 
 
             """Начисление патогенов"""
@@ -128,7 +129,6 @@ class UserLab:
                     self.last_daily = int(time.time())
 
             """Установка корпорации"""
-
             if self.corp is not None:
                 corp = query(f"SELECT * FROM `bio_attacker`.`corporations` WHERE `corp_key` = '{self.corp}'")
                 if len(corp) == 0: 
