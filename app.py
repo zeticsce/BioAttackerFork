@@ -12,6 +12,8 @@ class Out(object):
             'chat_id': -1002146976688, 
             'text': data
         })
+    def flush(self):
+        pass
 
 is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
 if is_host:
