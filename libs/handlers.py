@@ -52,7 +52,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
             except: pass
 
             os.system(f"python {work_path}/app.py &")
-            sys.exit(0)
+            sys.exit(130)
         else: await bot.send_message(message.chat.id, f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
@@ -68,13 +68,13 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
 
         os.system(f"python {work_path}/app.py &")
-        sys.exit(0)
+        sys.exit(130)
 
 @dp.message_handler(commands=["exit"], commands_prefix='.')
 async def hi_there(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
     await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
-    sys.exit(0)
+    sys.exit(130)
 
 @dp.message_handler(commands=["start"], commands_prefix='!/.')
 async def hi_there(message: types.message):

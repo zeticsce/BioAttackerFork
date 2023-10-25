@@ -16,6 +16,7 @@ from math import floor
 
 from aiogram import types
 from aiogram.utils.callback_data import CallbackData
+from aiogram.utils import exceptions
 
 def skloneniye(num):
     names = ['день', 'дня', 'дней']
@@ -301,11 +302,18 @@ async def show_lab(message: types.Message):
                                 profit
                             )
 
-                            if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
 
-                            else:
-                                await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
+                            try:
+                                if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
+                                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+
+                                else:
+                                    await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
+                            except exceptions.CantInitiateConversation: pass
+                            except exceptions.ChatNotFound: pass
+                            except exceptions.BotBlocked: pass
+                            except exceptions.UserDeactivated: pass
+                            except exceptions.BotKicked: pass
 
                     else: # действия при нуедаче заражения
 
