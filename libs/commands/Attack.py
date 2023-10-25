@@ -305,7 +305,8 @@ async def show_lab(message: types.Message):
 
                             try:
                                 if VictimLab.security >= lab.security: # отправка сообщения о заражении, если сб жертвы больше сб атакующего
-                                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+                                    # await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message,VictimLab.theme, id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=0))
+                                    await bot.send_message(chat_id=VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
 
                                 else:
                                     await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML")
@@ -340,14 +341,17 @@ async def show_lab(message: types.Message):
                                 atts
                             )
 
-                            if VictimLab.security >= lab.security:
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme,id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
-                                except Exception as e:
-                                    print(e)
-                            else:
-                                try: await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", disable_web_page_preview=True)
-                                except Exception as e:
-                                    print(e)
+                            try:
+                                if VictimLab.security >= lab.security:
+                                    # await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme,id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
+                                    await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", disable_web_page_preview=True)
+                                else:   
+                                    await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", disable_web_page_preview=True)
+                            except exceptions.CantInitiateConversation: pass
+                            except exceptions.ChatNotFound: pass
+                            except exceptions.BotBlocked: pass
+                            except exceptions.UserDeactivated: pass
+                            except exceptions.BotKicked: pass
 
                     lab.save()
                     VictimLab.save()
@@ -413,7 +417,7 @@ async def show_lab(message: types.Message):
                     lab.bio_res -= lab.bio_res
                     lab.save()
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
-
+                    await bot.send_message(VictimLab.virus_chat, text=sb_text,  parse_mode="HTML", reply_markup=against(message, VictimLab.theme,id_id=VictimLab.user_id, chat_id=VictimLab.virus_chat,id_of_organizator=lab.user_id, hidden=1), disable_web_page_preview=True)
                 else:
                     await message.reply("Недостаточно био-ресурса!")
 
@@ -464,6 +468,10 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
 ''' Код для ответки '''
 @dp.callback_query_handler(attack_against.filter(action='against'))
 async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
+
+    await query.answer("Функция временно отключена)")
+    return
+
     from_user_id = callback_data["id"]
     message_name = query.from_user.first_name
     chat_id = callback_data["chat_id"]
