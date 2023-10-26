@@ -181,8 +181,8 @@ theme = {
 🔬 ГЕХПЕЕЕЕ:
 🦠 Сикимин бойу: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Готун размери: {immunity} ур. (<code>+{immunity_calk}</code>)
-☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
-🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
+☠️ Гандон: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Ебана рот: {security} ур. (<code>+{security_calk}</code>)
 
 ⛩ ГИЖДЫЛЛАААХ:
 ☣️ Био-манатлар: {bio_exp}
