@@ -285,6 +285,27 @@ async def handler(message: types.message):
         elif url is not None:
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
+    if message.text.startswith(".т"):
+        spt = message.text.lower().split()
+        print(spt)
+        if len(spt) == 1:
+            await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
+        elif len(spt) == 2:
+            lab = labs.get_lab(message.from_user.id)
+            print(spt[1])
+            if spt[1] in theme:
+                if lab.theme == spt[1]:
+                    erpl = f"у вас же стоит {theme[spt[1]]['theme_name'].lower()}"
+                else:
+                    lab.theme = spt[1]
+                    erpl = f"✅ Вы установили {theme[spt[1]]['theme_name'].lower()}"
+
+                await message.reply(erpl)
+                lab.save()
+        else:
+            await message.reply("Неправильный формат команды")
+            return
+
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 
@@ -352,11 +373,6 @@ def change_theme_btn(message: types.Message, usid):
 
 
     return keyboard_markup
-
-@dp.message_handler(commands=["тема", "т"], commands_prefix='!/.')
-async def handler(message: types.message):
-
-    await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
 
 @dp.callback_query_handler(vote_cb.filter(action='back'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
