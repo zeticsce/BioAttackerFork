@@ -299,19 +299,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
     hide_attacker_link = f'<a href="tg://user?id={first_id}">\xad</a>'
     if suc == 1:
 
-        if theme is None:
-            organizer = "Организатор"
-            full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
-            short_attempt = "👨🏻‍🔬 Была проведена операция заражения"
-            lost = "🧪 Совершено минимум"
-            you_lost = "☣️ Вы потеряли"
-            bio = "био"
-
-            alternative = "👨🏻‍🔬 Вас подвергли заражению"
-            alter_lost = "☣️ Потерял"
-            alter_attempt = "был подвергнут заражению"
-
-        elif theme == "azeri":
+        if theme == "azeri":
             organizer = "Пейсяр"
             full_attempt = "👨🏻‍🔬 Сын пейсяр чыхдын"
             short_attempt = "👨🏻‍🔬 Сяни сикди"
@@ -346,6 +334,17 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Вас напугали"
             alter_lost = "🩸 Потерял"
             alter_attempt = "напугали"
+        else:
+            organizer = "Организатор"
+            full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
+            short_attempt = "👨🏻‍🔬 Была проведена операция заражения"
+            lost = "🧪 Совершено минимум"
+            you_lost = "☣️ Вы потеряли"
+            bio = "био"
+
+            alternative = "👨🏻‍🔬 Вас подвергли заражению"
+            alter_lost = "☣️ Потерял"
+            alter_attempt = "был подвергнут заражению"
 
         if hidden:
             if equal:
@@ -375,12 +374,8 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
 
 
     else:
-        if theme is None:
-            organizer = "Организатор"
-            full_attempt = "👺 Попытка вашего заражения провалилась!"
-            short_attempt = "👺 Попытка заразить"
 
-        elif theme == "azeri":
+        if theme == "azeri":
             organizer = "Пейсяр"
             full_attempt = "👺 Сяни вуранда озю пейсяр чыхды!"
             short_attempt = "👺 Сяни сикмяк"
@@ -394,6 +389,10 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Злочинець"
             full_attempt = "👺 Спроба вашого вбивства провалилася!"
             short_attempt = "👺 Спроба вбивства"
+        else:
+            organizer = "Организатор"
+            full_attempt = "👺 Попытка вашего заражения провалилась!"
+            short_attempt = "👺 Попытка заразить"
 
         if hidden:
             if equal:
