@@ -287,13 +287,11 @@ async def handler(message: types.message):
 
     if message.text.startswith(".т"):
         spt = message.text.lower().split()
-        print(spt)
         if len(spt) == 1:
             await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
         elif len(spt) == 2:
-            lab = labs.get_lab(message.from_user.id)
-            print(spt[1])
             if spt[1] in theme:
+                lab = labs.get_lab(message.from_user.id)
                 if lab.theme == spt[1]:
                     erpl = f"у вас же стоит {theme[spt[1]]['theme_name'].lower()}"
                 else:
