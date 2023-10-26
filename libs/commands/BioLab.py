@@ -124,8 +124,8 @@ async def show_lab(message: types.Message):
         .replace("{suc_operations}", str(lab.suc_operations))\
         .replace("{all_issue}", str(lab.all_issue))\
         \
-        .replace("{issues_percent}", str(round(int(lab.prevented_issue/lab.all_issue*100))))\
-        .replace("{operations_percent}", str(round(int(lab.suc_operations/lab.all_operations*100))))\
+        .replace("{issues_percent}", str(round(int(lab.prevented_issue/(lab.all_issue+1)*100))))\
+        .replace("{operations_percent}", str(round(int(lab.suc_operations/(lab.all_operations+1)*100))))\
         \
         .replace("{pats_calk}", str(get_impr_count(lab.all_patogens, lab.bio_res, 2)))\
         .replace("{infect_calk}", str(get_impr_count(lab.infectiousness, lab.bio_res, 2.5)))\
