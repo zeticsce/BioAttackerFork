@@ -286,23 +286,21 @@ async def handler(message: types.message):
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
     if message.text.startswith(".т"):
-        spt = message.text.lower().split()
-        if len(spt) == 1:
+        reg = re.fullmatch(r".т(\s[a-zа-я0-9\s]+)", message.text.lower())
+        if reg.group(1) == None:
             await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
-        elif len(spt) == 2:
-            if spt[1] in theme:
+        else:
+            th = reg.group(1).strip()
+            if th in theme:
                 lab = labs.get_lab(message.from_user.id)
-                if lab.theme == spt[1]:
-                    erpl = f"у вас же стоит {theme[spt[1]]['theme_name'].lower()}"
+                if lab.theme == th:
+                    erpl = f"У вас же стоит «{theme[th]['theme_name'].lower()}»"
                 else:
-                    lab.theme = spt[1]
-                    erpl = f"✅ Вы установили {theme[spt[1]]['theme_name'].lower()}"
+                    lab.theme = th
+                    erpl = f"✅ {theme[th]['theme_name']} установлена"
 
                 await message.reply(erpl)
                 lab.save()
-        else:
-            await message.reply("Неправильный формат команды")
-            return
 
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
