@@ -270,26 +270,24 @@ theme = {
             "Дефолтная тема для англоязычных (нет) олдов био-войн"
         ),
         "biolab": {
-            "lab": (
-    """🦠 Virus information: <code>{patogen_name}</code>
+            "lab": """🦠 Virus information: <code>{patogen_name}</code>
     
-    ✨ <b>Owner:</b> <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
-    
-    🧪 Pathogens: {pats} of {all_pats} (<code>+{pats_calk}</code>)
-    👨🏻‍🔬 Qualification: {qual} (<code>{qualification_calk}</code>){new_patogen}
-    
-    🔬 <b>SKILLS:</b>
-    🦠 Infectiousness: {infect} lvl (<code>+{infect_calk}</code>)
-    🛡 Immunity: {immunity} lvl (<code>+{immunity_calk}</code>)
-    ☠️ Lethality: {mortality} lvl (<code>+{mortality_calk}</code>)
-    🕵️‍♂️ Security Service: {security} lvl (<code>+{security_calk}</code>)
-    
-    ⛩ <b>DATA</b>:
-    ☣️ Bio-exp: {bio_exp}
-    🧬 Bio-resource: {bio_res}
-    😷 Special Operations: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
-    🥽 Prevented: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}"""
-        ),
+✨ <b>Owner:</b> <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Pathogens: {pats} of {all_pats} (<code>+{pats_calk}</code>)
+👨🏻‍🔬 Qualification: {qual} (<code>{qualification_calk}</code>){new_patogen}
+
+🔬 <b>SKILLS:</b>
+🦠 Infectiousness: {infect} lvl (<code>+{infect_calk}</code>)
+🛡 Immunity: {immunity} lvl (<code>+{immunity_calk}</code>)
+☠️ Lethality: {mortality} lvl (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Security Service: {security} lvl (<code>+{security_calk}</code>)
+
+⛩ <b>DATA</b>:
+☣️ Bio-exp: {bio_exp}
+🧬 Bio-resource: {bio_res}
+😷 Special Operations: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Prevented: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
             "no pathogen name": "unknown",
             "no lab name": "of {name}",
             "qualification calk": "{qual_time} min. | +{qual_calk}",
