@@ -294,7 +294,7 @@ async def handler(message: types.message):
             if th in theme:
                 lab = labs.get_lab(message.from_user.id)
                 if lab.theme == th:
-                    erpl = f"У вас же стоит «{theme[th]['theme_name'].lower()}»"
+                    erpl = f"У вас же стоит {theme[th]['theme_name'].lower()}"
                 else:
                     lab.theme = th
                     erpl = f"✅ {theme[th]['theme_name']} установлена"
