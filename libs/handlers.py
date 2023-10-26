@@ -287,6 +287,7 @@ async def handler(message: types.message):
 
     if message.text.startswith(".т"):
         reg = re.fullmatch(r".т(\s[a-zа-я0-9\s]+)", message.text.lower())
+        if reg == None: return
         if reg.group(1) == None:
             await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
         else:
