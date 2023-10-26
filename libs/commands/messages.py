@@ -173,22 +173,22 @@ theme = {
         "biolab" : {
             "lab": """🦠 Баздыгын сохбети: <code>{patogen_name}</code>
 
-👺 Хан: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+💩 Хан: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
-🧪 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
+🐳 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
 👨🏻‍🔬 Пейсярляр: {qual} (<code>{qualification_calk}</code>)
 
 🔬 ГЕХПЕЕЕЕ:
-🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
-🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
+🦠 Сикимин бойу: {infect} ур. (<code>+{infect_calk}</code>)
+🛡 Готун размери: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
 
 ⛩ ГИЖДЫЛЛАААХ:
 ☣️ Био-манатлар: {bio_exp}
 🧬 Био-гяпийляр: {bio_res}
-😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
-🥽 Предотвращены: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
+😷 Вурулду: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+🥽 Сикмяди: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}""",
 
             "no pathogen name": "неизвестно",
             "no lab name": "им. {name}",
@@ -315,13 +315,13 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Пейсяр"
             full_attempt = "👨🏻‍🔬 Сын пейсяр чыхдын"
             short_attempt = "👨🏻‍🔬 Сяни сикди"
-            lost = "🧪 Патогенляр сычды"
+            lost = "🐳 Баздыглар сычды"
             you_lost = "☣️ мантлары сычдын"
             bio = "манат"
 
             alternative = "👨🏻‍🔬 Сяни сиктиляр"
             alter_lost = "☣️ Сычдын"
-            alter_attempt = "ону сиктиляр"
+            alter_attempt = "сиктиляр"
 
         elif theme == "ukraine":
             organizer = "Злочинець"
