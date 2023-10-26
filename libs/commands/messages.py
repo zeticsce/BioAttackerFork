@@ -261,6 +261,57 @@ theme = {
             "victim" : "🔫 Цель не найдена, браток свинтил!"
         }
     },
+    
+    "english" : {
+        "theme_name" : (
+            "🇬🇧 Английская тема"
+        ),
+        "theme_desc" : (
+            "Дефолтная тема для англоязычных (нет) олдов био-войн"
+        ),
+        "biolab": {
+            "lab": (
+    """🦠 Virus information: <code>{patogen_name}</code>
+    
+    ✨ <b>Owner:</b> <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+    
+    🧪 Pathogens: {pats} of {all_pats} (<code>+{pats_calk}</code>)
+    👨🏻‍🔬 Qualification: {qual} (<code>{qualification_calk}</code>){new_patogen}
+    
+    🔬 <b>SKILLS:</b>
+    🦠 Infectiousness: {infect} lvl (<code>+{infect_calk}</code>)
+    🛡 Immunity: {immunity} lvl (<code>+{immunity_calk}</code>)
+    ☠️ Lethality: {mortality} lvl (<code>+{mortality_calk}</code>)
+    🕵️‍♂️ Security Service: {security} lvl (<code>+{security_calk}</code>)
+    
+    ⛩ <b>DATA</b>:
+    ☣️ Bio-exp: {bio_exp}
+    🧬 Bio-resource: {bio_res}
+    😷 Special Operations: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
+    🥽 Prevented: {prevented_issue}/{all_issue} (<code>{issues_percent}%</code>){fever}"""
+        ),
+            "no pathogen name": "unknown",
+            "no lab name": "of {name}",
+            "qualification calk": "{qual_time} min. | +{qual_calk}",
+            "qualification calk 60": "{qual_time} min.",
+            "corp": '\n🏛 Corporation «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ Before a new pathogen: <code>{next_patogen_time}</code> sec.",
+            "next patogen min": "\n⏱ Before a new pathogen: <code>{next_patogen_time}</code> min.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 You have fever caused by pathogen «<code>{fever_name}</code>», <code>{fever_time} more min.</code>",
+            "fever": "\n\n🥴 You have fever caused by an unknown pathogen, <code>{fever_time} more min.</code>",
+            "no fever": ""
+        },
+        "errors" : {
+            "wait" : "⏱ Wait for new pathogens!",
+            "10" : "🧪 Maximum of 10 pathogens at a time!",
+            "404" : "🧟‍♀️ User not found!",
+            "again" : "🕐 You can re-infect him in",
+            "bot" : "🙄 You can't infect a bot!",
+            "victim" : "👺 Victim not found!"
+        }
+    },
 }
 def illness_check(lab):
     text = f""
