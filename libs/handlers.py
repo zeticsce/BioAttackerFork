@@ -286,8 +286,7 @@ async def handler(message: types.message):
             await bot.send_message(chat_id=message.chat.id, text="Юзер не найден!", parse_mode="HTML", reply_to_message_id=message.message_id)
 
     if message.text.startswith(".т"):
-        reg = re.fullmatch(r".т(\s[a-zа-я0-9\s]+)", message.text.lower())
-        if reg == None: return
+        reg = re.fullmatch(r".т(\s[a-zа-я0-9\s]+)?", message.text.lower())
         if reg.group(1) == None:
             await bot.send_message(message.chat.id, "Что пожелаете сделать?)", reply_markup=first_change_theme_btn(message, message.from_user.id))
         else:
