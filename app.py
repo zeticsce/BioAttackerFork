@@ -16,10 +16,10 @@ class Out(object):
         pass
 
 is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
-# if is_host:
-#     out = Out()
-#     sys.stdout = out
-#     sys.stderr = out
+if is_host:
+    out = Out()
+    sys.stdout = out
+    sys.stderr = out
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
