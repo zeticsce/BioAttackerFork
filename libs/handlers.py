@@ -261,6 +261,8 @@ async def handler(message: types.message):
 
     if message.text.lower() == "биохелп":
         await bot.send_message(message.chat.id, f"[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)", parse_mode="Markdown")
+    if message.text.lower() == "влад": 
+        await bot.send_message(message.chat.id, text='лох<a href="tg://user?id=5770061336">\xad</a>', parse_mode="HTML", disable_web_page_preview=True)
 
     reg = re.fullmatch(r'[\./!]ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
     if reg is not None:
