@@ -23,7 +23,7 @@ async def improve(message: types.Message):
             else:
                 lab_name = "им. " + strconv.delinkify(strconv.normalaze(lab["name"], replace=str(lab['user_id'])))
             text += f'\n{count}. <a href="tg://openmessage?user_id={lab["user_id"]}">{lab_name}</a> | {strconv.num_to_str(lab["bio_exp"])} опыта'
-            if count == 25: break
+            if count == 30: break
 
         text += f"\n\nБанк био-опыта в игре: {strconv.num_to_str(all_bio_exp)} ☣️"
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML", disable_web_page_preview=True)
