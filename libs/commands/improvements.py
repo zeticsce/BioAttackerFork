@@ -65,7 +65,7 @@ async def improve(message: types.Message):
                         text = f"Прокачка заразности с _{lab.infectiousness} ур._ до _{lab.infectiousness + atts} ур._ обойдется вам в _{price} био_"
 
                     elif imps["иммунитет"] is not None:
-                        price = strconv.format_nums(impr_price(lab.immunity, lab.immunity + atts, 2.45))
+                        price = strconv.format_nums(impr_price(lab.immunity, lab.immunity + atts, 2.55))
                         text = f"Прокачка иммунитета с _{lab.immunity} ур._ до _{lab.immunity + atts} ур._ обойдется вам в _{price} био_"
 
                     elif imps["летальность"] is not None:
@@ -127,7 +127,7 @@ async def improve(message: types.Message):
                         else: text = f"Недостаточно био-ресурса!"
 
                     elif imps["иммунитет"] is not None:
-                        price = impr_price(lab.immunity, lab.immunity + atts, 2.45)
+                        price = impr_price(lab.immunity, lab.immunity + atts, 2.55)
                         text = f"Вы успешно прокачали иммунитет с _{lab.immunity} ур._ до _{lab.immunity + atts} ур._\n Это обошлось вам в _{strconv.format_nums(price)} 🧬_"
                         if lab.bio_res > price:
                             lab.immunity += atts
