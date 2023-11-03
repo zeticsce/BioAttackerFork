@@ -137,7 +137,7 @@ class UserLab:
                 else:
                     corp = corp[0]
                     self.corp_name = corp['corp_name']
-                    self.corp_owner_id = corp['corp_head']
+                    self.corp_owner_id = corp['corp_owner_id']
 
     def __getitem__(self, item):
         return self.__dict__[item]
