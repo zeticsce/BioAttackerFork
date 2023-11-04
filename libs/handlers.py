@@ -41,17 +41,18 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         pull_result = subprocess.Popen(["git", "pull", "https://github.com/kawasaji/BioAttacker"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
-        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\nРезультат:*\n`{output}`", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
+        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\n```Output\n{output}```", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
         if "Already up to date.\n" != output:
             await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-            try: await bot.close()
-            except: pass
             try: dp.stop_polling()
             except: pass
+            try: await dp.wait_closed()
+            except: pass
+            try: await bot.close()
+            except: pass
 
-            os.system(f"python {work_path}/app.py &")
-            sys.exit(130)
+            os.system(f"sudo systemctl restart biobot")
         else: await bot.send_message(message.chat.id, f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
     @dp.message_handler(commands=["restart"])
     async def handler(message: types.message):
@@ -59,27 +60,20 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 
         await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
-        try: await bot.close()
-        except: pass
         try: dp.stop_polling()
         except: pass
+        try: await dp.wait_closed()
+        except: pass
+        try: await bot.close()
+        except: pass
 
-
-        os.system(f"python {work_path}/app.py &")
-        sys.exit(130)
+        os.system(f"sudo systemctl restart biobot")
 
 @dp.message_handler(commands=["exit"], commands_prefix='.')
 async def hi_there(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
     await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
-    sys.exit(130)
-
-@dp.message_handler(commands=["start"], commands_prefix='!/.')
-async def hi_there(message: types.message):
-    text = random.choice(start_text)
-    text += "[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)"
-    await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
-
+    os.system(f"sudo systemctl stop biobot")
 
 @dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
 async def handler(message: types.message):
@@ -92,16 +86,22 @@ async def handler(message: types.message):
     message.text.pop(0)
     message.text = ' '.join(message.text).replace("\\", "/").replace(" ", "")
     if message.text in ('', '/'):
-        await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path), filename='BioAttacker.zip'))
+        try:
+            await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path), filename='BioAttacker.zip'))
+        except: await bot.send_message(message.chat.id, f"🪛 Произошла ошибка, возможно архив слишком тяжелый...")
         os.remove(work_path + "/files.zip")
     else:
         if not message.text.startswith('/'): message.text = "/" + message.text
         if os.path.exists(work_path + message.text):
             if not os.path.isfile(work_path + message.text):
-                await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path + message.text),  filename=message.text + ".zip"))
+                try:
+                    await bot.send_document(message.chat.id,  InputFile(shutil.make_archive("files", 'zip', work_path + message.text),  filename=message.text + ".zip"))
+                except: await bot.send_message(message.chat.id, f"🪛 Произошла ошибка, возможно архив слишком тяжелый...")
                 os.remove(work_path + "/files.zip")
-            else:
-                await bot.send_document(message.chat.id,  InputFile(work_path + message.text, filename=message.text))
+            else: 
+                try:
+                    await bot.send_document(message.chat.id,  InputFile(work_path + message.text, filename=message.text))
+                except: await bot.send_message(message.chat.id, f"🪛 Произошла ошибка, возможно файл слишком тяжелый...")
         else: await bot.send_message(message.chat.id, f"🪛 Путь `{message.text}` не найден")
 
 @dp.message_handler(content_types=["text"]) 
@@ -109,6 +109,11 @@ async def handler(message: types.message):
 
     if message.text.lower() == "био":
         await bot.send_message(message.chat.id, f"*Бот на месте*", parse_mode='Markdown')
+
+    if message.text.lower() == "/start":
+        text = random.choice(start_text)
+        text += "[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)"
+        await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
     if message.text.lower() == "-вирус":
         lab = labs.get_lab(message['from']['id'])
@@ -264,7 +269,7 @@ async def handler(message: types.message):
     if message.text.lower() == "влад": 
         await bot.send_message(message.chat.id, text='лох<a href="tg://user?id=5770061336">\xad</a>', parse_mode="HTML", disable_web_page_preview=True)
 
-    reg = re.fullmatch(r'[\./!]ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
+    reg = re.fullmatch(r'[.!/][\s]?ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
     if reg is not None:
         url = reg.group(2)
         name = None
@@ -311,7 +316,6 @@ def back_btn(message: types.Message, usid):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
     keyboard_markup.row(
         types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action='desc', id=usid, chat_id=message.chat.id)),
-
     )
 
     return keyboard_markup
