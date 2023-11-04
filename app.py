@@ -4,22 +4,24 @@ import sys
 import requests
 
 class Out(object):
+    def __init__(self, message_type) -> None:
+        self.type = message_type
     def write(self, data):
         data = str(data)
         open('chats/errors.txt', 'a+').write(f"\n -- {datetime.datetime.now()}:\n" + data)
         requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
             'method': 'sendMessage', 
-            'chat_id': -1002146976688, 
-            'text': data
+            'chat_id': 780882761, 
+            'text': f'```{self.type}\n' + re.sub(r"([_*\[\]()~|`])", r"\\\1", data) + '```',
+            'parse_mode': "Markdown"
         })
     def flush(self):
         pass
 
 is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
 if is_host:
-    out = Out()
-    sys.stdout = out
-    sys.stderr = out
+    sys.stdout = Out('Message')
+    sys.stderr = Out('Warning')
 
 from aiogram import Bot, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
