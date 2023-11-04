@@ -49,8 +49,6 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
             except: pass
             try: await dp.wait_closed()
             except: pass
-            try: await bot.close()
-            except: pass
 
             os.system(f"sudo systemctl restart biobot")
         else: await bot.send_message(message.chat.id, f"*Файлы не затронуты, перезагрузка не требуется!*", parse_mode="Markdown")
@@ -63,8 +61,6 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         try: dp.stop_polling()
         except: pass
         try: await dp.wait_closed()
-        except: pass
-        try: await bot.close()
         except: pass
 
         os.system(f"sudo systemctl restart biobot")
