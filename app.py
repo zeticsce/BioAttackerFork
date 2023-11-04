@@ -1,4 +1,4 @@
-from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST
+from config import BOT_TOKEN, OWNER_ID, MYSQL_HOST, USERNAME, ECHO_CHAT
 import datetime
 import sys
 import requests
@@ -11,7 +11,7 @@ class Out(object):
         open('chats/errors.txt', 'a+').write(f"\n -- {datetime.datetime.now()}:\n" + data)
         requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
             'method': 'sendMessage', 
-            'chat_id': 780882761, 
+            'chat_id': ECHO_CHAT, 
             'text': f'```{self.type}\n' + re.sub(r"([_*\[\]()~|`])", r"\\\1", data) + '```',
             'parse_mode': "Markdown"
         })
