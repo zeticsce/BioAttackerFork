@@ -30,8 +30,9 @@ from aiogram.types import InputFile
 
 work_path = os.path.abspath(os.curdir)
 
+is_host = requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST
 
-if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') == MYSQL_HOST: # Необходимо, потому что команда /git и /restar работает только на хостинге
+if is_host: # Необходимо, потому что команда /git и /restar работает только на хостинге
     @dp.message_handler(commands=["git"])
     async def handler(message: types.message):
         if message['from']['id'] not in [780882761, 1058211493]: return
@@ -41,7 +42,7 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
         pull_result = subprocess.Popen(["git", "pull", "https://github.com/kawasaji/BioAttacker"], stdout=subprocess.PIPE, text=True, stderr=subprocess.PIPE)
         output, errors = pull_result.communicate(input="Hello from the other side!")
         pull_result.wait()
-        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...\n```Output\n{output}```", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
+        await bot.edit_message_text(f"🪛 *Ожидаем клонирования...*\n```Output\n{output}```", git_message.chat.id, git_message.message_id, parse_mode="Markdown")
         if "Already up to date.\n" != output:
             await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
 
@@ -69,7 +70,8 @@ if requests.get('https://ip.beget.ru/').text.replace(' ', '').replace('\n', '') 
 async def hi_there(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
     await bot.send_message(message.chat.id, f"*Выход!* _(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown")
-    os.system(f"sudo systemctl stop biobot")
+    if is_host: os.system(f"sudo systemctl stop biobot")
+    else: sys.exit(0)
 
 @dp.message_handler(commands=["export", "exp"], commands_prefix='!/.')
 async def handler(message: types.message):
