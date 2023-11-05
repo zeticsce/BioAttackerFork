@@ -97,7 +97,7 @@ class StringConv:
 
     def escape_markdown(self, text):
         """функция для экранирования символов sql"""
-        return re.sub(r"([`_'*\[\]])", r"\\\1", str(text))
+        return str(text).replace("*", "\*").replace("`", "\`").replace("(", "\(").replace(")", "\)").replace("_", "\_").replace("[", "\[").replace("]", "\]")
 
     def delinkify(self, text):
         """ функция для удаления ссылок"""
