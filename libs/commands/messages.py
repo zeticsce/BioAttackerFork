@@ -1,8 +1,13 @@
 from typing import Any
 from app import strconv
 
-def skloneniye(num):
-    names = ['день', 'дня', 'дней']
+def skloneniye(num, theme):
+    if theme == "english":
+        names = ['day', 'days', 'days']
+    elif theme == "ukraine":
+        names = ['день', 'дня', 'днів']
+    else:
+        names = ['день', 'дня', 'дней']
     n = num % 100
     if n >= 5 and n <= 20: return names[2]
     n = num % 10
@@ -34,13 +39,13 @@ theme = {
 🧪 Патогенов: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 👨🏻‍🔬 Разработка: {qual} (<code>{qualification_calk}</code>){new_patogen}
 
-🔬 НАВЫКИ:
+<b>🔬 НАВЫКИ:</b>
 🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ДАННЫЕ:
+<b>⛩ ДАННЫЕ:</b>
 ☣️ Био-опыт: {bio_exp}
 🧬 Био-ресурс: {bio_res}
 😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -130,13 +135,13 @@ theme = {
 🧪 Патогенів: {pats} з {all_pats} (<code>+{pats_calk}</code>)
 👨🏻‍🔬 Розробка: {qual} (<code>{qualification_calk}</code>){new_patogen}
 
-🔬 НАВИЧКИ:
+<b>🔬 НАВИЧКИ:</b>
 🦠 Заразність: {infect} рів. (<code>+{infect_calk}</code>)
 🛡 Імунітет: {immunity} рів. (<code>+{immunity_calk}</code>)
 ☠️ Летальність: {mortality} рів. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Служба безпеки: {security} рів. (<code>+{security_calk}</code>)
 
-⛩ ІНФОРМАЦІЯ:
+<b>⛩ ІНФОРМАЦІЯ:</b>
 ☣️ Біо-досвід: {bio_exp}
 🧬 Біо-ресурси: {bio_res}
 😷 Спецоперацій: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -178,13 +183,13 @@ theme = {
 🐳 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
 👨🏻‍🔬 Пейсярляр: {qual} (<code>{qualification_calk}</code>)
 
-🔬 ГЕХПЕЕЕЕ:
+<b>🔬 ГЕХПЕЕЕЕ:</b>
 🦠 Сикимин бойу: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Готун размери: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Гандон: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Ебана рот: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ГИЖДЫЛЛАААХ:
+<b>⛩ ГИЖДЫЛЛАААХ:</b>
 ☣️ Био-манатлар: {bio_exp}
 🧬 Био-гяпийляр: {bio_res}
 😷 Вурулду: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -226,13 +231,13 @@ theme = {
 🚬 Придумано заманух: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 ⏳ Новая замануха: {qual} (<code>{qualification_calk}){new_patogen}
 
-🔬 НАВЫКИ:
+<b>🔬 НАВЫКИ:</b>
 🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ДАННЫЕ:
+<b>⛩ ДАННЫЕ:</b>
 ☣️ Био-опыт: {bio_exp}
 🧬 Био-ресурс: {bio_res}
 😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -327,8 +332,11 @@ def patogenName(lab, theme=""):
             howfuck = "приемом"
         elif lab.theme == "hell":
             howfuck = "розыгрышем"
+        elif lab.theme == "english":
+            howfuck = "with the pathogen"
         else:
             howfuck = "патогеном"
+        
     else:
         if theme == "azeri":
             howfuck = "баздыгом"
@@ -336,10 +344,15 @@ def patogenName(lab, theme=""):
             howfuck = "приемом"
         elif theme == "hell":
             howfuck = "розыгрышем"
+        elif theme == "english":
+            howfuck = "with the pathogen"
         else:
             howfuck = "патогеном"
 
-    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"неизвестным {howfuck}"
+    if lab.theme != "english" or theme != "english":
+        return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"неизвестным {howfuck}"
+    else:
+        return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"unknown {howfuck}"
 
 
 def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
@@ -383,6 +396,18 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Вас напугали"
             alter_lost = "🩸 Потерял"
             alter_attempt = "напугали"
+        elif theme == "english":
+            organizer = "Organizer"
+            full_attempt = "👨🏻‍🔬 Your infection operation has been performed"
+            short_attempt = "👨🏻‍🔬 An infection operation was performed"
+            lost = "🧪 Minimum completed"
+            you_lost = "☣️ You lost"
+            bio = "bio-exp"
+
+            alternative = "👨🏻‍🔬 You have been infected"
+            alter_lost = "☣️ Lost"
+            alter_attempt = "was infected"
+
         else:
             organizer = "Организатор"
             full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
@@ -438,6 +463,10 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Злочинець"
             full_attempt = "👺 Спроба вашого вбивства провалилася!"
             short_attempt = "👺 Спроба вбивства"
+        elif theme == "english":
+            organizer = "Organizer"
+            full_attempt = "👺 Your infection attempt failed!"
+            short_attempt = "👺 Attempt to infect"
         else:
             organizer = "Организатор"
             full_attempt = "👺 Попытка вашего заражения провалилась!"
@@ -451,8 +480,8 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
                         f'Совершено минимум <i>{atts}</i> попыток!'
             else:
                 sb_text = f'{short_attempt} '\
-                        f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> провалилась!'\
-                        f'\n\{organizer}: '\
+                        f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> провалилась!\n\n'\
+                        f'{organizer}: '\
                         f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n'\
                         f'Совершено минимум <i>{atts}</i> попыток!'\
                         f'{hide_victim_link}'
@@ -506,6 +535,15 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "біо-ресурса"
         infect = "☠️ Гіпертонія на"
         lol = "👨‍🔬 Йолоп ще не був йобнутий вашим патогеном"
+    
+    elif theme == "english":
+        ''' Английская тема '''
+        fucked = "infected"
+        spend = "🧪 Pathogens Spent"
+        gain = "☣️ The sacrifice brings"
+        bio_res = "bio-resources"
+        infect = "☠️ Infection for"
+        lol = "👨‍🔬 The object has not yet been infected with your pathogen"
 
     else:
         ''' Стандартная тема '''
@@ -525,7 +563,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
                 f" {patogen_name}\n\n"\
                 f"{spend}: <i>{atts}</i>\n"\
                 f"{gain} <i>{strconv.format_nums(profit)}{bio_res}</i>\n"\
-                f"{infect} <i>{mortality} {skloneniye(mortality)}</i>"
+                f"{infect} <i>{mortality} {skloneniye(mortality, theme)}</i>"
 
     if new:
         rslt_text += f"\n\n<i>{lol}</i>"
@@ -547,5 +585,6 @@ fuck_against = {
     "standard" : "Заразить в ответ",
     "azeri" : "Выебать",
     "hell" : "Напугать в ответ",
-    "ukraine" : "Йобнути у відповідь "
+    "ukraine" : "Йобнути у відповідь ",
+    "english": "Infect back"
 }
