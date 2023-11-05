@@ -506,6 +506,15 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "біо-ресурса"
         infect = "☠️ Гіпертонія на"
         lol = "👨‍🔬 Йолоп ще не був йобнутий вашим патогеном"
+    
+    elif theme == "english":
+        ''' Английская тема '''
+        fucked = "infected"
+        spend = "🧪 Pathogens Spent"
+        gain = "☣️ The sacrifice brings"
+        bio_res = "bio-resources"
+        infect = "☠️ Infection for"
+        lol = "👨‍🔬 The object has not yet been infected with your pathogen"
 
     else:
         ''' Стандартная тема '''
