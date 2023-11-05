@@ -18,14 +18,14 @@ from aiogram import types
 from aiogram.utils.callback_data import CallbackData
 from aiogram.utils import exceptions
 
-def skloneniye(num):
-    names = ['день', 'дня', 'дней']
-    n = num % 100
-    if n >= 5 and n <= 20: return names[2]
-    n = num % 10
-    if n == 1: return names[0]
-    if n >= 2 and n <= 4: return names[1]
-    return names[2]
+# def skloneniye(num):
+#     names = ['день', 'дня', 'дней']
+#     n = num % 100
+#     if n >= 5 and n <= 20: return names[2]
+#     n = num % 10
+#     if n == 1: return names[0]
+#     if n >= 2 and n <= 4: return names[1]
+#     return names[2]
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 attack_against = CallbackData('vote', 'action', 'id', 'chat_id', 'id_of_organizator', 'hidden')
@@ -585,8 +585,8 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
 
             patogen_name =  f"патогеном «{lab.patogen_name}»" if lab.patogen_name is not None else "неизветным патогеном"
 
-            if new: rslt_text = f"😎 [{lab.name}](tg://user?id={lab.user_id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_\n\n_👨‍🔬 Объект ещё не подвергался заражению вашим патогеном_"
-            else: rslt_text = f"😎 [{lab.name}](tg://user?id={lab.user_id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality)}_"
+            if new: rslt_text = f"😎 [{lab.name}](tg://user?id={lab.user_id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality, lab.theme)}_\n\n_👨‍🔬 Объект ещё не подвергался заражению вашим патогеном_"
+            else: rslt_text = f"😎 [{lab.name}](tg://user?id={lab.user_id}) подверг заражению [{strconv.escape_markdown(VictimLab.name)}](tg://user?id={VictimLab.user_id}) {patogen_name}\n\n🧪 Затрачено патогенов _{atts}_\n☣️ Получено _{strconv.format_nums(profit)} био-опыта_\n☠️ Заражение на _{lab.mortality} {skloneniye(lab.mortality, lab.theme)}_"
 
             await bot.send_message(query.message.chat.id, rslt_text,  parse_mode="Markdown", disable_web_page_preview=True)
 

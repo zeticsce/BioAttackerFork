@@ -1,8 +1,13 @@
 from typing import Any
 from app import strconv
 
-def skloneniye(num):
-    names = ['день', 'дня', 'дней']
+def skloneniye(num, theme):
+    if theme == "english":
+        names = ['day', 'days', 'days']
+    elif theme == "ukraine":
+        names = ['день', 'дня', 'днів']
+    else:
+        names = ['день', 'дня', 'дней']
     n = num % 100
     if n >= 5 and n <= 20: return names[2]
     n = num % 10
@@ -327,8 +332,11 @@ def patogenName(lab, theme=""):
             howfuck = "приемом"
         elif lab.theme == "hell":
             howfuck = "розыгрышем"
+        elif lab.theme == "english":
+            howfuck = "with the pathogen"
         else:
             howfuck = "патогеном"
+        
     else:
         if theme == "azeri":
             howfuck = "баздыгом"
@@ -336,10 +344,15 @@ def patogenName(lab, theme=""):
             howfuck = "приемом"
         elif theme == "hell":
             howfuck = "розыгрышем"
+        elif theme == "english":
+            howfuck = "with the pathogen"
         else:
             howfuck = "патогеном"
 
-    return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"неизвестным {howfuck}"
+    if lab.theme != "english" or theme != "english":
+        return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"неизвестным {howfuck}"
+    else:
+        return f"{howfuck} «<code>{lab.patogen_name}</code>»" if lab.patogen_name is not None else f"unknown {howfuck}"
 
 
 def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second_name, atts, patogen_name="", profit=0):
@@ -383,6 +396,18 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Вас напугали"
             alter_lost = "🩸 Потерял"
             alter_attempt = "напугали"
+        elif theme == "english":
+            organizer = "Organizer"
+            full_attempt = "👨🏻‍🔬 Your infection operation has been performed"
+            short_attempt = "👨🏻‍🔬 An infection operation was performed"
+            lost = "🧪 Minimum completed"
+            you_lost = "☣️ You lost"
+            bio = "bio-exp"
+
+            alternative = "👨🏻‍🔬 You have been infected"
+            alter_lost = "☣️ Lost"
+            alter_attempt = "was infected"
+
         else:
             organizer = "Организатор"
             full_attempt = "👨🏻‍🔬 Была проведена операция вашего заражения"
@@ -438,6 +463,10 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Злочинець"
             full_attempt = "👺 Спроба вашого вбивства провалилася!"
             short_attempt = "👺 Спроба вбивства"
+        elif theme == "english":
+            organizer = "Organizer"
+            full_attempt = "👺 Your infection attempt failed!"
+            short_attempt = "👺 Attempt to infect"
         else:
             organizer = "Организатор"
             full_attempt = "👺 Попытка вашего заражения провалилась!"
@@ -534,7 +563,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
                 f" {patogen_name}\n\n"\
                 f"{spend}: <i>{atts}</i>\n"\
                 f"{gain} <i>{strconv.format_nums(profit)}{bio_res}</i>\n"\
-                f"{infect} <i>{mortality} {skloneniye(mortality)}</i>"
+                f"{infect} <i>{mortality} {skloneniye(mortality, theme)}</i>"
 
     if new:
         rslt_text += f"\n\n<i>{lol}</i>"
@@ -556,5 +585,6 @@ fuck_against = {
     "standard" : "Заразить в ответ",
     "azeri" : "Выебать",
     "hell" : "Напугать в ответ",
-    "ukraine" : "Йобнути у відповідь "
+    "ukraine" : "Йобнути у відповідь ",
+    "english": "Infect back"
 }
