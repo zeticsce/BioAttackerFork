@@ -34,13 +34,13 @@ theme = {
 🧪 Патогенов: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 👨🏻‍🔬 Разработка: {qual} (<code>{qualification_calk}</code>){new_patogen}
 
-🔬 НАВЫКИ:
+<b>🔬 НАВЫКИ:</b>
 🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ДАННЫЕ:
+<b>⛩ ДАННЫЕ:</b>
 ☣️ Био-опыт: {bio_exp}
 🧬 Био-ресурс: {bio_res}
 😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -130,13 +130,13 @@ theme = {
 🧪 Патогенів: {pats} з {all_pats} (<code>+{pats_calk}</code>)
 👨🏻‍🔬 Розробка: {qual} (<code>{qualification_calk}</code>){new_patogen}
 
-🔬 НАВИЧКИ:
+<b>🔬 НАВИЧКИ:</b>
 🦠 Заразність: {infect} рів. (<code>+{infect_calk}</code>)
 🛡 Імунітет: {immunity} рів. (<code>+{immunity_calk}</code>)
 ☠️ Летальність: {mortality} рів. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Служба безпеки: {security} рів. (<code>+{security_calk}</code>)
 
-⛩ ІНФОРМАЦІЯ:
+<b>⛩ ІНФОРМАЦІЯ:</b>
 ☣️ Біо-досвід: {bio_exp}
 🧬 Біо-ресурси: {bio_res}
 😷 Спецоперацій: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -178,13 +178,13 @@ theme = {
 🐳 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
 👨🏻‍🔬 Пейсярляр: {qual} (<code>{qualification_calk}</code>)
 
-🔬 ГЕХПЕЕЕЕ:
+<b>🔬 ГЕХПЕЕЕЕ:</b>
 🦠 Сикимин бойу: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Готун размери: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Гандон: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Ебана рот: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ГИЖДЫЛЛАААХ:
+<b>⛩ ГИЖДЫЛЛАААХ:</b>
 ☣️ Био-манатлар: {bio_exp}
 🧬 Био-гяпийляр: {bio_res}
 😷 Вурулду: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
@@ -226,13 +226,13 @@ theme = {
 🚬 Придумано заманух: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 ⏳ Новая замануха: {qual} (<code>{qualification_calk}){new_patogen}
 
-🔬 НАВЫКИ:
+<b>🔬 НАВЫКИ:</b>
 🦠 Заразность: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Иммунитет: {immunity} ур. (<code>+{immunity_calk}</code>)
 ☠️ Летальность: {mortality} ур. (<code>+{mortality_calk}</code>)
 🕵️‍♂️ Безопасность: {security} ур. (<code>+{security_calk}</code>)
 
-⛩ ДАННЫЕ:
+<b>⛩ ДАННЫЕ:</b>
 ☣️ Био-опыт: {bio_exp}
 🧬 Био-ресурс: {bio_res}
 😷 Спецопераций: {suc_operations}/{all_operations} (<code>{operations_percent}%</code>)
