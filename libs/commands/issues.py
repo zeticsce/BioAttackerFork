@@ -15,6 +15,8 @@ from aiogram import types
 
 from math import floor
 
+from aiogram.utils.callback_data import CallbackData
+
 work_path = os.path.abspath(os.curdir)
 
 def impr_price(start, end, power):
@@ -22,6 +24,8 @@ def impr_price(start, end, power):
     for i in range(int(end) - int(start)):
         price += floor((int(start) + i + 1) ** power)
     return price
+
+vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 
 @dp.message_handler(content_types=["text"])
 async def issues(message: types.Message):
@@ -42,15 +46,19 @@ async def issues(message: types.Message):
                             text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
                         else:
                             text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
-                        text += f" | до {until}\n"
                     else: 
                         text += f'{count + 1}. '
                         if item['pat_name'] is not None:
                             text += f"{strconv.escape_markdown(item['pat_name'])}"
                         else:
                             text += "Неизвестный патоген"
+                    text += f" | до {until}\n"
                     in_list.append(item['user_id'])
 
                     count += 1
-                    if count == 50: break
-            await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
+                    if count == 30: break
+            victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
+            victims_keyboard.row(
+                types.InlineKeyboardButton('❌ Скрыть', callback_data=vote_cb.new(action='delete msg', id=message.from_user.id, chat_id=message.chat.id)),
+            )
+            await bot.send_message(message.chat.id, text=text, parse_mode="Markdown", reply_markup=victims_keyboard)

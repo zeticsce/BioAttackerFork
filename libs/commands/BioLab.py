@@ -197,23 +197,22 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
             if item['until_infect'] > int(time.time()):
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                 if item['hidden'] == 0: 
-                    if item['hidden'] == 0: 
-                        text += f'{count + 1}. '
-                        if item['pat_name'] != None:
-                            text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
-                        else:
-                            text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
-                        text += f" | до {until}\n"
-                    else: 
-                        text += f'{count + 1}. '
-                        if item['pat_name'] != None:
-                            text += f"{strconv.escape_markdown(item['pat_name'])}"
-                        else:
-                            text += "Неизвестный патоген"
+                    text += f'{count + 1}. '
+                    if item['pat_name'] is not None:
+                        text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
+                    else:
+                        text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
+                else: 
+                    text += f'{count + 1}. '
+                    if item['pat_name'] is not None:
+                        text += f"{strconv.escape_markdown(item['pat_name'])}"
+                    else:
+                        text += "Неизвестный патоген"
+                text += f" | до {until}\n"
                 in_list.append(item['user_id'])
 
                 count += 1
-                if count == 25: break
+                if count == 30: break
                 
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
