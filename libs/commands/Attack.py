@@ -406,12 +406,20 @@ async def show_lab(message: types.Message):
                     lab.bio_res -= 10
                     lab.save()
 
-                    text = "🤓Вы успешно исцелились!\n\n"
-                    text += "Потрачено `10` био-ресурсов 🧬" 
+                    if lab.theme == "english":
+                        text = "🤓You have been successfully healed!\n\n"
+                        text += "Spent `10` bio-resources 🧬"
+                    else:
+                        text = "🤓Вы успешно исцелились!\n\n"
+                        text += "Потрачено `10` био-ресурсов 🧬" 
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
                 elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 10:
-                    text = "🤓Вы успешно исцелились!\n\n"
-                    text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
+                    if lab.theme == "english":
+                        text = "🤓You have been successfully healed!\n\n"
+                        text += f"Spent {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
+                    else:
+                        text = "🤓Вы успешно исцелились!\n\n"
+                        text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
                     lab.last_issue = 0
                     lab.coins -= (10 - lab.bio_res)
                     lab.bio_res -= lab.bio_res
@@ -439,8 +447,12 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
                 lab.bio_res -= 10
                 lab.save()
 
-                text = "🤓Вы успешно исцелились!\n\n"
-                text += "Потрачено `10` био-ресурсов 🧬" 
+                if lab.theme == "english":
+                    text = "🤓You have been successfully healed!\n\n"
+                    text += "Spent `10` bio-resources 🧬"
+                else:
+                    text = "🤓 Вы успешно исцелились!\n\n"
+                    text += "Потрачено `10` био-ресурсов 🧬" 
                 await bot.edit_message_text(
                     chat_id=query.message.chat.id, 
                     text=text, 
