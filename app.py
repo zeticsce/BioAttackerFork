@@ -12,7 +12,7 @@ class Out(object):
         requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
             'method': 'sendMessage', 
             'chat_id': ECHO_CHAT, 
-            'text': f'```{self.type}\n' + data.replace("*", "\*").replace("`", "\`").replace("(", "\(").replace(")", "\)").replace("_", "\_").replace("[", "\[").replace("]", "\]") + '```',
+            'text': f'```{self.type}\n' + data + '```',
             'parse_mode': "Markdown"
         })
     def flush(self):

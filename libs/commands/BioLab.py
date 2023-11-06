@@ -129,7 +129,7 @@ async def show_lab(message: types.Message):
         \
         .replace("{pats_calk}", str(get_impr_count(lab.all_patogens, lab.bio_res, 2)))\
         .replace("{infect_calk}", str(get_impr_count(lab.infectiousness, lab.bio_res, 2.5)))\
-        .replace("{immunity_calk}", str(get_impr_count(lab.immunity, lab.bio_res, 2.45)))\
+        .replace("{immunity_calk}", str(get_impr_count(lab.immunity, lab.bio_res, 2.55)))\
         .replace("{mortality_calk}", str(get_impr_count(lab.mortality, lab.bio_res, 1.95)))\
         .replace("{security_calk}", str(get_impr_count(lab.security, lab.bio_res, 2.1)))\
         \
@@ -197,23 +197,22 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
             if item['until_infect'] > int(time.time()):
                 until = datetime.datetime.fromtimestamp(item['until_infect']).strftime("%d.%m.%Y")
                 if item['hidden'] == 0: 
-                    if item['hidden'] == 0: 
-                        text += f'{count + 1}. '
-                        if item['pat_name'] != None:
-                            text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
-                        else:
-                            text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
-                        text += f" | до {until}\n"
-                    else: 
-                        text += f'{count + 1}. '
-                        if item['pat_name'] != None:
-                            text += f"{strconv.escape_markdown(item['pat_name'])}"
-                        else:
-                            text += "Неизвестный патоген"
+                    text += f'{count + 1}. '
+                    if item['pat_name'] is not None:
+                        text += f"[{strconv.escape_markdown(item['pat_name'])}](tg://openmessage?user_id={item['user_id']})"
+                    else:
+                        text += f"[Неизвестный патоген](tg://openmessage?user_id={item['user_id']})"
+                else: 
+                    text += f'{count + 1}. '
+                    if item['pat_name'] is not None:
+                        text += f"{strconv.escape_markdown(item['pat_name'])}"
+                    else:
+                        text += "Неизвестный патоген"
+                text += f" | до {until}\n"
                 in_list.append(item['user_id'])
 
                 count += 1
-                if count == 25: break
+                if count == 30: break
                 
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
