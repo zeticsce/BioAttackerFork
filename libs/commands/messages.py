@@ -180,14 +180,14 @@ theme = {
 
 💩 Хан: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
-🐳 Баздыглар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
-👨🏻‍🔬 Пейсярляр: {qual} (<code>{qualification_calk}</code>)
+🥒 Хыярлар: {pats} из {all_pats} (<code>+{pats_calk}</code>){new_patogen}
+👨🏻‍🔬 Хякимляр: {qual} (<code>{qualification_calk}</code>)
 
 <b>🔬 ГЕХПЕЕЕЕ:</b>
 🦠 Сикимин бойу: {infect} ур. (<code>+{infect_calk}</code>)
 🛡 Готун размери: {immunity} ур. (<code>+{immunity_calk}</code>)
-☠️ Гандон: {mortality} ур. (<code>+{mortality_calk}</code>)
-🕵️‍♂️ Ебана рот: {security} ур. (<code>+{security_calk}</code>)
+☠️ Няняляр: {mortality} ур. (<code>+{mortality_calk}</code>)
+🕵️‍♂️ Анти-полисляр: {security} ур. (<code>+{security_calk}</code>)
 
 <b>⛩ ГИЖДЫЛЛАААХ:</b>
 ☣️ Био-манатлар: {bio_exp}
@@ -375,7 +375,7 @@ def illness_check(lab):
 def patogenName(lab, theme=""):
     if theme == "":
         if lab.theme == "azeri":
-            howfuck = "баздыгом"
+            howfuck = "хыяром"
         elif lab.theme == "mafia":
             howfuck = "приемом"
         elif lab.theme == "hell":
@@ -387,7 +387,7 @@ def patogenName(lab, theme=""):
         
     else:
         if theme == "azeri":
-            howfuck = "баздыгом"
+            howfuck = "хыяром"
         elif theme == "mafia":
             howfuck = "приемом"
         elif theme == "hell":
@@ -413,12 +413,12 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Пейсяр"
             full_attempt = "👨🏻‍🔬 Сын пейсяр чыхдын"
             short_attempt = "👨🏻‍🔬 Сяни сикди"
-            lost = "🐳 Баздыглар сычды"
-            you_lost = "☣️ мантлары сычдын"
+            lost = "🥒 Хыярлар сычды"
+            you_lost = "☣️ мантлары сычды"
             bio = "манат"
 
             alternative = "👨🏻‍🔬 Сяни сиктиляр"
-            alter_lost = "☣️ Сычдын"
+            alter_lost = "☣️ Сычды"
             alter_attempt = "сиктиляр"
 
         elif theme == "ukraine":
@@ -511,7 +511,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
     else:
 
         if theme == "azeri":
-            organizer = "Пейсяр"
+            organizer = "Баклажан"
             full_attempt = "👺 Сяни вуранда озю пейсяр чыхды!"
             short_attempt = "👺 Сяни сикмяк"
 
@@ -569,7 +569,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
     if theme == "azeri":
         ''' Азербайджанская тема '''
         fucked = "сикди"
-        spend = "🧪 патогенляр гетди"
+        spend = "🥒 хыярлар гетди"
         gain = "☣️ Бу гяхпя верир"
         bio_res = "био-манатлар"
         infect = "☠️ Заражение на"
@@ -658,7 +658,7 @@ heal_text = (
 
 fuck_against = {
     "standard" : "Заразить в ответ",
-    "azeri" : "Выебать",
+    "azeri" : "Хыяры салмаг?",
     "hell" : "Напугать в ответ",
     "ukraine" : "Йобнути у відповідь ",
     "english": "Infect back",
