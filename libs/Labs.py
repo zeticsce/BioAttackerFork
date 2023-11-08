@@ -4,6 +4,7 @@ import random
 import pymysql
 import requests
 
+
 class Labs:
     def __init__(self) -> None:
         self.has_lab_users = [i['user_id'] for i in query("SELECT * FROM `bio_attacker`.`labs`")]
