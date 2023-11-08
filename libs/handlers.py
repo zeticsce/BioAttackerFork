@@ -354,6 +354,10 @@ def second_change_theme_btn(message: types.Message, usid):
     )
 
     keyboard_markup.add(
+        types.InlineKeyboardButton(text='🇬🇧 Английская тема', callback_data=vote_cb.new(action='desc_english', id=usid, chat_id=message.chat.id)),
+    )
+
+    keyboard_markup.add(
         types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action='back', id=usid, chat_id=message.chat.id)),
     )
 
@@ -366,6 +370,7 @@ def change_theme_btn(message: types.Message, usid):
         types.InlineKeyboardButton(text='🇦🇿 Азербайджанская', callback_data=vote_cb.new(action='azeri', id=usid, chat_id=message.chat.id)),
         types.InlineKeyboardButton(text='Хеллоуинская', callback_data=vote_cb.new(action='hell', id=usid, chat_id=message.chat.id)),
         types.InlineKeyboardButton(text='🇺🇦 Украинская', callback_data=vote_cb.new(action='ukraine', id=usid, chat_id=message.chat.id)),
+        types.InlineKeyboardButton(text='🇬🇧 Английская тема', callback_data=vote_cb.new(action='english', id=usid, chat_id=message.chat.id)),
     )
 
     keyboard_markup.add(
@@ -406,6 +411,15 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
         await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
     else:
         await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(vote_cb.filter(action='desc_english'))
+async def change_theme(query: types.CallbackQuery, callback_data: dict):
+    chat_id = callback_data["chat_id"]
+    from_user_id = callback_data["id"]
+    if from_user_id == str(query.from_user.id):
+        text = f"Название темы: {theme['english']['theme_name']}\n\n"
+        text += f"Описание темы: {theme['english']['theme_desc']}"
+        await bot.edit_message_text(chat_id=chat_id, text=text, message_id=query.message.message_id, reply_markup=back_btn(query.message, from_user_id))
 
 @dp.callback_query_handler(vote_cb.filter(action='desc_azeri'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
@@ -492,6 +506,21 @@ async def change_theme(query: types.CallbackQuery, callback_data: dict):
 
     else:
         await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(vote_cb.filter(action='english'))
+async def change_theme(query: types.CallbackQuery, callback_data: dict):
+    from_user_id = callback_data["id"]
+    chat_id = callback_data["chat_id"]
+    lab = labs.get_lab(from_user_id)
+    if from_user_id == str(query.from_user.id):
+        if lab.theme == "english":
+
+            await bot.edit_message_text(chat_id=chat_id, text="You already have an English theme!", message_id=query.message.message_id)
+            return
+        else:
+            lab.theme = "english"
+            lab.save()
+            await bot.edit_message_text(chat_id=chat_id, text="✅ English theme installed!", message_id=query.message.message_id)
 
 @dp.callback_query_handler(vote_cb.filter(action='azeri'))
 async def change_theme(query: types.CallbackQuery, callback_data: dict):
