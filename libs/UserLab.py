@@ -4,7 +4,7 @@ from app import query, strconv
 import json
 import time
 import math
-
+import copy
 
 class UserLab:
     """
@@ -47,7 +47,7 @@ class UserLab:
         self.last_issue: int
         self.last_daily: int
         self.virus_chat: int
-        self.modules: json
+        self.modules: dict
 
         self.__convert_lab()
         if self.has_lab and self.virus_chat is None: self.virus_chat = str(self.user_id)
@@ -85,10 +85,20 @@ class UserLab:
 
             result['name'] = strconv.normalaze(result['name'])
 
-            self.__dict__ = dict(result)
-            self.__start_data = dict(result)
+            result['modules'] = json.loads(result['modules'])
+            if result['modules'] == None: result['modules'] = {}
+
+            self.__dict__ = copy.deepcopy(result)
+            self.__start_data = copy.deepcopy(result)
 
             self.has_lab = True
+
+            """Инициализация и проверка модулей"""
+
+            # Пример
+            
+            # if 'themes' not in self.modules:
+            #     self.modules['themes'] = {}
 
 
             """Начисление патогенов"""
@@ -204,9 +214,13 @@ class UserLab:
         """Сохраняет значение лабы, если никакие значения не были изменены, то ничего не делает"""
         result = []
         for i in self.__start_data:
-            if self.__start_data[i] != self.__dict__[i]: 
-                if self.__dict__[i] is not None: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
-                else: result.append(f"`{i}` = NULL") 
+            if type(self.__dict__[i]) == dict:
+                if json.dumps(self.__start_data[i]) != json.dumps(self.__dict__[i]):
+                    result.append(f"`{i}` = '{json.dumps(self.__dict__[i])}'") 
+            else:
+                if self.__start_data[i] != self.__dict__[i]: 
+                    if self.__dict__[i] is not None: result.append(f"`{i}` = '{strconv.escape_sql(self.__dict__[i])}'") 
+                    else: result.append(f"`{i}` = NULL") 
         if len(result) != 0: query(f"UPDATE `bio_attacker`.`labs` SET {', '.join(result)} WHERE `labs`.`user_id` = {self.user_id}")
 
         if self.__start_data['bio_exp'] >= labs.bio_top[-1]['bio_exp'] or self['bio_exp'] >= labs.bio_top[-1]['bio_exp']: # если твое био больше последнего био в спике биотопа, то тогда список пересчитывается
