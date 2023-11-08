@@ -409,6 +409,8 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
     hide_attacker_link = f'<a href="tg://user?id={first_id}">\xad</a>'
     if suc == 1:
 
+        attempt = "попыток"
+
         if theme == "azeri":
             organizer = "Пейсяр"
             full_attempt = "👨🏻‍🔬 Сын пейсяр чыхдын"
@@ -416,6 +418,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             lost = "🥒 Хыярлар сычды"
             you_lost = "☣️ мантлары сычды"
             bio = "манат"
+            attempt = "дяня"
 
             alternative = "👨🏻‍🔬 Сяни сиктиляр"
             alter_lost = "☣️ Сычды"
@@ -432,6 +435,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 Вас йобнули"
             alter_lost = "☣️ Проєбав "
             alter_attempt = "був йобнутий"
+            attempt = "спроб"
 
         elif theme == "hell":
             organizer = "Организатор розыгрыша"
@@ -451,6 +455,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             lost = "🧪 Minimum completed"
             you_lost = "☣️ You lost"
             bio = "bio-exp"
+            attempt = "attempts"
 
             alternative = "👨🏻‍🔬 You have been infected"
             alter_lost = "☣️ Lost"
@@ -487,14 +492,14 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
                 sb_text = f'{full_attempt} {patogen_name}.\n\n'\
                         f'{organizer}: '\
                         f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n\n'\
-                        f'{lost} {atts} попыток!\n'\
+                        f'{lost} {atts} {attempt}!\n'\
                         f'{you_lost} <code>{profit}</code> {bio}.'
             else:
                 sb_text = f'{short_attempt} '\
                         f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> {patogen_name}.\n\n'\
                         f'{organizer}: '\
                         f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n\n'\
-                        f'{lost} {atts} попыток!\n'\
+                        f'{lost} {atts} {attempt}!\n'\
                         f'{you_lost} <code>{profit}</code> {bio}.'\
                         f'{hide_victim_link}'
         else:
@@ -510,11 +515,14 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
 
 
     else:
+        
+        attempt = "попыток"
 
         if theme == "azeri":
             organizer = "Баклажан"
             full_attempt = "👺 Сяни вуранда озю пейсяр чыхды!"
             short_attempt = "👺 Сяни сикмяк"
+            attempt = "дяня"
 
         elif theme == "hell":
             organizer = "Организатор розыгрыша"
@@ -525,10 +533,12 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Злочинець"
             full_attempt = "👺 Спроба вашого вбивства провалилася!"
             short_attempt = "👺 Спроба вбивства"
+            attempt = "спроб"
         elif theme == "english":
             organizer = "Organizer"
             full_attempt = "👺 Your infection attempt failed!"
             short_attempt = "👺 Attempt to infect"
+            attempt = "attempts"
         elif theme == "zombie":
             organizer = "Распостранитель инфекции"
             full_attempt = "🚜 Инфицирование провалилось!"
@@ -545,22 +555,22 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
                 sb_text = f'{full_attempt}\n\n'\
                         f'{organizer}: '\
                         f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n'\
-                        f'Совершено минимум <i>{atts}</i> попыток!'
+                        f'Совершено минимум <i>{atts}</i> {attempt}!'
             else:
                 sb_text = f'{short_attempt} '\
                         f'<a href="tg://openmessage?user_id={second_id}">{second_name}</a> провалилась!\n\n'\
                         f'{organizer}: '\
                         f'<a href="tg://openmessage?user_id={first_id}">{first_name}</a>\n'\
-                        f'Совершено минимум <i>{atts}</i> попыток!'\
+                        f'Совершено минимум <i>{atts}</i> {attempt}!'\
                         f'{hide_victim_link}'
         else:
             if equal:
                 sb_text = f'{full_attempt}\n\n'\
-                    f'Совершено минимум <i>{atts}</i> попыток!'
+                    f'Совершено минимум <i>{atts}</i> {attempt}!'
             else:
                 sb_text = f'{short_attempt} '\
                     f'<a href="tg://user?id={second_id}">{second_name}</a> провалилась!\n\n'\
-                    f'Совершено минимум <i>{atts}</i> попыток!'
+                    f'Совершено минимум <i>{atts}</i> {attempt}!'
 
     return sb_text
 
