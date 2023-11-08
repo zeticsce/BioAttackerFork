@@ -401,27 +401,30 @@ async def show_lab(message: types.Message):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:  #проверка на наличие лабы
             if lab.illness is not None:
-                if lab.bio_res - 10 >= 0:
+
+                price = lab.immunity * 20
+
+                if lab.bio_res - price >= 0:
                     lab.last_issue = 0
-                    lab.bio_res -= 10
+                    lab.bio_res -= price
                     lab.save()
 
                     if lab.theme == "english":
                         text = "🤓You have been successfully healed!\n\n"
-                        text += "Spent `10` bio-resources 🧬"
+                        text += f"Spent `{price}` bio-resources 🧬"
                     else:
                         text = "🤓Вы успешно исцелились!\n\n"
-                        text += "Потрачено `10` био-ресурсов 🧬" 
+                        text += f"Потрачено `{price}` био-ресурсов 🧬" 
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
-                elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 10:
+                elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
                     if lab.theme == "english":
                         text = "🤓You have been successfully healed!\n\n"
-                        text += f"Spent {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
+                        text += f"Spent {lab.bio_res} 🧬 и {(price - lab.bio_res)} 💰"
                     else:
                         text = "🤓Вы успешно исцелились!\n\n"
-                        text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
+                        text += f"Потрачено {lab.bio_res} 🧬 и {(price - lab.bio_res)} 💰"
                     lab.last_issue = 0
-                    lab.coins -= (10 - lab.bio_res)
+                    lab.coins -= (price - lab.bio_res)
                     lab.bio_res -= lab.bio_res
                     lab.save()
                     await bot.send_message(chat_id=message.chat.id, text=text, parse_mode="Markdown", reply_to_message_id=message.message_id)
@@ -441,29 +444,32 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:  #проверка на наличие лабы
+            
+            price = lab.immunity * 20
 
-            if lab.bio_res - 10 >= 0:
+
+            if lab.bio_res - price >= 0:
                 lab.last_issue = 0
-                lab.bio_res -= 10
+                lab.bio_res -= price
                 lab.save()
 
                 if lab.theme == "english":
                     text = "🤓You have been successfully healed!\n\n"
-                    text += "Spent `10` bio-resources 🧬"
+                    text += f"Spent `{price}` bio-resources 🧬"
                 else:
                     text = "🤓 Вы успешно исцелились!\n\n"
-                    text += "Потрачено `10` био-ресурсов 🧬" 
+                    text += f"Потрачено `{price}` био-ресурсов 🧬" 
                 await bot.edit_message_text(
                     chat_id=query.message.chat.id, 
                     text=text, 
                     parse_mode="Markdown", 
                     message_id=query.message.message_id,
                 )
-            elif lab.bio_res - 10 <= 0 and lab.bio_res + lab.coins >= 10:
+            elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
                 text = "🤓Вы успешно исцелились!\n\n"
-                text += f"Потрачено {lab.bio_res} 🧬 и {(10 - lab.bio_res)} 💰"
+                text += f"Потрачено {lab.bio_res} 🧬 и {(price - lab.bio_res)} 💰"
                 lab.last_issue = 0
-                lab.coins -= (10 - lab.bio_res)
+                lab.coins -= (price - lab.bio_res)
                 lab.bio_res -= lab.bio_res
                 lab.save()
                 await bot.edit_message_text(
