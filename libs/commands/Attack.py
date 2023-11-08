@@ -402,7 +402,7 @@ async def show_lab(message: types.Message):
         if lab.has_lab:  #проверка на наличие лабы
             if lab.illness is not None:
 
-                price = lab.immunity * 20
+                price = lab.immunity * 15
 
                 if lab.bio_res - price >= 0:
                     lab.last_issue = 0
@@ -445,7 +445,7 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:  #проверка на наличие лабы
             
-            price = lab.immunity * 20
+            price = lab.immunity * 15
 
 
             if lab.bio_res - price >= 0:

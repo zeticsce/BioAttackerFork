@@ -129,7 +129,7 @@ async def show_lab(message: types.Message):
         \
         .replace("{pats_calk}", str(get_impr_count(lab.all_patogens, lab.bio_res, 2)))\
         .replace("{infect_calk}", str(get_impr_count(lab.infectiousness, lab.bio_res, 2.5)))\
-        .replace("{immunity_calk}", str(get_impr_count(lab.immunity, lab.bio_res, 2.55)))\
+        .replace("{immunity_calk}", str(get_impr_count(lab.immunity, lab.bio_res, 2.5)))\
         .replace("{mortality_calk}", str(get_impr_count(lab.mortality, lab.bio_res, 1.95)))\
         .replace("{security_calk}", str(get_impr_count(lab.security, lab.bio_res, 2.1)))\
         \
