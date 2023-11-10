@@ -12,7 +12,7 @@ from aiogram import types
 
 @dp.message_handler(content_types=["text"])
 async def improve(message: types.Message):
-    if message.text.lower() == "биоб":
+    if message.text.lower() == "биоб" and not message.forward_from:
         text = "Биотоп чмоней\n"
         count = 0
         all_bio_exp = query("SELECT SUM(bio_exp) as bio FROM `bio_attacker`.`labs`")[0]['bio']

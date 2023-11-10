@@ -69,7 +69,7 @@ def against( message: types.Message, theme, id_of_organizator, id_id, chat_id, h
 @dp.message_handler(content_types=["text"])
 async def show_lab(message: types.Message):
     bio_infect = re.fullmatch(r"(биоеб)( \d{1,2})?( \S+)?", message.text.lower()) # регулярка на заражения
-    if bio_infect is not None:
+    if bio_infect is not None and not message.forward_from:
 
         time_start = time.time()
         try: 
@@ -397,7 +397,7 @@ async def show_lab(message: types.Message):
 
                     lab.save()
 
-    if message.text.lower() in ("хил", "биохил", "биохилл"):
+    if message.text.lower() in ("хил", "биохил", "биохилл") and not message.forward_from:
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:  #проверка на наличие лабы
             if lab.illness is not None:

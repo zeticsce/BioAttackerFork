@@ -29,7 +29,7 @@ vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 
 @dp.message_handler(content_types=["text"])
 async def issues(message: types.Message):
-    if message.text.lower() == "биоболь":
+    if message.text.lower() == "биоболь" and not message.forward_from:
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:
             text = f'Болезни игрока [{message.from_user.first_name}](tg://openmessage?user_id={message.from_user.id})\n\n'

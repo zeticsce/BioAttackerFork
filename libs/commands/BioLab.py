@@ -49,7 +49,7 @@ def get_impr_count(start, biores, power): # подсчет колва досту
 @dp.message_handler(content_types=["text"])
 async def show_lab(message: types.Message):
 
-    if message.text.lower() == "биолаб":
+    if message.text.lower() == "биолаб" and not message.forward_from:
 
         """
             Команда вывода лаборатории юзера

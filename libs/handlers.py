@@ -113,7 +113,7 @@ async def handler(message: types.message):
         text += "[Все команды бота](https://teletype.in/@kawasaji/commands_of_bio-cmo)"
         await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
-    if message.text.lower() == "-вирус":
+    if message.text.lower() == "-вирус" and not message.forward_from:
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
             lab.patogen_name = None
@@ -121,7 +121,7 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Название патогена удалено.")
 
-    if message.text.lower() == "-лаб":
+    if message.text.lower() == "-лаб" and not message.forward_from:
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
             lab.lab_name = None
@@ -129,7 +129,7 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Имя лаборатории удалено.")
 
-    if message.text.lower().startswith("+лаб "):
+    if message.text.lower().startswith("+лаб ") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
@@ -157,7 +157,7 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Имя лаборатории успешно обновлено!")
 
-    if message.text.lower().startswith("+вирус "):
+    if message.text.lower().startswith("+вирус ") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
@@ -183,14 +183,14 @@ async def handler(message: types.message):
 
             await bot.send_message(message.chat.id, "✅ Название патогена успешно обновлено!")
 
-    if message.text.lower() == "+вирусы":
+    if message.text.lower() in ["+вирусы", "+сбчат"] and not message.forward_from:
         lab = labs.get_lab(message['from']['id'])
         if lab.has_lab: 
             lab.virus_chat = message.chat.id
             lab.save()
             await bot.send_message(message.chat.id, text="Сообщения службы безопасности перенесены в этот чат", parse_mode="Markdown")
 
-    if message.text.lower() in ("биожертвы", "биоежа"):
+    if message.text.lower() in ("биожертвы", "биоежа") and not message.forward_from:
         lab = labs.get_lab(message['from']['id'])
 
         text = f'Жертвы игрока <a href="tg://openmessage?user_id={message.from_user.id}">{strconv.normalaze(message.from_user.first_name, replace=str(message["from"]["id"]))}</a>\n\n'
@@ -223,7 +223,7 @@ async def handler(message: types.message):
 
         await bot.send_message(message.chat.id, text=text, parse_mode="HTML", reply_markup=victims_keyboard)
 
-    if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн"):
+    if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
         if lab.last_farma + (60*60) > int(time.time()):
@@ -251,7 +251,7 @@ async def handler(message: types.message):
 
         await bot.send_message(message.chat.id, text=text, parse_mode="Markdown")
 
-    if message.text.lower() in ("биомеш", "биомешок", "биобаланс", "коины"):
+    if message.text.lower() in ("биомеш", "биомешок", "биобаланс", "коины") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
 
@@ -268,7 +268,7 @@ async def handler(message: types.message):
         await bot.send_message(message.chat.id, text='лох<a href="tg://user?id=5770061336">\xad</a>', parse_mode="HTML", disable_web_page_preview=True)
 
     reg = re.fullmatch(r'[.!/][\s]?ид(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
-    if reg is not None:
+    if reg is not None and not message.forward_from:
         url = reg.group(2)
         name = None
         if url is not None:

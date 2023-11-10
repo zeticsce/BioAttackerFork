@@ -25,7 +25,7 @@ def impr_price(start, end, power):
 @dp.message_handler(content_types=["text"])
 async def improve(message: types.Message):
 
-    if message.text.startswith("+"):
+    if message.text.startswith("+") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
 
