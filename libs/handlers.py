@@ -226,7 +226,7 @@ async def handler(message: types.message):
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
-        if lab.last_farma + (60*60) > int(time.time()):
+        if lab.last_farma + (60*60*4) > int(time.time()):
             minuts = 60 - int((int(time.time()) - lab.last_farma)/60)
             if minuts <= 20:
                 if minuts == 1: declination = "минута"
@@ -241,7 +241,7 @@ async def handler(message: types.message):
             lab.save()
             return
 
-        profit = random.randint(20, 200)
+        profit = random.randint(20, 100)
 
         lab.coins += profit
         lab.last_farma = int(time.time())
