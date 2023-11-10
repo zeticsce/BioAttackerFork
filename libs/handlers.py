@@ -227,7 +227,7 @@ async def handler(message: types.message):
 
         lab = labs.get_lab(message['from']['id'])
         if lab.last_farma + (60*60*4) > int(time.time()):
-            minuts = 60 - int((int(time.time()) - lab.last_farma)/60)
+            minuts = 60*4 - int((int(time.time()) - lab.last_farma)/60)
             if minuts <= 20:
                 if minuts == 1: declination = "минута"
                 elif minuts <= 4: declination = "минуты"
