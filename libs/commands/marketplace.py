@@ -208,7 +208,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                     vitun.coins += 500
                     vitun.save()
  
-                if theme_name == "cookies":
+                if theme_name in ("cookies", "mafia"):
                     knopka = labs.get_lab(1202336740)
                     knopka.coins += 500
                     knopka.save()
