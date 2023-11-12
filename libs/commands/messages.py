@@ -446,6 +446,8 @@ def patogenName(lab, theme=""):
             howfuck = "with the pathogen"
         elif lab.theme == "cookies":
             howfuck = "десертом"
+        elif lab.theme == "zombie":
+            howfuck = "мутагеном"
         else:
             howfuck = "патогеном"
         
@@ -460,6 +462,8 @@ def patogenName(lab, theme=""):
             howfuck = "with the pathogen"
         elif theme == "cookies":
             howfuck = "десертом"
+        elif theme == "zombie":
+            howfuck = "мутагеном"
         else:
             howfuck = "патогеном"
 
