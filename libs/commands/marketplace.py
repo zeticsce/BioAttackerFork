@@ -205,8 +205,14 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
             else:
                 if theme_name == "zombie":
                     vitun = labs.get_lab(1731537016)
-                    vitun.coins += 100
+                    vitun.coins += 500
                     vitun.save()
+ 
+                if theme_name == "cookies":
+                    knopka = labs.get_lab(1202336740)
+                    knopka.coins += 500
+                    knopka.save()
+
 
                 lab.coins -= int(theme[theme_name]["price"])
                 lab.modules['themes'].append(theme_name)
