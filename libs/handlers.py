@@ -311,7 +311,8 @@ async def handler(message: types.message):
     #             await message.reply(erpl)
     #             lab.save()
 
-    check = re.fullmatch(r'[.!/][\s]?чек(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
+    check = re.fullmatch(r'[.!/][\s]?чек(\s([@./:\\a-z0-9_?=]+))?', message.text, re.I)
+    print(check)
     if check is not None and not message.forward_from:
         lab = labs.get_lab(message.from_user.id)
 

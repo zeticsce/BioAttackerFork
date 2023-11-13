@@ -253,12 +253,10 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         text = "🌪 Ваши темы\n\n"
 
+        keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
         if len(lab.modules['themes']) == 0:
             text += "У вас нету ни одной приобретенной темы."
         else:
-
-            keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
-
             text += "Кликните на кнопку чтобы установить тему."
             for i in range(len(lab.modules['themes'])):
                 theme_name = lab.modules['themes'][i]
