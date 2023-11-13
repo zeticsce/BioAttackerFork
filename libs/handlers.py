@@ -334,22 +334,21 @@ async def handler(message: types.message):
                     bebra = bebra[0]
                     until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
                     await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
-                    
-            elif message.reply_to_message:
-                name = strconv.normalaze(message.reply_to_message.from_user.first_name, str(message.reply_to_message.from_user.id))
-                user_id = message.reply_to_message.from_user.id
 
-                try:
-                    bebra = dict(query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user_id}")[0])
-                except TypeError:
-                    await message.reply("Жертва не найдена")
-                    return
-                if bebra != None:
-                        until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
-                        await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
-                else:
-                    await message.reply("Жертва не найдена")
-                    return
+            elif message.reply_to_message:
+                    user = labs.get_user(message.reply_to_message.from_user.id)
+
+                    if user == None:
+                        await message.reply("Жертва не найдена")
+                        return
+
+                    bebra = query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")
+                    if len(bebra) == 0:
+                        await message.reply("Жертва не найдена")
+                        return
+                    bebra = bebra[0]
+                    until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
+                    await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
 
 
 
