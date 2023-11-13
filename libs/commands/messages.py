@@ -337,7 +337,7 @@ theme = {
         "biolab" : {
             "lab": """🏷 Название рецепта <code>{patogen_name}</code>
 
-🧑‍🍳 Шеф-повар: <a href="Заразить @{user_id}">{lab_name}</a>{corp}
+🧑‍🍳 Шеф-повар: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
 🧁 Приготовлено вкусняшек: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 🎂 Квалификация пекаря: {qual} (<code>{qualification_calk}</code>){new_patogen}
@@ -362,7 +362,7 @@ theme = {
             "no corp": "",
             "next patogen sec": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> сек.",
             "next patogen min": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> мин.",
-            "full patogens": "🍰 Уровень глюкозы повышен десертом  «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "full patogens": "",
             "fever": "\n\n🍰 Ваша попа слиплась от чрезмерной сладости еще на <code>{fever_time} мин.</code>",
             "no fever": "",
         },
