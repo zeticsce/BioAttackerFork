@@ -10,7 +10,7 @@ import time
 import datetime
 import math
 
-from app import dp, bot, query, strconv, save_message, is_host, IsAdmin
+from app import dp, bot, query, strconv, save_message, is_host
 from config import MYSQL_HOST
 from libs.handlers import labs
 from commands.messages import *

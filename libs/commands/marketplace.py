@@ -1,32 +1,12 @@
-import os
-import shutil
-import requests
-import random
-import subprocess
-import sys
-import datetime
-import re
 import time
 
-from app import dp, bot, query, strconv, save_message
-from config import MYSQL_HOST
-from Labs import Labs
-
-labs = Labs()
-
-from commands.improvements import *
-from commands.BioTop import *
-from commands.BioLab import *
-from commands.AddUsersToDB import *
-from commands.Attack import *
-from commands.issues import *
+from app import dp, bot
+from libs.handlers import labs, statistics
+from config import USER_ID
 from commands.messages import *
-from commands.rp_module import *
-from commands.corps import *
 
 
 from aiogram import types
-from aiogram.types import InputFile
 from aiogram.utils.callback_data import CallbackData
 from aiogram.utils import exceptions
 
@@ -35,7 +15,7 @@ buylg = CallbackData('vote', 'action', 'theme_name', 'id', 'chat_id')
 
 @dp.message_handler(content_types=["text"]) 
 async def handler(message: types.message):
-    if message.text.lower() in ("market", "маркет", "тема", "theme" ".m", ".м", ".т"):
+    if message.text.lower().replace(". ", ".") in ("market", "маркет", "тема", "theme" ".m", ".м", ".т"):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:
 
@@ -58,7 +38,6 @@ async def handler(message: types.message):
                 
             keyboard_markup.row(
                 types.InlineKeyboardButton(text="Темы", callback_data=vote_cb.new(action='themes', id=message.from_user.id, chat_id=message.chat.id)),
-                
             )
 
             await message.reply(text, reply_markup=keyboard_markup)
@@ -204,62 +183,45 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                 await bot.edit_message_text(text="У вас недостаточно коинов!", message_id=query.message.message_id, chat_id=chat_id)
                 return
             else:
+                creator_lab = None
                 if theme_name == "zombie":
-                    vitun = labs.get_lab(1731537016)
-                    vitun.coins += 500
-                    vitun.save()
-                    try:
-                        await bot.send_message(1731537016, "+500 коинов за покупку темы")
-                    except exceptions.ChatNotFound:
-                        pass
+                    creator_lab = labs.get_lab(1731537016) # Окультизм
  
                 elif theme_name in ("cookies", "mafia"):
-                    knopka = labs.get_lab(1202336740)
-                    knopka.coins += 500
-                    knopka.save()
-                    try:
-                        await bot.send_message(1202336740, "+500 коинов за покупку темы")
-                    except exceptions.ChatNotFound:
-                        pass
+                    creator_lab = labs.get_lab(1202336740) # Кнопка
 
                 elif theme_name == "dream":
-                    devidge = labs.get_lab(5892568878)
-                    devidge.coins += 500
-                    devidge.save()
-                    try:
-                        await bot.send_message(5892568878, "+500 коинов за покупку темы")
-                    except exceptions.ChatNotFound:
-                        pass
+                    creator_lab = labs.get_lab(5892568878) # David95gT
                 
                 elif theme_name == "scammer":
-                    gelya = labs.get_lab(6112156332)
-                    gelya.coins += 500
-                    gelya.save()
-                    try:
-                        await bot.send_message(6112156332, "+500 коинов за покупку темы")
-                    except exceptions.ChatNotFound:
-                        pass
+                    creator_lab = labs.get_lab(6112156332) # Геля
                 
                 elif theme_name == "school":
-                    donatik = labs.get_lab(1468359713)
-                    donatik.coins += 500
-                    donatik.save()
-                    try:
-                        await bot.send_message(1468359713, "+500 коинов за покупку темы")
-                    except exceptions.ChatNotFound:
-                        pass
+                    creator_lab = labs.get_lab(1468359713) # Донатик
                 
                 elif theme_name == "pornohub":
-                    dino = labs.get_lab(5022122512)
-                    dino.coins += 500
-                    dino.save()
+                    creator_lab = labs.get_lab(5022122512) # Дино
+
+                if creator_lab != None:
+                    creator_lab.coins += 500
+                    statistics.save_transaction(sender_id=USER_ID, getter_id=creator_lab.user_id, coins=500)
+                    creator_lab.save()
                     try:
-                        await bot.send_message(5022122512, "+500 коинов за покупку темы")
+                        await bot.send_message(creator_lab.user_id, "Вашу тему купили, вам начислено 500 комнов!")
                     except exceptions.ChatNotFound:
                         pass
 
+                statistics.themes.append({
+                    "descr": f"Куплена тема {theme_name} за {int(theme[theme_name]['price'])}",
+                    "prise": int(theme[theme_name]['price']),
+                    "theme_name": theme_name,
+                    "time": time.time(),
+                    "buyer": lab.user_id,
+                    "creator": creator_lab.user_id if creator_lab != None else None
+                })
 
                 lab.coins -= int(theme[theme_name]["price"])
+                statistics.save_transaction(sender_id=lab.user_id, getter_id=USER_ID, coins=int(theme[theme_name]["price"]))
                 lab.modules['themes'].append(theme_name)
                 lab.save()
 
@@ -304,7 +266,6 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
     else:
         await query.answer("Эта кнопка не для тебя :)")
-
 
 @dp.callback_query_handler(buylg.filter(action='install_theme'))
 async def buy_language(query: types.CallbackQuery, callback_data: dict):

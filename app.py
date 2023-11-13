@@ -50,9 +50,11 @@ from libs.handlers import *
 from libs.StringConverters import StringConv
 from libs.ChatHistory import save_message
 
+
 sys.path.append(os.path.abspath(os.curdir) + "/libs")
 
 strconv = StringConv()
+
 bot = Bot(
     token = BOT_TOKEN
 )

@@ -11,7 +11,9 @@ import time
 from app import dp, bot, query, strconv, save_message
 from config import MYSQL_HOST
 from Labs import Labs
+from libs.Statistics import Statistics
 
+statistics = Statistics()
 labs = Labs()
 
 from commands.improvements import *
