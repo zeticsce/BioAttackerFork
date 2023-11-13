@@ -329,6 +329,9 @@ async def handler(message: types.message):
                     except TypeError:
                         await message.reply("Жертва не найдена")
                         return
+                    except IndexError:
+                        await message.reply("Жертва не найдена")
+                        return
                     if bebra != None:
                         until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
                         await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
