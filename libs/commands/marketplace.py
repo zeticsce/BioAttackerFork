@@ -27,6 +27,8 @@ from commands.corps import *
 
 from aiogram import types
 from aiogram.types import InputFile
+from aiogram.utils.callback_data import CallbackData
+from aiogram.utils import exceptions
 
 vote_cb = CallbackData('vote', 'action', 'id', 'chat_id')
 buylg = CallbackData('vote', 'action', 'theme_name', 'id', 'chat_id')
@@ -101,7 +103,6 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         purchased = lab.modules
-        print(purchased)
         
         keys = list(theme.keys())
         count = 0
@@ -207,11 +208,46 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                     vitun = labs.get_lab(1731537016)
                     vitun.coins += 500
                     vitun.save()
+                    try:
+                        await bot.send_message(1731537016, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
  
-                if theme_name in ("cookies", "mafia"):
+                elif theme_name in ("cookies", "mafia"):
                     knopka = labs.get_lab(1202336740)
                     knopka.coins += 500
                     knopka.save()
+                    try:
+                        await bot.send_message(1202336740, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
+
+                elif theme_name == "dream":
+                    devidge = labs.get_lab(5892568878)
+                    devidge.coins += 500
+                    devidge.save()
+                    try:
+                        await bot.send_message(5892568878, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
+                
+                elif theme_name == "scammer":
+                    gelya = labs.get_lab(6112156332)
+                    gelya.coins += 500
+                    gelya.save()
+                    try:
+                        await bot.send_message(6112156332, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
+                
+                elif theme_name == "school":
+                    donatik = labs.get_lab(1468359713)
+                    donatik.coins += 500
+                    donatik.save()
+                    try:
+                        await bot.send_message(1468359713, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
 
 
                 lab.coins -= int(theme[theme_name]["price"])
