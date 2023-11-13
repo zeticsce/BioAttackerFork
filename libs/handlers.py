@@ -313,6 +313,9 @@ async def handler(message: types.message):
 
     check = re.fullmatch(r'[.!/][\s]?чек(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
     if check is not None and not message.forward_from:
+        await message.reply("Проеб, функция отключена")
+        return
+
         lab = labs.get_lab(message.from_user.id)
 
         if lab.has_lab:
