@@ -248,6 +248,15 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                         await bot.send_message(1468359713, "+500 коинов за покупку темы")
                     except exceptions.ChatNotFound:
                         pass
+                
+                elif theme_name == "pornohub":
+                    dino = labs.get_lab(5022122512)
+                    dino.coins += 500
+                    dino.save()
+                    try:
+                        await bot.send_message(5022122512, "+500 коинов за покупку темы")
+                    except exceptions.ChatNotFound:
+                        pass
 
 
                 lab.coins -= int(theme[theme_name]["price"])
