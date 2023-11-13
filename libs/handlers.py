@@ -318,37 +318,29 @@ async def handler(message: types.message):
         if lab.has_lab:
             url = check.group(2)
             name = None
+            user = None
             if url is not None:
                 clear_url = url.replace(" ", "").replace("@", "").replace("tg://openmessage?user_id=", "").replace("tg://user?id=", "").replace("https://t.me/", "").replace("t.me/", "")
                 if re.fullmatch(r"[a-z0-9_]+", clear_url) is not None:
                     user = labs.get_user(clear_url)
-
-                    if user == None:
-                        await message.reply("Жертва не найдена")
-                        return
-
-                    bebra = query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")
-                    if len(bebra) == 0:
-                        await message.reply("Жертва не найдена")
-                        return
-                    bebra = bebra[0]
-                    until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
-                    await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
-
             elif message.reply_to_message:
-                    user = labs.get_user(message.reply_to_message.from_user.id)
+                user = labs.get_user(message.reply_to_message.from_user.id)
 
-                    if user == None:
-                        await message.reply("Жертва не найдена")
-                        return
+            if user == None:
+                await message.reply("Жертва не найдена")
+                return
 
-                    bebra = query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")
-                    if len(bebra) == 0:
-                        await message.reply("Жертва не найдена")
-                        return
-                    bebra = bebra[0]
-                    until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
-                    await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
+            bebra = query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")
+            if len(bebra) == 0:
+                await message.reply("Жертва не найдена")
+                return
+            bebra = bebra[0]
+            until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
+            if bebra['until_infect'] > time.time():
+                await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
+            else:
+                await message.reply("Жертва не найдена")
+
 
 
 
