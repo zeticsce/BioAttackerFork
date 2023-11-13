@@ -313,13 +313,9 @@ async def handler(message: types.message):
 
     check = re.fullmatch(r'[.!/][\s]?чек(\s([@./:\\a-z0-9_?=]+))?', message.text.lower())
     if check is not None and not message.forward_from:
-        await message.reply("Проеб, функция отключена")
-        return
-
         lab = labs.get_lab(message.from_user.id)
 
         if lab.has_lab:
-            victims = lab.get_victums()
             url = check.group(2)
             name = None
             if url is not None:
@@ -327,36 +323,18 @@ async def handler(message: types.message):
                 if re.fullmatch(r"[a-z0-9_]+", clear_url) is not None:
                     user = labs.get_user(clear_url)
 
-                    try:
-                        bebra = dict(query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")[0])
-                    except TypeError:
+                    if user == None:
                         await message.reply("Жертва не найдена")
                         return
-                    except IndexError:
+
+                    bebra = query(f"SELECT * FROM `bio_attacker_data`.`victums{lab.user_id}` WHERE user_id = {user['user_id']}")
+                    if len(bebra) == 0:
                         await message.reply("Жертва не найдена")
                         return
-                    if bebra != None:
-                        until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
-                        await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
-                    else:
-                        await message.reply("Жертва не найдена")
-                        return
-                    # result = 0
-
-                    # for item in list(reversed(victims)):
-
-                    #     if item['until_infect'] > int(time.time()):
-
-                    #         if str(item['user_id']) == str(user['user_id']):
-                    #             result = 1
-                                
-                    #             return
-
-                    # if result == 0:
-                    #     await message.reply("Жертва не найдена")
-                    # if user is not None:
-                    #     name = strconv.normalaze(user['name'], str(user['user_id']))
-                    #     user_id = user['user_id']
+                    bebra = bebra[0]
+                    until = datetime.datetime.fromtimestamp(bebra['until_infect']).strftime("%d.%m.%Y")
+                    await message.reply(f"Жертва `@{bebra['user_id']}` приносит вам {bebra['profit']} ☣️ до {until}", parse_mode='Markdown')
+                    
             elif message.reply_to_message:
                 name = strconv.normalaze(message.reply_to_message.from_user.first_name, str(message.reply_to_message.from_user.id))
                 user_id = message.reply_to_message.from_user.id
