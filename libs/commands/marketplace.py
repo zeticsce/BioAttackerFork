@@ -35,7 +35,7 @@ buylg = CallbackData('vote', 'action', 'theme_name', 'id', 'chat_id')
 
 @dp.message_handler(content_types=["text"]) 
 async def handler(message: types.message):
-    if message.text.lower() in ("market", "маркет", ".m", ".м"):
+    if message.text.lower() in ("market", "маркет", "тема", "theme" ".m", ".м", ".т"):
         lab = labs.get_lab(message.from_user.id)
         if lab.has_lab:
 
