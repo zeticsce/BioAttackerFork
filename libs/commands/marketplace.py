@@ -268,7 +268,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                     types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action=f'themes', id=from_user_id, chat_id=chat_id)),
             )
 
-            await bot.edit_message_text(text=f"{theme[theme_name]['theme_name']} приобретена", message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
+            await bot.edit_message_text(text=f"{theme[theme_name]['theme_name']} приобретена\n\nВы потратили {theme[theme_name]['price']} коинов!", message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
     
     else:
         await query.answer("Эта кнопка не для тебя :)")
