@@ -26,7 +26,6 @@ class Statistics:
         try:
             with open(work_path + f'/chats/statistics.json', encoding='utf-8') as f: stat = json.load(f)
         except Exception as e:
-            print(e)
             file_id = str(int(time.time()*1000))[::-1][:6]
             shutil.copyfile(work_path + f'/chats/statistics.json', work_path + f'/chats/invalidStatistics{file_id}.json')
             requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
@@ -44,7 +43,7 @@ class Statistics:
         self.stat = stat
         self.users = stat["users"]
         self.themes: list = stat["themes"]
-        self.transactions: list = stat['themes']
+        self.transactions: list = stat['transactions']
 
     def __setattr__(self, name, value):
         self.__dict__[name] = value
@@ -57,7 +56,6 @@ class Statistics:
             "coins": coins,
             "time": time.time()
         })
-        print(self.transactions)
         self.save()
     def save(self):
         if self.last_update + 30 < time.time(): # сохранение в файл раз в тридцать секунд

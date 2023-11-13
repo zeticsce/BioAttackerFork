@@ -144,3 +144,18 @@ class StringConv:
         # text = emoji.demojize(text)
 
         return text
+
+    def format_dir(self, _item, indent=4, base_indent=None):
+
+        if base_indent is None: 
+            base_indent = indent
+        result = "{\n"
+        count = 0
+        for i in _item:
+            comma = "" if len(_item) - 1 == count else ","
+            if type(_item[i]) == str: result += " "*indent + f'"{i}": "{_item[i]}"{comma}\n'
+            elif type(_item[i]) == dict: result += " "*indent + f'"{i}": ' + self.format_dir(_item[i], indent=base_indent + indent, base_indent=base_indent) + comma
+            else: result += " "*indent + f'"{i}": {_item[i]}{comma}\n'
+            count += 1
+        result += " "*(indent - base_indent) + "}\n"
+        return result

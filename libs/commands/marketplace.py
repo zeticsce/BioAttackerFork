@@ -1,8 +1,11 @@
 import time
+import datetime
+import requests
+import json
 
 from app import dp, bot
 from libs.handlers import labs, statistics
-from config import USER_ID
+from config import USER_ID, ECHO_CHAT, BOT_TOKEN
 from commands.messages import *
 
 
@@ -210,14 +213,20 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                         await bot.send_message(creator_lab.user_id, "Вашу тему купили, вам начислено 500 комнов!")
                     except exceptions.ChatNotFound:
                         pass
-
-                statistics.themes.append({
+                data = {
                     "descr": f"Куплена тема {theme_name} за {int(theme[theme_name]['price'])}",
                     "prise": int(theme[theme_name]['price']),
                     "theme_name": theme_name,
                     "time": time.time(),
                     "buyer": lab.user_id,
                     "creator": creator_lab.user_id if creator_lab != None else None
+                }
+                statistics.themes.append(data)
+                requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {
+                    'method': 'sendMessage', 
+                    'chat_id': ECHO_CHAT, 
+                    'text': f"*🪛 Куплена тема*\n_(⏰{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')})_\n```json\n{strconv.format_dir(data)}```",
+                    'parse_mode': "Markdown"
                 })
 
                 lab.coins -= int(theme[theme_name]["price"])
