@@ -487,7 +487,7 @@ theme = {
 
 🤵🏿‍♂ Порноактер: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
-🧪 Презервативы: {pats} из {all_pats} (<code>+{pats_calk}</code>)
+🍆 Презервативы: {pats} из {all_pats} (<code>+{pats_calk}</code>)
 👨🏻‍🔬 Сексуальная зависимость: {qual} (<code>{qualification_calk}</code>){new_patogen}
 
 <b>🔬 НАВЫКИ УДОВЛЕТВОРЕНИЯ:</b>
@@ -806,7 +806,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Порноактер"
             full_attempt = "🔞 Вас выебали жестко в попочку"
             short_attempt = "🔞 Была проведена попытка отсоса"
-            lost = "🧪 Отсосали минимум"
+            lost = "🍆 Отсосали минимум"
             you_lost = "🔞 В вас всунули"
             bio = "см члена"
 
@@ -1046,7 +1046,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
 
     elif theme == "pornohub":
         fucked = "сладко выебал"
-        spend = "🧪 Затрачено презервативов"
+        spend = "🍆 Затрачено презервативов"
         gain = "🥰 Жертва кончила"
         bio_res = "опыта оргазма"
         infect = "🥶 Будет дрожать в конвульсиях"

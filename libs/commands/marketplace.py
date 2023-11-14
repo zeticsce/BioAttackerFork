@@ -178,6 +178,34 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
             keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
 
+            
+
+            keyboard_markup.add(
+                    types.InlineKeyboardButton(text='Подвердить покупку', callback_data=buylg.new(action=f'confirmation', theme_name=theme_name, id=from_user_id, chat_id=chat_id)),
+            )
+
+            keyboard_markup.add(
+                    types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action=f'themes', id=from_user_id, chat_id=chat_id)),
+            )
+
+            await bot.edit_message_text(text=f"{theme[theme_name]['theme_name']} будет стоить {theme[theme_name]['price']} коинов.\n\nПодвердить покупку?", message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
+    
+    else:
+        await query.answer("Эта кнопка не для тебя :)")
+
+@dp.callback_query_handler(buylg.filter(action='confirmation'))
+async def buy_language(query: types.CallbackQuery, callback_data: dict):
+    from_user_id = callback_data["id"]
+    message_name = query.from_user.first_name
+    chat_id = callback_data["chat_id"]
+    theme_name = callback_data["theme_name"]
+
+    if from_user_id == str(query.from_user.id):
+        lab = labs.get_lab(from_user_id)
+        if lab.has_lab:
+
+            keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
+
             if 'themes' not in lab.modules:
                 lab.modules['themes'] = []
                 lab.save()
