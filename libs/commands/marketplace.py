@@ -210,7 +210,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                     statistics.save_transaction(sender_id=USER_ID, getter_id=creator_lab.user_id, coins=500)
                     creator_lab.save()
                     try:
-                        await bot.send_message(creator_lab.user_id, "Вашу тему купили, вам начислено 500 комнов!")
+                        await bot.send_message(creator_lab.user_id, "Вашу тему купили, вам начислено 500 коинов!")
                     except exceptions.ChatNotFound:
                         pass
                 data = {
