@@ -229,7 +229,7 @@ async def handler(message: types.message):
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
-        if lab.last_farma + (60*60*4) > int(time.time()):
+        if lab.has_lab and lab.last_farma + (60*60*4) > int(time.time()):
             minuts = 60*4 - int((int(time.time()) - lab.last_farma)/60)
             if minuts <= 20:
                 if minuts == 1: declination = "минута"
