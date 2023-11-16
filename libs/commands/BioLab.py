@@ -48,8 +48,67 @@ def get_impr_count(start, biores, power): # подсчет колва досту
 
 @dp.message_handler(content_types=["text"])
 async def show_lab(message: types.Message):
+    if message.text.lower() in ("минилаб", "млаб") and not message.forward_from:
 
-    if message.text.lower() == "биолаб" and not message.forward_from:
+        """
+            Команда вывода лаборатории юзера
+        """
+
+        lab = labs.get_lab(message['from']['id'])
+        if not lab.has_lab: 
+            lab = labs.create_lab(message['from']['id'])
+        
+        if lab.theme not in theme: themeId = "standard"
+        else: themeId = lab.theme
+
+        labTheme = theme[themeId]["minilab"]
+        
+        text = labTheme['lab']\
+        .replace("{pats}", str(lab.patogens))\
+        .replace("{all_pats}", str(lab.all_patogens))\
+        .replace("{bio_res}", str(strconv.num_to_str(lab.bio_res)))\
+        .replace("{bio_exp}", str(strconv.num_to_str(lab.bio_exp)))\
+        .replace("{lab_name}", lab.lab_name if lab.lab_name != None else labTheme["no lab name"].replace("{name}", lab.name))\
+        \
+        \
+        .replace("{user_id}", str(lab.user_id))
+
+        if lab.corp == None:
+            text = text.replace("{corp}", labTheme["no corp"])
+        else:
+            text = text.replace("{corp}", labTheme["corp"].replace("{corp_name}", lab.corp_name).replace("{corp_owner_id}", str(lab.corp_owner_id)))
+
+        if lab.patogens == lab.all_patogens:
+            text = text.replace("{new_patogen}", labTheme["full patogens"])
+        else:
+            quala = (61 - lab.qualification) * 60
+            if (quala - ( int(time.time()) - lab.last_patogen_time)) < 60:
+                untill = quala - int(time.time()) + lab.last_patogen_time
+                patogen_line = labTheme["next patogen sec"]
+            else:
+                untill = math.ceil(round(quala - ( int(time.time()) - lab.last_patogen_time )) / 60)
+                patogen_line = labTheme["next patogen min"]
+            text = text.replace("{new_patogen}", patogen_line.replace("{next_patogen_time}", str(untill)))
+
+        if lab.illness != None:
+            untill = floor(lab.illness['illness'] / 60)
+            if lab.illness['patogen'] != None:
+                text = text.replace("{fever}", labTheme['fever patogen'].replace("{fever_time}", str(untill)).replace("{fever_name}", lab.illness['patogen']))
+            else:
+                text = text.replace("{fever}", labTheme['fever'].replace("{fever_time}", str(untill)))
+        else:
+            text = text.replace("{fever}", labTheme['no fever'])
+
+        await bot.send_message(chat_id=message.chat.id, 
+            text=text, 
+            reply_to_message_id=message.message_id, 
+            parse_mode="HTML",
+            disable_web_page_preview=True,
+        )
+
+        lab.save() 
+
+    if message.text.lower() in ("биолаб", "блаб") and not message.forward_from:
 
         """
             Команда вывода лаборатории юзера

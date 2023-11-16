@@ -33,6 +33,24 @@ theme = {
         "type" : "language",
         "price" : 0,
 
+        "minilab": {
+            "lab": """
+👺 Владелец: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Патогенов: {pats} из {all_pats}
+☣️ Био-опыт: {bio_exp}
+🧬 Био-ресурс: {bio_res}{fever}""",
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Корпорация «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная патогеном «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным патогеном ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
+
         "biolab" : {
             "lab": """🦠 Информация о вирусе: <code>{patogen_name}</code>
 
@@ -82,6 +100,24 @@ theme = {
         "theme_desc" : "Тема чтобы попытатся уснуть",
         "type" : "arcade",
         "price" : 5000,
+
+         "minilab": {
+            "lab": """
+👨‍⚕️ Профессор: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+💊 Таблеток: {pats} из {all_pats}
+🌌 Сон-опыт: {bio_exp}
+✨ Сон-ресурс: {bio_res}{fever}""",
+            "no lab name": "им. {name}",
+            "corp": '\n🕍 Дворец Снов «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До новой таблетки: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До новой таблетки: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥱 У вас сонливость вызванная таблеткой «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥱 У вас сонливость вызванная неизвестной таблеткой ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
 
         "biolab" : {
             "lab": """💤 Информация о снотворном: <code>{patogen_name}</code>
@@ -134,6 +170,24 @@ theme = {
         "type" : "arcade",
         "price" : 1000,
 
+        "minilab": {
+            "lab": """
+👺 Владелец: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🪄 ужастиков: {pats} из {all_pats}
+🩸 Адреналин: {bio_exp}
+🧬 Сладостей: {bio_res}{fever}""",
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Корпорация «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ Новый ужастик: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ Новый ужастик: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 Вы в шоке с розыгрыша «<code>{fever_name}</code>» ещё {fever_time} мин!",
+            "fever": "\n\n🥴 У вас шок от неизвестного розыгрыша ещё {fever_time} мин.",
+            "no fever": "",
+        },
+
         "biolab" : {
             "lab": """👻 Название розыгрыша: <code>{patogen_name}</code>
 
@@ -183,6 +237,25 @@ theme = {
         "theme_desc" : "Стандартна тема але українською мовою",
         "type" : "language",
         "price" : 100,
+
+        "minilab": {
+            "lab": """
+👺 Власник: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Патогенів: {pats} из {all_pats}
+☣️ Біо-досвід: {bio_exp}
+🧬 Біо-ресурси: {bio_res}{fever}""",
+            
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Хата «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового патогена: <code>{next_patogen_time}</code> хв.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас лихоманка через вірус «<code>{fever_name}</code>» ще <code>{fever_time} хв.</code>",
+            "fever": "\n\n🥴 У вас лихоманка через невідомий вірус ще <code>{fever_time} хв.</code>",
+            "no fever": "",
+        },
 
         "biolab" : {
             "lab": """🦠 Інформація про вірус: <code>{patogen_name}</code>
@@ -234,6 +307,25 @@ theme = {
         "type" : "language",
         "price" : 100,
 
+        "minilab": {
+            "lab": """
+💩 Хан: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🥒 Хыярлар: {pats} из {all_pats}
+☣️ Био-манатлар: {bio_exp}
+🧬 Био-гяпийляр: {bio_res}{fever}""",
+            
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Азерчай «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового огурца: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового огурца: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная огурцом «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным огурцом ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
+
         "biolab" : {
             "lab": """🦠 Хыярын сохбети: <code>{patogen_name}</code>
 
@@ -260,11 +352,11 @@ theme = {
             "qualification calk 60": "{qual_time} мин.",
             "corp": '\n🏛 Азерчай «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
-            "next patogen sec": "\n⏱ До нового баздыга: <code>{next_patogen_time}</code> сек.",
-            "next patogen min": "\n⏱ До нового баздыга: <code>{next_patogen_time}</code> мин.",
+            "next patogen sec": "\n⏱ До нового огурца: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового огурца: <code>{next_patogen_time}</code> мин.",
             "full patogens": "",
-            "fever patogen": "\n\n🥴 У вас горячка вызванная баздыгом «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
-            "fever": "\n\n🥴 У вас горячка вызванная неизвестным баздыгом ещё <code>{fever_time} мин.</code>",
+            "fever patogen": "\n\n🥴 У вас горячка вызванная огурцом «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас горячка вызванная неизвестным огурцом ещё <code>{fever_time} мин.</code>",
             "no fever": "",
         },
 
@@ -283,6 +375,25 @@ theme = {
         "theme_desc" : "Любительское оформление по теме «Зомби-Апокалипсис»",
         "type" : "arcade",
         "price" : 5000,
+
+        "minilab": {
+            "lab": """
+🧯 Выживший: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Мутагенов: {pats} из {all_pats}
+🔬 Инфекто-опыт: {bio_exp}
+💶 Инфекто-ресурсы: {bio_res}{fever}""",
+            
+            "no lab name": "им. {name}",
+            "corp": '\n🏭 Гильдия «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового мутагена: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового мутагена: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🌡 У вас горячка вызванная инфекцией «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🌡 У вас горячка вызванная неизвестной инфекцией ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
 
         "biolab" : {
             "lab": """🧟‍♀️ Название инфекции: <code>{patogen_name}</code>
@@ -334,6 +445,25 @@ theme = {
         "type" : "arcade",
         "price" : 5000,
 
+        "minilab": {
+            "lab": """
+🧑‍🍳 Шеф-повар: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧁 Приготовлено вкусняшек: {pats} из {all_pats}
+🙏 Благодарности: {bio_exp}
+💵 Касса: {bio_res}{fever}""",
+            
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Сеть кондитерских «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🍰 Ваша попа слиплась от чрезмерной сладости десерта «<code>{fever_name}</code>» еще на <code>{fever_time} мин.</code>",
+            "fever": "\n\n🍰 Ваша попа слиплась от чрезмерной сладости еще на <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
+
         "biolab" : {
             "lab": """🏷 Название рецепта <code>{patogen_name}</code>
 
@@ -358,7 +488,7 @@ theme = {
             "no lab name": "им. {name}",
             "qualification calk": "{qual_time} мин. | +{qual_calk}",
             "qualification calk 60": "{qual_time} мин.",
-            "corp": '\n🏛 Сеть кондитерских «<a href="Заразить @{corp_owner_id}">{corp_name}</a>»',
+            "corp": '\n🏛 Сеть кондитерских «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
             "next patogen sec": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> сек.",
             "next patogen min": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> мин.",
@@ -383,6 +513,25 @@ theme = {
         "theme_desc" : "Тема для школьников. ", 
         "type" : "arcade", 
         "price" : 5000, 
+
+        "minilab": {
+            "lab": """
+💀 Учитель: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+💀 Доступных двоек: {pats} из {all_pats}
+⚡️ Зарплата: {bio_exp}
+🎖 Премия: {bio_res}{fever}""",
+            
+            "no lab name": "им. {name}",
+            "corp": '\n⚠️ Учительская «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До новой двойки: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До новой двойки: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n💥 У вас расстройство,вызванное потерей зарплаты, «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴 У вас расстройство,вызванное потерей зарплаты, ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
 
         "biolab" : {
             "lab": """😈 Информация о причине: <code>{patogen_name}</code>
@@ -483,8 +632,27 @@ theme = {
         "type" : "arcade",
         "price" : 5000,
 
- "biolab" : {
-        "lab": """🪪 Информация о пенисе: <code>{patogen_name}</code>
+        "minilab": {
+            "lab": """
+🤵🏿‍♂ Порноактер: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🍆 Презервативы: {pats} из {all_pats}
+🏆 Рейтинг в Порнхабе: {bio_exp}
+🧬 Гармоны счастья: {bio_res}{fever}""",    
+
+            "no lab name": "им. {name}",
+            "corp": '\n🏛 Порностудия «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До нового полового акта: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До нового полового акта: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🥴 У вас импотенция из за нарушения эрекции «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n🥴У вас импотенция из за нарушения эрекции ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
+
+        "biolab" : {
+            "lab": """🪪 Информация о пенисе: <code>{patogen_name}</code>
 
 🤵🏿‍♂ Порноактер: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
@@ -532,6 +700,25 @@ theme = {
         "theme_desc" : "Тема для тех кто хочет получать ресурсы с помощью своей хитрости",
         "type" : "arcade",
         "price" : 5000,
+
+        "minilab": {
+            "lab": """
+👤 Вы представляетесь: <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+📱 Ложных номеров: {pats} из {all_pats}
+💵  Долларов: {bio_exp}
+💎 Общих запасов: {bio_res}{fever}""",    
+
+            "no lab name": "им. {name}",
+            "corp": '\n🏦 Сеть аферистов «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До готовности шантажа: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До готовности шантажа: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🖥 Вы слишком доверяли посторонним и были заскамлены «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n❓Вы повелись на фейковые данные ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
 
         "biolab" : {
             "lab": """👥 Информация об организации: <code>{patogen_name}</code>
@@ -586,6 +773,26 @@ theme = {
         ),
         "type" : "language",
         "price" : 100,
+
+        "minilab": {
+            "lab": """
+✨ <b>Owner:</b> <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
+
+🧪 Pathogens: {pats} из {all_pats}
+☣️ Bio-exp: {bio_exp}
+🧬 Bio-resource: {bio_res}{fever}""",    
+
+            "no lab name": "им. {name}",
+            "corp": '\n🏦 Сеть аферистов «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
+            "no corp": "",
+            "next patogen sec": "\n⏱ До готовности шантажа: <code>{next_patogen_time}</code> сек.",
+            "next patogen min": "\n⏱ До готовности шантажа: <code>{next_patogen_time}</code> мин.",
+            "full patogens": "",
+            "fever patogen": "\n\n🖥 Вы слишком доверяли посторонним и были заскамлены «<code>{fever_name}</code>» ещё <code>{fever_time} мин.</code>",
+            "fever": "\n\n❓Вы повелись на фейковые данные ещё <code>{fever_time} мин.</code>",
+            "no fever": "",
+        },
+
         "biolab": {
             "lab": """🦠 Virus information: <code>{patogen_name}</code>
     
