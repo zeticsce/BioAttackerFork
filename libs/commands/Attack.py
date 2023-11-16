@@ -455,10 +455,10 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
 
                 if lab.theme == "english":
                     text = "🤓You have been successfully healed!"
-                    await query.answer(f"Spent `{price}` bio-resources 🧬")
+                    await query.answer(f"Spent {price} bio-resources 🧬")
                 else:
                     text = "🤓 Вы успешно исцелились!"
-                    await query.answer(f"Потрачено `{price}` био-ресурсов 🧬")
+                    await query.answer(f"Потрачено {price} био-ресурсов 🧬")
                 await bot.edit_message_text(
                     chat_id=query.message.chat.id, 
                     text=text, 
