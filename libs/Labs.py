@@ -8,7 +8,7 @@ import requests
 class Labs:
     def __init__(self) -> None:
         self.has_lab_users = [i['user_id'] for i in query("SELECT * FROM `bio_attacker`.`labs`")]
-        self.bio_top = query("SELECT * FROM bio_attacker.labs INNER JOIN telegram_data.tg_users ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id ORDER BY bio_attacker.labs.bio_exp DESC LIMIT 50;")
+        self.bio_top = query("SELECT * FROM bio_attacker.labs INNER JOIN telegram_data.tg_users ON bio_attacker.labs.user_id = telegram_data.tg_users.user_id ORDER BY bio_attacker.labs.bio_exp DESC LIMIT 100;")
 
     def create_lab(self, user_id):
         if len(query(f"SELECT * FROM `bio_attacker`.`labs` WHERE `user_id` = {user_id}")) == 0:        

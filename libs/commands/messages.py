@@ -363,6 +363,7 @@ theme = {
             "next patogen sec": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> сек.",
             "next patogen min": "\n⏳ Новая вкусняшка: <code>{next_patogen_time}</code> мин.",
             "full patogens": "",
+            "fever patogen": "\n\n🍰 Ваша попа слиплась от чрезмерной сладости десерта «<code>{fever_name}</code>» еще на <code>{fever_time} мин.</code>",
             "fever": "\n\n🍰 Ваша попа слиплась от чрезмерной сладости еще на <code>{fever_time} мин.</code>",
             "no fever": "",
         },

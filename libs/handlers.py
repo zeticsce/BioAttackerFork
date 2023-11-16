@@ -69,6 +69,27 @@ if is_host: # Необходимо, потому что команда /git и /
 
         os.system(f"sudo systemctl restart biobot")
 
+@dp.message_handler(content_types=[types.ContentType.NEW_CHAT_MEMBERS, types.ContentType.LEFT_CHAT_MEMBER])
+async def user_joined_chat(message: types.Message):
+    if message.chat.id == -1001875205082:
+    # if message.chat.id == -1001678995999:
+        count = (await bot.get_chat_members_count(message.chat.id))
+        count_str = strconv.skl(count)
+        count_str = count_str[0].upper() + count_str[1:]    
+        forms=('азербайджанец', 'азербайджанца', 'азербайджанцев')
+        form = ''
+        if count % 100 in (11, 12, 13, 14):
+            form = forms[2]
+        else:
+            remainder = count % 10
+            if remainder == 1:
+                form = forms[0]
+            elif 2 <= remainder <= 4:
+                form = forms[1]
+            else:
+                form = forms[2]
+        await bot.set_chat_title(message.chat.id, title=f"{count_str} {form}")
+
 @dp.message_handler(commands=["exit"], commands_prefix='.')
 async def hi_there(message: types.message):
     if message['from']['id'] not in [780882761, 1058211493]: return
@@ -229,6 +250,7 @@ async def handler(message: types.message):
     if message.text.lower() in ("биоферма", "биофарма", "биофа", "майн") and not message.forward_from:
 
         lab = labs.get_lab(message['from']['id'])
+        if not lab.has_lab: return
         if lab.last_farma + (60*60*4) > int(time.time()):
             minuts = 60*4 - int((int(time.time()) - lab.last_farma)/60)
             if minuts <= 20:
