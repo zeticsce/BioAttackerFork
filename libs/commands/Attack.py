@@ -454,11 +454,11 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
                 lab.save()
 
                 if lab.theme == "english":
-                    text = "🤓You have been successfully healed!\n\n"
-                    text += f"Spent `{price}` bio-resources 🧬"
+                    text = "🤓You have been successfully healed!"
+                    await query.answer(f"Spent `{price}` bio-resources 🧬")
                 else:
-                    text = "🤓 Вы успешно исцелились!\n\n"
-                    text += f"Потрачено `{price}` био-ресурсов 🧬" 
+                    text = "🤓 Вы успешно исцелились!"
+                    await query.answer(f"Потрачено `{price}` био-ресурсов 🧬")
                 await bot.edit_message_text(
                     chat_id=query.message.chat.id, 
                     text=text, 
@@ -466,8 +466,8 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
                     message_id=query.message.message_id,
                 )
             elif lab.bio_res - price <= 0 and lab.bio_res + lab.coins >= price:
-                text = "🤓Вы успешно исцелились!\n\n"
-                text += f"Потрачено {lab.bio_res} 🧬 и {(price - lab.bio_res)} 💰"
+                text = "🤓Вы успешно исцелились!"
+                await query.answer(f"Потрачено {lab.bio_res} 🧬 и {(price - lab.bio_res)} 💰")
                 lab.last_issue = 0
                 lab.coins -= (price - lab.bio_res)
                 lab.bio_res -= lab.bio_res
