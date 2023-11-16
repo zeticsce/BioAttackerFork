@@ -73,8 +73,8 @@ if is_host: # Необходимо, потому что команда /git и /
 async def user_joined_chat(message: types.Message):
     if message.chat.id == -1001875205082:
     # if message.chat.id == -1001678995999:
-        count = (await bot.get_chat_members_count(message.chat.id))
-        count_str = strconv.skl(count+1)
+        count = (await bot.get_chat_members_count(message.chat.id))+1
+        count_str = strconv.skl(count)
         count_str = count_str[0].upper() + count_str[1:]    
         forms=('азербайджанец', 'азербайджанца', 'азербайджанцев')
         form = ''
