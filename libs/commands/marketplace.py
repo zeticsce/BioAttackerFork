@@ -36,8 +36,9 @@ async def handler(message: types.message):
                 count = 0
                 for i in range(len(lab.modules['themes'])):
                     theme_name = lab.modules['themes'][i]
-                    text += f"{count + 1}. " + f"{theme[theme_name]['theme_name']}\n"
-                    count += 1
+                    if theme_name in theme:
+                        text += f"{count + 1}. " + f"{theme[theme_name]['theme_name']}\n"
+                        count += 1
                 
             keyboard_markup.row(
                 types.InlineKeyboardButton(text="Темы", callback_data=vote_cb.new(action='themes', id=message.from_user.id, chat_id=message.chat.id)),
