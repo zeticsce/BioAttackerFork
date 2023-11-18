@@ -55,7 +55,7 @@ def against(id_of_organizator, id_id, theme_name):
 
     if theme_name in (None, "None"):
         theme_name = "standard"
-    
+
     text = fuck_against[theme_name]
     keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
     keyboard_markup.row(
@@ -463,7 +463,7 @@ async def treat(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:  #проверка на наличие лабы
-            
+
             price = lab.immunity * 15
 
 
@@ -511,9 +511,9 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
 
     from_user_id = callback_data["id"]
     message_name = query.from_user.first_name
-    
+
     victim = callback_data["id_of_organizator"]
-    
+
     lab = labs.get_lab(from_user_id)
     VictimLab = labs.get_lab(victim)
     chat_id = VictimLab.virus_chat
@@ -533,25 +533,25 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
         atts = callback_data["patogens"]
         profit = callback_data["bio"]
         text = sbService(
-            1, 1, int(lab.virus_chat) == lab.user_id, 
-            lab.theme, 
+            1, 1, int(lab.virus_chat) == lab.user_id,
+            lab.theme,
             VictimLab.user_id,
             strconv.normalaze(VictimLab.name, replace=str(VictimLab.user_id)),
             lab.user_id,
             strconv.normalaze(lab.name, replace=str(lab.user_id)),
-            atts, 
+            atts,
             patogenName(VictimLab, lab.theme),
             profit
         )
 
         await bot.edit_message_text(
-                    chat_id=query.message.chat.id, 
-                    text=text, 
-                    parse_mode="HTML", 
+                    chat_id=query.message.chat.id,
+                    text=text,
+                    parse_mode="HTML",
                     message_id=query.message.message_id,
                     disable_web_page_preview=True
                 )
-    
+
 
         """
 
@@ -690,8 +690,8 @@ async def attack_youknow(query: types.CallbackQuery, callback_data: dict):
                     strconv.normalaze(VictimLab.name, replace=str(VictimLab.user_id)),
                     atts
                 )
-                
-                
+
+
                 try:
                     if VictimLab.security >= lab.security:
                         await bot.send_message(

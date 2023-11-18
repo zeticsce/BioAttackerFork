@@ -39,13 +39,13 @@ async def handler(message: types.message):
                     if theme_name in theme:
                         text += f"{count + 1}. " + f"{theme[theme_name]['theme_name']}\n"
                         count += 1
-                
+
             keyboard_markup.row(
                 types.InlineKeyboardButton(text="Темы", callback_data=vote_cb.new(action='themes', id=message.from_user.id, chat_id=message.chat.id)),
             )
 
             await message.reply(text, reply_markup=keyboard_markup)
-        
+
         else:
             return
 
@@ -71,7 +71,7 @@ async def open_themes(query: types.CallbackQuery, callback_data: dict):
         text += f"Аркадные - темы с использованием разных тематик"
 
         await bot.edit_message_text(text=text, chat_id=chat_id, message_id=query.message.message_id, reply_markup=keyboard_markup)
-        
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -86,7 +86,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         purchased = lab.modules
-        
+
         keys = list(theme.keys())
         count = 0
 
@@ -96,27 +96,27 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
             if theme[keys[i]]["type"] == "language":
                 if keys[i] in lab.modules['themes']:
                     continue
-                
+
                 theme_name = theme[keys[i]]["theme_name"]
                 theme_price = theme[keys[i]]["price"]
-                
+
                 text += f"{count + 1}. " + f'{theme_name} | {theme_price} 💰\n'
                 count += 1
-                
+
 
                 keyboard_markup.add(
                     types.InlineKeyboardButton(text=f'{theme_name}', callback_data=buylg.new(action=f'buy_theme', theme_name=keys[i], id=from_user_id, chat_id=chat_id)),
                 )
-        
+
         if count == 0:
             text += "Походу вы купили все темы :)"
-        
+
         keyboard_markup.add(
             types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action='themes', id=from_user_id, chat_id=chat_id)),
         )
 
         await bot.edit_message_text(text, message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -132,7 +132,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         purchased = lab.modules
-        
+
         keys = list(theme.keys())
         count = 0
 
@@ -145,15 +145,15 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
                 theme_name = theme[keys[i]]["theme_name"]
                 theme_price = theme[keys[i]]["price"]
-                
+
                 text += f"{count + 1}. " + f'{theme_name} | {theme_price} 💰\n'
                 count += 1
-                
+
 
                 keyboard_markup.add(
                     types.InlineKeyboardButton(text=f'{theme_name}', callback_data=buylg.new(action=f'buy_theme', theme_name=keys[i], id=from_user_id, chat_id=chat_id)),
                 )
-        
+
         if count == 0:
             text += "Походу вы купили все темы :)"
 
@@ -162,7 +162,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
         )
 
         await bot.edit_message_text(text, message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -179,7 +179,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
 
             keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
 
-            
+
 
             keyboard_markup.add(
                     types.InlineKeyboardButton(text='Подвердить покупку', callback_data=buylg.new(action=f'confirmation', theme_name=theme_name, id=from_user_id, chat_id=chat_id)),
@@ -190,7 +190,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
             )
 
             await bot.edit_message_text(text=f"{theme[theme_name]['theme_name']} будет стоить {theme[theme_name]['price']} коинов.\n\nПодвердить покупку?", message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -210,7 +210,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
             if 'themes' not in lab.modules:
                 lab.modules['themes'] = []
                 lab.save()
-            
+
             if lab.coins < int(theme[theme_name]["price"]):
                 await bot.edit_message_text(text="У вас недостаточно коинов!", message_id=query.message.message_id, chat_id=chat_id)
                 return
@@ -218,19 +218,19 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                 creator_lab = None
                 if theme_name == "zombie":
                     creator_lab = labs.get_lab(1731537016) # Окультизм
- 
+
                 elif theme_name in ("cookies", "mafia"):
                     creator_lab = labs.get_lab(1202336740) # Кнопка
 
                 elif theme_name == "dream":
                     creator_lab = labs.get_lab(5892568878) # David95gT
-                
+
                 elif theme_name == "scammer":
                     creator_lab = labs.get_lab(6112156332) # Геля
-                
+
                 elif theme_name == "school":
                     creator_lab = labs.get_lab(1468359713) # Донатик
-                
+
                 elif theme_name == "pornohub":
                     creator_lab = labs.get_lab(5022122512) # Дино
 
@@ -263,13 +263,13 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                 lab.modules['themes'].append(theme_name)
                 lab.save()
 
-            
+
             keyboard_markup.add(
                     types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action=f'themes', id=from_user_id, chat_id=chat_id)),
             )
 
             await bot.edit_message_text(text=f"{theme[theme_name]['theme_name']} приобретена\n\nВы потратили {theme[theme_name]['price']} коинов!", message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -293,11 +293,11 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                 keyboard_markup.add(
                     types.InlineKeyboardButton(text=f'{theme[theme_name]["theme_name"]}', callback_data=buylg.new(action=f'install_theme', theme_name=theme_name, id=from_user_id, chat_id=chat_id)),
                 )
-        
+
         keyboard_markup.add(
                     types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action=f'themes', id=from_user_id, chat_id=chat_id)),
         )
-        
+
         await bot.edit_message_text(text=text, message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
 
     else:
@@ -313,7 +313,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
     if from_user_id == str(query.from_user.id):
         lab = labs.get_lab(from_user_id)
         if lab.has_lab:
-            
+
             keyboard_markup = types.InlineKeyboardMarkup(row_width=2)
 
             lab.theme = theme_name
@@ -324,8 +324,8 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
             keyboard_markup.add(
                     types.InlineKeyboardButton(text='◀️ Назад', callback_data=vote_cb.new(action=f'themes', id=from_user_id, chat_id=chat_id)),
             )
-            
+
             await bot.edit_message_text(text=text, message_id=query.message.message_id, chat_id=chat_id, reply_markup=keyboard_markup)
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")

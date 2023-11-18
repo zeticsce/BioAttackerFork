@@ -96,7 +96,7 @@ class UserLab:
             """Инициализация и проверка модулей"""
 
             # Пример
-            
+
             # if 'themes' not in self.modules:
             #     self.modules['themes'] = {}
 
@@ -193,7 +193,7 @@ class UserLab:
             if victums[0]['until_infect'] < int(time.time()): is_new = True
             query(f"DELETE FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `victums{self.user_id}`.`id` = {victums[0]['id']}")
             query(f"INSERT INTO `bio_attacker_data`.`victums{self.user_id}` (`id`, `user_id`, `profit`, `from_infect`, `until_infect`) VALUES (NULL, '{victum_id}', '{profit}', '{int(time.time())}', '{int(time.time()) + (self.mortality * 24 * 60 * 60)}')")
-        
+
         q = query(f"SELECT count(victums{self.user_id}.id) FROM `bio_attacker_data`.`victums{self.user_id}` WHERE `until_infect` >= {int(time.time())}")
         self.victims = q[0][list(q[0].keys())[0]]
         return is_new

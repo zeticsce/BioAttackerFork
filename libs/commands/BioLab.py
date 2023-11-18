@@ -57,12 +57,12 @@ async def show_lab(message: types.Message):
         lab = labs.get_lab(message['from']['id'])
         if not lab.has_lab: 
             lab = labs.create_lab(message['from']['id'])
-        
+
         if lab.theme not in theme: themeId = "standard"
         else: themeId = lab.theme
 
         labTheme = theme[themeId]["minilab"]
-        
+
         text = labTheme['lab']\
         .replace("{pats}", str(lab.patogens))\
         .replace("{all_pats}", str(lab.all_patogens))\
@@ -162,9 +162,9 @@ async def show_lab(message: types.Message):
 
         if lab.theme not in theme: themeId = "standard"
         else: themeId = lab.theme
-    
+
         labTheme = theme[themeId]["biolab"]
-        
+
         text = labTheme['lab']\
         .replace("{pats}", str(lab.patogens))\
         .replace("{all_pats}", str(lab.all_patogens))\
@@ -248,7 +248,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
         lab = labs.get_lab(from_user_id)
         text = f'Болезни игрока [{strconv.normalaze(message_name, replace=str(from_user_id))}](tg://openmessage?user_id={from_user_id})\n\n'
-        
+
         count = 0
         in_list = []
         for item in list(reversed(lab.get_issues())):
@@ -272,7 +272,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
 
                 count += 1
                 if count == 30: break
-                
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -282,7 +282,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
@@ -312,11 +312,11 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
                     text += f'{count + 1}. <a href="tg://openmessage?user_id={item["user_id"]}">{name}</a> | +{item["profit"]} | до {until}\n'
 
                 count += 1
-        
+
         text += f'\n🤒 Итого {actual} зараженных'
         text += f'\n🧬 Общая прибыль: +{strconv.format_nums(profit)} био-ресурсов '
 
-        
+
         victims_keyboard = types.InlineKeyboardMarkup(row_width=1)
         victims_keyboard.row(
             types.InlineKeyboardButton('❌', callback_data=vote_cb.new(action='delete msg', id=query.from_user.id, chat_id=chat_id)),
@@ -326,7 +326,7 @@ async def first_help_editor(query: types.CallbackQuery, callback_data: dict):
         await query.message.edit_reply_markup(victims_keyboard)
         await query.answer()
 
-    
+
     else:
         await query.answer("Эта кнопка не для тебя :)")
 
