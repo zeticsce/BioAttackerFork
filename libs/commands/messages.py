@@ -245,7 +245,7 @@ theme = {
 🧪 Патогенів: {pats} из {all_pats}
 ☣️ Біо-досвід: {bio_exp}
 🧬 Біо-ресурси: {bio_res}{fever}""",
-            
+
             "no lab name": "им. {name}",
             "corp": '\n🏛 Хата «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
@@ -314,7 +314,7 @@ theme = {
 🥒 Хыярлар: {pats} из {all_pats}
 ☣️ Био-манатлар: {bio_exp}
 🧬 Био-гяпийляр: {bio_res}{fever}""",
-            
+
             "no lab name": "им. {name}",
             "corp": '\n🏛 Азерчай «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
@@ -383,7 +383,7 @@ theme = {
 🧪 Мутагенов: {pats} из {all_pats}
 🔬 Инфекто-опыт: {bio_exp}
 💶 Инфекто-ресурсы: {bio_res}{fever}""",
-            
+
             "no lab name": "им. {name}",
             "corp": '\n🏭 Гильдия «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
@@ -452,7 +452,7 @@ theme = {
 🧁 Приготовлено вкусняшек: {pats} из {all_pats}
 🙏 Благодарности: {bio_exp}
 💵 Касса: {bio_res}{fever}""",
-            
+
             "no lab name": "им. {name}",
             "corp": '\n🏛 Сеть кондитерских «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
@@ -521,7 +521,7 @@ theme = {
 💀 Доступных двоек: {pats} из {all_pats}
 ⚡️ Зарплата: {bio_exp}
 🎖 Премия: {bio_res}{fever}""",
-            
+
             "no lab name": "им. {name}",
             "corp": '\n⚠️ Учительская «<a href="tg://openmessage?user_id={corp_owner_id}">{corp_name}</a>»',
             "no corp": "",
@@ -576,7 +576,7 @@ theme = {
             "victim" : "😶 Двоечник не найден!"
         }
     },
-    
+
 #     "mafia" : { # недоделка
 #         "theme_name" : "🕵🏻‍♂️ Мафия",
 #         "theme_desc" : "💰 Деньги и власть – основные ценности мафии, ты поднимешься к вершине преступного мира, либо станешь жертвой своей собственной доверчивости",
@@ -763,7 +763,7 @@ theme = {
             "victim" : "👺 Возможно данная личность скрывается от вас!"
         }
     },
-    
+
     "english" : {
         "theme_name" : (
             "🇬🇧 Английская тема"
@@ -795,7 +795,7 @@ theme = {
 
         "biolab": {
             "lab": """🦠 Virus information: <code>{patogen_name}</code>
-    
+
 ✨ <b>Owner:</b> <a href="tg://openmessage?user_id={user_id}">{lab_name}</a>{corp}
 
 🧪 Pathogens: {pats} of {all_pats} (<code>+{pats_calk}</code>)
@@ -869,7 +869,7 @@ def patogenName(lab, theme=""):
 
         else:
             howfuck = "патогеном"
-        
+
     else:
         if theme == "azeri":
             howfuck = "хыяром"
@@ -959,7 +959,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "👨🏻‍🔬 You have been infected"
             alter_lost = "☣️ Lost"
             alter_attempt = "was infected"
-        
+
         elif theme == "zombie":
             organizer = "Распостранитель инфекции"
             full_attempt = "🖲 Была проведена операция вашего инфицирования"
@@ -984,7 +984,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             alternative = "🧑‍🍳 Вас угостили десертом"
             alter_lost = "🙏 Оставил"
             alter_attempt = "был угощен десертом"
-        
+
         elif theme == "dream":
             organizer = "Организатор"
             full_attempt = "🧑‍🔬 Была проведена операция подвергнуть вас сонливостью"
@@ -1077,7 +1077,7 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
 
 
     else:
-        
+
         attempt = "попыток"
 
         if theme == "azeri":
@@ -1117,12 +1117,12 @@ def sbService(suc, hidden, equal, theme, first_id, first_name, second_id, second
             organizer = "Организатор"
             full_attempt = "🤯 Попытка вашего раскрытия провалилась!"
             short_attempt = "🤯 Попытка сдать"
-        
+
         elif theme == "dream":
             organizer = "Организатор"
             full_attempt = "⛔️ Попытка подвергнуть вас сонливостью провалилась!"
             short_attempt = "⛔️ Попытка подвергнуть сонливостью"
-        
+
         elif theme == "scammer":
             organizer = "Аферист"
             full_attempt = "🤓 Вы обладаете достаточной информацией и не были обмануты!"
@@ -1201,7 +1201,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "біо-ресурса"
         infect = "☠️ Гіпертонія на"
         lol = "👨‍🔬 Йолоп ще не був йобнутий вашим патогеном"
-    
+
     elif theme == "english":
         ''' Английская тема '''
         fucked = "infected"
@@ -1219,7 +1219,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "инфекто-ресурса"
         infect = "☠️ Инфицирование на"
         lol = "🧟‍♀ Объект ещё не подвергался инфицированию вашим мутагеном"
-    
+
     elif theme == "cookies":
         fucked = "угостил(а)"
         spend = "🧁 Использовано вкусняшек"
@@ -1235,7 +1235,7 @@ def attackText(theme, new, first_name, second_name, first_id, second_id, patogen
         bio_res = "зарплаты"
         infect = "☠️ Двойка на"
         lol = "😎 Вы еще не ставили этому человеку двойку!"
-    
+
     elif theme == "dream":
         fucked = "подверг сонливостью"
         spend = "💊 Затрачено таблеток"
