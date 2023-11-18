@@ -348,7 +348,7 @@ async def handler(message: types.message):
             elif message.reply_to_message:
                 user = labs.get_user(message.reply_to_message.from_user.id)
 
-            if user == None:
+            if user is None:
                 await message.reply("Жертва не найдена")
                 return
 

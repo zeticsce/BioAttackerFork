@@ -86,7 +86,7 @@ class UserLab:
             result['name'] = strconv.normalaze(result['name'])
 
             result['modules'] = json.loads(result['modules'])
-            if result['modules'] == None: result['modules'] = {}
+            if result['modules'] is None: result['modules'] = {}
 
             self.__dict__ = copy.deepcopy(result)
             self.__start_data = copy.deepcopy(result)
