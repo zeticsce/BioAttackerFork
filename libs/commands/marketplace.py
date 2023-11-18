@@ -234,7 +234,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                 elif theme_name == "pornohub":
                     creator_lab = labs.get_lab(5022122512) # Дино
 
-                if creator_lab != None:
+                if creator_lab is not None:
                     creator_lab.coins += 500
                     statistics.save_transaction(sender_id=USER_ID, getter_id=creator_lab.user_id, coins=500)
                     creator_lab.save()
@@ -248,7 +248,7 @@ async def buy_language(query: types.CallbackQuery, callback_data: dict):
                     "theme_name": theme_name,
                     "time": time.time(),
                     "buyer": lab.user_id,
-                    "creator": creator_lab.user_id if creator_lab != None else None
+                    "creator": creator_lab.user_id if creator_lab is not None else None
                 }
                 statistics.themes.append(data)
                 requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/', {

@@ -68,12 +68,12 @@ async def show_lab(message: types.Message):
         .replace("{all_pats}", str(lab.all_patogens))\
         .replace("{bio_res}", str(strconv.num_to_str(lab.bio_res)))\
         .replace("{bio_exp}", str(strconv.num_to_str(lab.bio_exp)))\
-        .replace("{lab_name}", lab.lab_name if lab.lab_name != None else labTheme["no lab name"].replace("{name}", lab.name))\
+        .replace("{lab_name}", lab.lab_name if lab.lab_name is not None else labTheme["no lab name"].replace("{name}", lab.name))\
         \
         \
         .replace("{user_id}", str(lab.user_id))
 
-        if lab.corp == None:
+        if lab.corp is None:
             text = text.replace("{corp}", labTheme["no corp"])
         else:
             text = text.replace("{corp}", labTheme["corp"].replace("{corp_name}", lab.corp_name).replace("{corp_owner_id}", str(lab.corp_owner_id)))
@@ -90,9 +90,9 @@ async def show_lab(message: types.Message):
                 patogen_line = labTheme["next patogen min"]
             text = text.replace("{new_patogen}", patogen_line.replace("{next_patogen_time}", str(untill)))
 
-        if lab.illness != None:
+        if lab.illness is not None:
             untill = floor(lab.illness['illness'] / 60)
-            if lab.illness['patogen'] != None:
+            if lab.illness['patogen'] is not None:
                 text = text.replace("{fever}", labTheme['fever patogen'].replace("{fever_time}", str(untill)).replace("{fever_name}", lab.illness['patogen']))
             else:
                 text = text.replace("{fever}", labTheme['fever'].replace("{fever_time}", str(untill)))
@@ -175,8 +175,8 @@ async def show_lab(message: types.Message):
         .replace("{security}", str(lab.security))\
         .replace("{bio_res}", str(strconv.num_to_str(lab.bio_res)))\
         .replace("{bio_exp}", str(strconv.num_to_str(lab.bio_exp)))\
-        .replace("{lab_name}", lab.lab_name if lab.lab_name != None else labTheme["no lab name"].replace("{name}", lab.name))\
-        .replace("{patogen_name}", lab.patogen_name if lab.patogen_name != None else labTheme["no pathogen name"])\
+        .replace("{lab_name}", lab.lab_name if lab.lab_name is not None else labTheme["no lab name"].replace("{name}", lab.name))\
+        .replace("{patogen_name}", lab.patogen_name if lab.patogen_name is not None else labTheme["no pathogen name"])\
         \
         .replace("{prevented_issue}", str(lab.prevented_issue))\
         .replace("{all_operations}", str(lab.all_operations))\
@@ -202,7 +202,7 @@ async def show_lab(message: types.Message):
             qualification_calk = labTheme['qualification calk 60'].replace("{qual_time}", str(61 - lab.qualification))
         text = text.replace("{qualification_calk}", qualification_calk)
 
-        if lab.corp == None:
+        if lab.corp is None:
             text = text.replace("{corp}", labTheme["no corp"])
         else:
             text = text.replace("{corp}", labTheme["corp"].replace("{corp_name}", lab.corp_name).replace("{corp_owner_id}", str(lab.corp_owner_id)))
@@ -219,9 +219,9 @@ async def show_lab(message: types.Message):
                 patogen_line = labTheme["next patogen min"]
             text = text.replace("{new_patogen}", patogen_line.replace("{next_patogen_time}", str(untill)))
 
-        if lab.illness != None:
+        if lab.illness is not None:
             untill = floor(lab.illness['illness'] / 60)
-            if lab.illness['patogen'] != None:
+            if lab.illness['patogen'] is not None:
                 text = text.replace("{fever}", labTheme['fever patogen'].replace("{fever_time}", str(untill)).replace("{fever_name}", lab.illness['patogen']))
             else:
                 text = text.replace("{fever}", labTheme['fever'].replace("{fever_time}", str(untill)))
